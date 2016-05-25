@@ -20,9 +20,9 @@ Principais Funcionalidades
 Características Técnicas
 ------------------------
 
-Banco de Dados: PostgreSQL
-Linguagem de programação: Python
-Web Framework: Django
+- Banco de Dados: PostgreSQL
+- Linguagem de programação: Python
+- Web Framework: Django
 
 
 Documentação
