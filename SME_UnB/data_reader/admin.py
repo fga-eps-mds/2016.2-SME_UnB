@@ -4,7 +4,7 @@ from .models import Transductor, TransductorManager, Measurements
 
 class TransductorInLine(admin.StackedInline):
     model = Transductor
-    extra = 1
+    extra = 0
 
 class TransductorManagerAdmin(admin.ModelAdmin):
     fieldset = [

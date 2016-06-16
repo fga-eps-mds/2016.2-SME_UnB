@@ -1,7 +1,31 @@
-{% if data_list %}
-    {% for data in data_list %}
-        <li>{{data.voltage_a}}</li>
-    {% endfor %}
-{% else %}
-    <p>No data avaiable.</p>
-{% endif %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data collection</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href="http://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}">
+</head>
+<body>
+    <div>
+        <h1>Data Collection</h1>
+    </div>
+
+    <div>
+        {% if data_list %}
+        {% for data in data_list %}
+            <li>{{data.voltage_a}} - {{data.collection_date|date:'Y-m-d H:i:s'}}</li>
+        {% endfor %}
+        {% else %}
+            <p>No data avaiable.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+
+
+
+

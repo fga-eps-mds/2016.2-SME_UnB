@@ -1,11 +1,10 @@
 from __future__ import unicode_literals
 from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.db import models
+from django.utils import timezone
 import socket
 import struct
 import sys
-import array
 import time
 import thread
 
@@ -31,6 +30,7 @@ class Transductor(models.Model):
 
 class Observer():
     _observers = []
+
     def __init__(self):
         self._observers.append(self)
         self._observables = {}
@@ -47,18 +47,18 @@ class VoltageObserver(Observer):
         low_voltage = False
 
         if voltage < 220.0:
-            print "\n\n!!Low Voltage!! - %.3f\n\n" % voltage
             low_voltage = True
 
         return low_voltage
 
 
 class Event():
-    def __init__(self, name, data, autofire = True):
+    def __init__(self, name, data, autofire=True):
         self.name = name
         self.data = data
         if autofire:
             self.fire()
+
     def fire(self):
         for observer in Observer._observers:
             if self.name in observer._observables:
@@ -75,7 +75,7 @@ class CommunicationProtocol(models.Model):
         return self.protocol_type
 
     def start_data_collection(self):
-        socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        new_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         register_start_address = 68
         total_registers = 2
@@ -89,12 +89,11 @@ class CommunicationProtocol(models.Model):
         alarm = VoltageObserver()
 
         try:
-            thread.start_new_thread(self._thread_data_collection, (socket, message_send, alarm))
+            thread.start_new_thread(self._thread_data_collection, (new_socket, message_send, alarm))
         except:
             print "Can't create thread"
 
         return True
-
 
     def _thread_data_collection(self, socket, message_send, alarm):
         i = 0
@@ -107,16 +106,15 @@ class CommunicationProtocol(models.Model):
             alarm.observe('new data received', alarm.verify_voltage)
             Event('new data received', value)
 
-            self.transductor.measurements_set.create(voltage_a=value)
+            self.transductor.measurements_set.create(voltage_a=value, collection_date=timezone.now())
 
             i = i + 1
-            time.sleep(2)
-
+            time.sleep(1)
 
     def _get_value_from_response_message(self, message_received_data):
         n_bytes = struct.unpack("1B", message_received_data[2])[0]
 
-        msg = bytearray(message_received_data[3:-2], 'utf8')
+        msg = bytearray(message_received_data[3:-2])
 
         for i in range(0, n_bytes, 4):
             if sys.byteorder == "little":
@@ -152,9 +150,12 @@ class CommunicationProtocol(models.Model):
 
         return final_crc
 
+
 class Measurements(models.Model):
+
     transductor = models.ForeignKey(Transductor, on_delete=models.CASCADE)
     voltage_a = models.FloatField(default=None)
+    collection_date = models.DateTimeField('date published')
 
     def __str__(self):
         return '%s' % self.voltage_a
