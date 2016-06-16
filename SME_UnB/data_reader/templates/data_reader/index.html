@@ -1,0 +1,9 @@
+{% if transductors_list %}
+    <u>
+    {% for transductor in transductors_list %}
+        <li><a href="{% url 'data_reader:detail' transductor.id %}">{{transductor.description}}</a></li>
+    {% endfor %}
+    </u>
+{% else %}
+    <p>No transductors avaiable.</p>
+{% endif %}

@@ -75,7 +75,7 @@ class CommunicationProtocol(models.Model):
         return self.protocol_type
 
     def start_data_collection(self):
-        # socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         register_start_address = 68
         total_registers = 2
@@ -99,17 +99,15 @@ class CommunicationProtocol(models.Model):
     def _thread_data_collection(self, socket, message_send, alarm):
         i = 0
         while(i < 10):
-            # socket.sendto(message_send, ("164.41.119.135", 1001))
-            # message_received = socket.recvfrom(256)
-
-            message_received = ('\x01\x03\x04%JC[\xa0"', ('164.41.119.135', 1001))
+            socket.sendto(message_send, ("164.41.119.135", 1001))
+            message_received = socket.recvfrom(256)
 
             value = self._get_value_from_response_message(message_received[0])
 
             alarm.observe('new data received', alarm.verify_voltage)
             Event('new data received', value)
 
-            # self.transductor.measurements_set.create(voltage_a=value)
+            self.transductor.measurements_set.create(voltage_a=value)
 
             i = i + 1
             time.sleep(2)

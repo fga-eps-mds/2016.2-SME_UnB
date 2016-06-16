@@ -1,0 +1,7 @@
+{% if data_list %}
+    {% for data in data_list %}
+        <li>{{data.voltage_a}}</li>
+    {% endfor %}
+{% else %}
+    <p>No data avaiable.</p>
+{% endif %}
