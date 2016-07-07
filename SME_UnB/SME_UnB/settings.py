@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap3',
     'data_reader.apps.DataReaderConfig',
     'django.contrib.admin',
     'django.contrib.auth',

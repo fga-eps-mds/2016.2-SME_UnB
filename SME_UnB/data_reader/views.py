@@ -4,11 +4,11 @@ from .models import Transductor
 from django.shortcuts import get_object_or_404, render
 
 class IndexView(generic.ListView):
-    template_name = 'data_reader/index.html'
-    context_object_name = 'transductors_list'
-
-    def get_queryset(self):
-        return Transductor.objects.all()
+     template_name = 'data_reader/index.html'
+     context_object_name = 'transductors_list'
+ 
+     def get_queryset(self):
+         return Transductor.objects.all()
 
 
 def detail(request, transductor_id):

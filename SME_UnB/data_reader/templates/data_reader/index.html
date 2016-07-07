@@ -1,12 +1,40 @@
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+{% extends 'data_reader/base.html' %}
 
-{% if transductors_list %}
-    <u>
-    {% for transductor in transductors_list %}
-        <li><a href="{% url 'data_reader:detail' transductor.id %}">{{transductor.description}}</a></li>
-    {% endfor %}
-    </u>
-{% else %}
-    <p>No transductors avaiable.</p>
-{% endif %}
+{% block title %}
+    <title>Transductors</title>
+{% endblock %}
+
+{% block body %}
+<div class="col-md-6" style="padding-top: 60px">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Description</th>
+        <th>IP Address</th>
+        <th>Serie Number</th>
+      </tr>
+    </thead>
+
+    {% if transductors_list %}
+      {% for transductor in transductors_list %}
+      <tbody>
+        <tr>
+          <td>{{transductor.id}}</td>
+          <td><a href="{% url 'data_reader:detail' transductor.id %}">{{transductor.description}}</a></td>
+          <td>{{transductor.ip_address}}</td>
+          <td>{{transductor.serie_number}}</td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    {% else %}
+      <div class="container">
+        <div class="starter-template">
+          <h1>No Registered Transducer</h1>
+          <p class="lead">To register a new transductor click here.</p>
+        </div>
+      </div>
+    {% endif %}
+</table>
+</div>
+{% endblock %}

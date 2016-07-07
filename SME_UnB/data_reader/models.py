@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.db import models
 from django.utils import timezone
 import socket
@@ -160,12 +161,9 @@ class Measurements(models.Model):
     def __str__(self):
         return '%s' % self.voltage_a
 
-
+@receiver(post_save, sender=Transductor)
 def transductor_saved(sender, instance, **kwargs):
     if instance.data_collection:
         print "true"
     else:
         instance.communicationprotocol_set.first().start_data_collection()
-
-
-post_save.connect(transductor_saved, sender=Transductor)
