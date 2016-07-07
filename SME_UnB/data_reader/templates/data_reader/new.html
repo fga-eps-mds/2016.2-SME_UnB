@@ -1,0 +1,15 @@
+{% extends 'data_reader/base.html' %}
+
+{% block title %}
+    <title>New Transductor</title>
+{% endblock %}
+
+{% block body %}
+    <h1>New Transductor</h1>
+    <form method="post" class="post-form">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="save btn btn-default">Save</button>
+        <a href="{% url 'data_reader:index' %}" class="save btn btn-default">Cancel</button>
+    </form>
+{% endblock %}

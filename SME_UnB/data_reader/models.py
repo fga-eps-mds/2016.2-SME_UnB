@@ -99,7 +99,7 @@ class CommunicationProtocol(models.Model):
     def _thread_data_collection(self, socket, message_send, alarm):
         i = 0
         while(i < 10):
-            socket.sendto(message_send, ("164.41.119.135", 1001))
+            socket.sendto(message_send, (self.transductor.ip_address, self.port))
             message_received = socket.recvfrom(256)
 
             value = self._get_value_from_response_message(message_received[0])
@@ -165,5 +165,6 @@ class Measurements(models.Model):
 def transductor_saved(sender, instance, **kwargs):
     if instance.data_collection:
         print "true"
+        # instance.communicationprotocol_set.first().restart_data_collection()
     else:
         instance.communicationprotocol_set.first().start_data_collection()

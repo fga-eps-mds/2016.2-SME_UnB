@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block body %}
-<div class="col-md-6" style="padding-top: 60px">
+<p><a href="{% url 'data_reader:new' %}" class="btn btn-primary">Create Transductor</a></p>
+<div class="col-md-6">
   <table class="table table-striped">
     <thead>
       <tr>
@@ -13,6 +14,7 @@
         <th>Description</th>
         <th>IP Address</th>
         <th>Serie Number</th>
+        <th>Options</th>
       </tr>
     </thead>
 
@@ -24,6 +26,10 @@
           <td><a href="{% url 'data_reader:detail' transductor.id %}">{{transductor.description}}</a></td>
           <td>{{transductor.ip_address}}</td>
           <td>{{transductor.serie_number}}</td>
+          <td>
+            <a href="{% url 'data_reader:new' %}"><span class="glyphicon glyphicon-edit"></span></a>
+            <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+          </td>
         </tr>
       </tbody>
       {% endfor %}

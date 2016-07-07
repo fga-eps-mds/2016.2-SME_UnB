@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'bootstrap3',
+    'home.apps.HomeConfig',
     'data_reader.apps.DataReaderConfig',
     'django.contrib.admin',
     'django.contrib.auth',
