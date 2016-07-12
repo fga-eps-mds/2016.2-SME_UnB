@@ -103,7 +103,7 @@ class CommunicationProtocol(models.Model):
             message_received = socket.recvfrom(256)
 
             value = self._get_value_from_response_message(message_received[0])
-
+            print str(value)
             alarm.observe('new data received', alarm.verify_voltage)
             Event('new data received', value)
 

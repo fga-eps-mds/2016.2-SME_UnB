@@ -27,7 +27,7 @@
           <td>{{transductor.ip_address}}</td>
           <td>{{transductor.serie_number}}</td>
           <td>
-            <a href="{% url 'data_reader:new' %}"><span class="glyphicon glyphicon-edit"></span></a>
+            <a href="{% url 'data_reader:edit' pk=transductor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
           </td>
         </tr>

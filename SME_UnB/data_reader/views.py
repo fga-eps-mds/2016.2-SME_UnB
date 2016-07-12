@@ -35,3 +35,16 @@ def new(request):
     else:
         form = PostForm()
     return render(request, 'data_reader/new.html', {'form': form})
+
+def edit(request, pk):
+    post = get_object_or_404(Transductor, pk=pk)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            transductor = form.save(commit=False)
+            transductor.transductor_manager = TransductorManager.objects.all().first()
+            transductor.save()           
+            return redirect('/data_reader')
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'data_reader/new.html', {'form': form})

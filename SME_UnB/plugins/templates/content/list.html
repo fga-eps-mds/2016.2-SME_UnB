@@ -1,0 +1,16 @@
+{% extends 'data_reader/base.html' %}
+
+{% block title %}
+    <title>SME Reports</title>
+{% endblock %}
+
+{% block body %}
+<a href="{{ plugin.get_create_url }}" class="btn btn-primary">Create {{ plugin.title }}</a>
+<hr>
+
+<ul>
+  {% for report in reports %}
+  <li><a href="{{ report.get_absolute_url }}">{{ report.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'data_reader/base.html' %}
+
+{% block title %}
+    <title>SME Create Report</title>
+{% endblock %}
+
+{% block body %}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-success">Save</button>
+  <a href="/content/report-plugin/" class="btn btn-danger">Cancel</a>
+</form>
+{% endblock %}

@@ -1,13 +1,13 @@
 {% extends 'data_reader/base.html' %}
 
 {% block title %}
-    <title>Data Record</title>
+    <title>SME Reports</title>
 {% endblock %}
 
 {% block body %}
 <div class="page-header">
   <div class="starter-template">
-    <h1>Data from {{data_list.first.transductor.ip_address}}</h1>
+    <h1>Data from {{content.transductor.ip_address}}</h1>
   </div>
 </div>
 {% if data_list %}
@@ -19,7 +19,6 @@
         <th>Date - Time</th>
       </tr>
     </thead>
-
       {% for data in data_list %}
       <tbody>
         <tr>
@@ -28,12 +27,12 @@
         </tr>
       </tbody>
       {% endfor %}
-    {% else %}
-      <div class="container">
-        <div class="starter-template">
-          <h1>No data avaiable</h1>
-        </div>
-      </div>
+{% else %}
+  <div class="container">
+    <div class="starter-template">
+      <h1>No data avaiable</h1>
+    </div>
+  </div>
   </table>
 </div>
 {% endif %}
