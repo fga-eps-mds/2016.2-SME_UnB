@@ -1,40 +1,55 @@
 {% extends 'data_reader/base.html' %}
 
 {% block title %}
-    <title>Data Record</title>
+  <title>Data Record</title>
 {% endblock %}
 
 {% block body %}
-<div class="page-header">
-  <div class="starter-template">
-    <h1>Data from {{data_list.first.transductor.ip_address}}</h1>
+  <div class="page-header">
+    <div class="starter-template">
+      <h1>Data from {{data_list.first.transductor.ip_address}}</h1>
+    </div>
   </div>
-</div>
 {% if data_list %}
-<div class="col-md-6">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Voltage Phase A</th>
-        <th>Date - Time</th>
-      </tr>
-    </thead>
-
-      {% for data in data_list %}
-      <tbody>
+  <div class="col-md-6">
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <td>{{data.voltage_a}}</td>
-          <td>{{data.collection_date|date:'Y-m-d H:i:s'}}</td>
+          <th>Voltage Phase A</th>
+          <th>Date - Time</th>
         </tr>
-      </tbody>
+      </thead>
+      {% for data in data_list %}
+        <tbody>
+          <tr>
+            <td>{{data.voltage_a}}</td>
+            <td>{{data.collection_date|date:'Y-m-d H:i:s'}}</td>
+          </tr>
+        </tbody>
       {% endfor %}
-    {% else %}
-      <div class="container">
-        <div class="starter-template">
-          <h1>No data avaiable</h1>
-        </div>
-      </div>
-  </table>
-</div>
+    </table>
+
+    <div class="pagination">
+      <span class="step-links">
+        {% if data_list.has_previous %}
+          <a href="?page={{ data_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+          Page {{ data_list.number }} of {{ data_list.paginator.num_pages }}
+        </span>
+
+        {% if data_list.has_next %}
+          <a href="?page={{ data_list.next_page_number }}">next</a>
+        {% endif %}
+      </span>
+    </div>
+  </div>
+{% else %}
+  <div class="container">
+    <div class="starter-template">
+      <h1>No data avaiable</h1>
+    </div>
+  </div>
 {% endif %}
 {% endblock %}

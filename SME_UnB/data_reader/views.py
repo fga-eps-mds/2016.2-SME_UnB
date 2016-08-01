@@ -1,6 +1,7 @@
 from django.views import generic
 from .models import *
 from django.shortcuts import get_object_or_404, render, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import PostForm
 from django.utils import timezone
 
@@ -17,7 +18,17 @@ def detail(request, transductor_id):
     transductor = get_object_or_404(Transductor, pk=transductor_id)
     data_list = Transductor.objects.get(id=transductor_id).measurements_set.all()
 
-    return render(request, template_name, {'data_list': data_list})
+    paginator = Paginator(data_list, 10)
+    page = request.GET.get('page')
+
+    try:
+        data = paginator.page(page)
+    except PageNotAnInteger:
+        data = paginator.page(1)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
+
+    return render(request, template_name, {'data_list': data})
 
 def new(request):
     if request.method == "POST":
@@ -43,7 +54,7 @@ def edit(request, pk):
         if form.is_valid():
             transductor = form.save(commit=False)
             transductor.transductor_manager = TransductorManager.objects.all().first()
-            transductor.save()           
+            transductor.save()
             return redirect('/data_reader')
     else:
         form = PostForm(instance=post)
