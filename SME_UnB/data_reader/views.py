@@ -18,7 +18,7 @@ def detail(request, transductor_id):
     transductor = get_object_or_404(Transductor, pk=transductor_id)
     data_list = Transductor.objects.get(id=transductor_id).measurements_set.all()
 
-    paginator = Paginator(data_list, 10)
+    paginator = Paginator(data_list, 3)
     page = request.GET.get('page')
 
     try:
@@ -28,7 +28,7 @@ def detail(request, transductor_id):
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
 
-    return render(request, template_name, {'data_list': data})
+    return render(request, template_name, {'data_list': data, 'transductor': transductor})
 
 def new(request):
     if request.method == "POST":

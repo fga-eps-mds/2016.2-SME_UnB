@@ -3,6 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
 from django.utils import timezone
+from math import sqrt
 import socket
 import struct
 import sys
@@ -103,7 +104,6 @@ class CommunicationProtocol(models.Model):
             message_received = socket.recvfrom(256)
 
             value = self._get_value_from_response_message(message_received[0])
-            print str(value)
             alarm.observe('new data received', alarm.verify_voltage)
             Event('new data received', value)
 
@@ -155,11 +155,45 @@ class CommunicationProtocol(models.Model):
 class Measurements(models.Model):
 
     transductor = models.ForeignKey(Transductor, on_delete=models.CASCADE)
+
     voltage_a = models.FloatField(default=None)
+    voltage_b = models.FloatField(default=None)
+    voltage_c = models.FloatField(default=None)
+
+    current_a = models.FloatField(default=None)
+    current_b = models.FloatField(default=None)
+    current_c = models.FloatField(default=None)
+
+    active_power_a = models.FloatField(default=None)
+    active_power_b = models.FloatField(default=None)
+    active_power_c = models.FloatField(default=None)
+
+    reactive_power_a = models.FloatField(default=None)
+    reactive_power_b = models.FloatField(default=None)
+    reactive_power_c = models.FloatField(default=None)
+
     collection_date = models.DateTimeField('date published')
 
     def __str__(self):
-        return '%s' % self.voltage_a
+        return '%s' % self.collection_date
+
+    def calculate_total_active_power(self):
+        return (self.active_power_a + self.active_power_b + self.active_power_c)
+
+    def calculate_total_reactive_power(self):
+        return (self.reactive_power_a + self.reactive_power_b + self.reactive_power_c)
+
+    def calculate_apparent_power_phase_a(self):
+        apparent_power = sqrt((self.active_power_a**2 + self.reactive_power_a**2))
+        return '{0:.3f}'.format(apparent_power)
+
+    def calculate_apparent_power_phase_b(self):
+        apparent_power = sqrt((self.active_power_b**2 + self.reactive_power_b**2))
+        return '{0:.3f}'.format(apparent_power)
+
+    def calculate_apparent_power_phase_c(self):
+        apparent_power = sqrt((self.active_power_c**2 + self.reactive_power_c**2))
+        return '{0:.3f}'.format(apparent_power)
 
 @receiver(post_save, sender=Transductor)
 def transductor_saved(sender, instance, **kwargs):
