@@ -1,7 +1,9 @@
 from django.views import generic
 from .models import *
 from django.shortcuts import get_object_or_404, render, redirect
+from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
 from .forms import PostForm
 from django.utils import timezone
 
@@ -42,7 +44,7 @@ def new(request):
             # Fix communication protocol
             # cp = CommunicationProtocol.all().first()
 
-            return redirect('detail', transductor_id=transductor.id)
+            return redirect('data_reader:detail', transductor_id=transductor.id)
     else:
         form = PostForm()
     return render(request, 'data_reader/new.html', {'form': form})
@@ -59,3 +61,7 @@ def edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'data_reader/new.html', {'form': form})
+
+def delete(request, pk):
+    transductor = get_object_or_404(Transductor, pk=pk).delete()
+    return HttpResponseRedirect(reverse('data_reader:index'))
