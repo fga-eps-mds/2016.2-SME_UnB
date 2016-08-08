@@ -7,7 +7,6 @@ from math import sqrt
 import socket
 import struct
 import sys
-import time
 import thread
 
 
@@ -79,40 +78,81 @@ class CommunicationProtocol(models.Model):
     def start_data_collection(self):
         new_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        register_start_address = 68
+        messages_to_send = []
+
         total_registers = 2
+        initial_register = 68
+        last_register = 93
 
-        message_send = struct.pack("2B", 0x01, 0x03) + struct.pack(">2H", register_start_address, total_registers)
+        while(initial_register < last_register):
+            if(initial_register == 86):
+                initial_register = initial_register + 2
+            else:
+                packaged_message = struct.pack("2B", 0x01, 0x03) + struct.pack(">2H", initial_register, total_registers)
 
-        crc = self._computate_crc(message_send)
+                crc = self._computate_crc(packaged_message)
 
-        message_send = message_send + crc
+                packaged_message = packaged_message + crc
+
+                messages_to_send.append(packaged_message)
+
+                initial_register = initial_register + 2
 
         alarm = VoltageObserver()
 
         try:
-            thread.start_new_thread(self._thread_data_collection, (new_socket, message_send, alarm))
+            thread.start_new_thread(self._thread_data_collection, (new_socket, messages_to_send, alarm))
         except:
             print "Can't create thread"
 
         return True
 
-    def _thread_data_collection(self, socket, message_send, alarm):
-        i = 0
-        while(i < 10):
-            socket.sendto(message_send, (self.transductor.ip_address, self.port))
+    def _thread_data_collection(self, socket, messages_to_send, alarm):
+        messages = []
+
+        for i in range(len(messages_to_send)):
+            socket.sendto(messages_to_send[i], (self.transductor.ip_address, self.port))
             message_received = socket.recvfrom(256)
 
-            value = self._get_value_from_response_message(message_received[0])
-            alarm.observe('new data received', alarm.verify_voltage)
-            Event('new data received', value)
+            messages.append(message_received[0])
+            # alarm.observe('new data received', alarm.verify_voltage)
+            # Event('new data received', value)
 
-            self.transductor.measurements_set.create(voltage_a=value, collection_date=timezone.now())
+            # self.transductor.measurements_set.create(voltage_a=value, collection_date=timezone.now())
 
-            i = i + 1
-            time.sleep(1)
+        collection_time = timezone.now()
+        self._create_measurements_from_data_collected(messages, collection_time)
 
-    def _get_value_from_response_message(self, message_received_data):
+    def _create_measurements_from_data_collected(self, messages, collection_time):
+        data = Measurements()
+
+        data.transductor = self.transductor
+
+        data.voltage_a = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[0])))
+        data.voltage_b = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[1])))
+        data.voltage_c = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[2])))
+
+        data.current_a = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[3])))
+        data.current_b = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[4])))
+        data.current_c = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[5])))
+
+        data.active_power_a = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[6])))
+        data.active_power_b = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[7])))
+        data.active_power_c = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[8])))
+
+        data.reactive_power_a = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[9])))
+        data.reactive_power_b = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[10])))
+        data.reactive_power_c = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[11])))
+
+        data.apparent_power_a = float("{0:.3f}".format(sqrt(data.active_power_a**2 + data.reactive_power_a**2)))
+        data.apparent_power_b = float("{0:.3f}".format(sqrt(data.active_power_b**2 + data.reactive_power_b**2)))
+        data.apparent_power_c = float("{0:.3f}".format(sqrt(data.active_power_c**2 + data.reactive_power_c**2)))
+
+        data.collection_date = collection_time
+
+        data.save()
+
+    def _get_float_value_from_response_message(self, message_received_data):
         n_bytes = struct.unpack("1B", message_received_data[2])[0]
 
         msg = bytearray(message_received_data[3:-2])
@@ -172,6 +212,10 @@ class Measurements(models.Model):
     reactive_power_b = models.FloatField(default=None)
     reactive_power_c = models.FloatField(default=None)
 
+    apparent_power_a = models.FloatField(default=None)
+    apparent_power_b = models.FloatField(default=None)
+    apparent_power_c = models.FloatField(default=None)
+
     collection_date = models.DateTimeField('date published')
 
     def __str__(self):
@@ -183,22 +227,17 @@ class Measurements(models.Model):
     def calculate_total_reactive_power(self):
         return (self.reactive_power_a + self.reactive_power_b + self.reactive_power_c)
 
-    def calculate_apparent_power_phase_a(self):
-        apparent_power = sqrt((self.active_power_a**2 + self.reactive_power_a**2))
-        return '{0:.3f}'.format(apparent_power)
+    def calculate_total_apparent_power(self):
+        ap_phase_a = self.apparent_power_a
+        ap_phase_b = self.apparent_power_b
+        ap_phase_c = self.apparent_power_c
 
-    def calculate_apparent_power_phase_b(self):
-        apparent_power = sqrt((self.active_power_b**2 + self.reactive_power_b**2))
-        return '{0:.3f}'.format(apparent_power)
+        ap_total = (ap_phase_a + ap_phase_b + ap_phase_c)
 
-    def calculate_apparent_power_phase_c(self):
-        apparent_power = sqrt((self.active_power_c**2 + self.reactive_power_c**2))
-        return '{0:.3f}'.format(apparent_power)
+        return '{0:.3f}'.format(ap_total)
+
 
 @receiver(post_save, sender=Transductor)
 def transductor_saved(sender, instance, **kwargs):
-    if instance.data_collection:
-        print "true"
-        # instance.communicationprotocol_set.first().restart_data_collection()
-    else:
+    if not instance.data_collection:
         instance.communicationprotocol_set.first().start_data_collection()

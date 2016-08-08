@@ -7,7 +7,8 @@
 {% block body %}
 <div class="page-header">
   <div class="starter-template">
-    <h1>Data from {{content.transductor.ip_address}}</h1>
+    <h1>{{content.title}}</h1>
+    <h2>Data from {{content.transductor.description.title}}</h1>
   </div>
 </div>
 {% if data_list %}

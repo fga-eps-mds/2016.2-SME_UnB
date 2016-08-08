@@ -2,6 +2,7 @@ from django import forms
 
 from .models import Transductor
 
+
 class PostForm(forms.ModelForm):
 
     class Meta:

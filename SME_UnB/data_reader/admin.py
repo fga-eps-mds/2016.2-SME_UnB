@@ -1,10 +1,11 @@
 from django.contrib import admin
-from .models import Transductor, TransductorManager, Measurements
+from .models import Transductor, TransductorManager
 
 
 class TransductorInLine(admin.StackedInline):
     model = Transductor
     extra = 0
+
 
 class TransductorManagerAdmin(admin.ModelAdmin):
     fieldset = [
