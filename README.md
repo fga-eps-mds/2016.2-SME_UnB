@@ -37,4 +37,4 @@ TODO
 
 Licença
 -------
-TODO
+https://gitlab.com/brenddongontijo/SME-UnB/blob/master/LICENSE
