@@ -1,10 +1,9 @@
 from django import forms
+from .models import EnergyTransductor
 
-from .models import Transductor
 
-
-class PostForm(forms.ModelForm):
+class EnergyForm(forms.ModelForm):
 
     class Meta:
-        model = Transductor
+        model = EnergyTransductor
         fields = ('serie_number', 'ip_address', 'description',)

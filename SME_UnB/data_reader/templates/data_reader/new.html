@@ -5,7 +5,12 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Edit Transductor</h1>
+    <h1>New Transductor</h1>
+
+    {% if errors %}
+        <p style="color: #ff0000;">{{errors}}</p>
+    {% endif %}
+
     <form method="post" class="post-form">
         {% csrf_token %}
         {{form.as_p}}

@@ -5,20 +5,20 @@
 {% endblock %}
 
 {% block body %}
-<p><a href="{% url 'data_reader:new' %}" class="btn btn-primary">Create Transductor</a></p>
 <div class="col-md-6">
   <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Description</th>
-        <th>IP Address</th>
-        <th>Serie Number</th>
-        <th>Options</th>
-      </tr>
-    </thead>
-
     {% if transductors_list %}
+      <p><a href="{% url 'data_reader:new' %}" class="btn btn-primary">Create Transductor</a></p>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Description</th>
+          <th>IP Address</th>
+          <th>Serie Number</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+
       {% for transductor in transductors_list %}
       <tbody>
         <tr>
@@ -37,7 +37,7 @@
       <div class="container">
         <div class="starter-template">
           <h1>No Registered Transducer</h1>
-          <p class="lead">To register a new transductor click here.</p>
+          <p class="lead">To create a new transductor click <a href="{% url 'data_reader:new' %}" >here</a></p>
         </div>
       </div>
     {% endif %}

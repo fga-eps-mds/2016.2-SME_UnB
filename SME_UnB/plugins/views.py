@@ -45,5 +45,5 @@ def content_read(request, pk, plugin):
     return render(request, 'content/detail.html', {
         'plugin': plugin,
         'content': content,
-        'data_list': content.transductor.measurements_set.all(),
+        'data_list': content.transductor.energymeasurements_set.all(),
     })

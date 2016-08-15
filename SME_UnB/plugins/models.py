@@ -6,12 +6,12 @@ from djangoplugins.fields import PluginField
 
 from plugins.plugins import BasePlugin
 
-from data_reader.models import Transductor
+from data_reader.models import EnergyTransductor
 
 
 class Report(models.Model):
     title = models.CharField(max_length=255)
-    transductor = models.ForeignKey(Transductor, on_delete=models.CASCADE)
+    transductor = models.ForeignKey(EnergyTransductor, on_delete=models.CASCADE)
 
     plugin = PluginField(BasePlugin, editable=False)
 
