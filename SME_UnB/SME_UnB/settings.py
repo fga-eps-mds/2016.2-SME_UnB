@@ -31,10 +31,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'bootstrap3',
-    'home.apps.HomeConfig',
-    'sme_plugins',
-    'plugins',
-    'djangoplugins',
     'data_reader.apps.DataReaderConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -82,9 +78,9 @@ WSGI_APPLICATION = 'SME_UnB.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cmsunb',
-        'user': 'brenddon',
-        'password': 'teste',
+        'NAME': 'smeunb',
+        'user': 'admin',
+        'password': 'admin',
     }
 }
 
