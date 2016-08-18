@@ -9,20 +9,17 @@ from .forms import EnergyForm
 from django.utils import timezone
 
 
-class IndexView(generic.ListView):
+def index(request):
     template_name = 'data_reader/index.html'
-    context_object_name = 'transductors_list'
+    transductors_list = EnergyTransductor.objects.all()
 
-    def get_queryset(self):
-        return EnergyTransductor.objects.all()
+    return render(request, template_name, {'transductors_list': transductors_list})
 
 
 def detail(request, transductor_id):
     template_name = 'data_reader/detail.html'
     transductor = get_object_or_404(EnergyTransductor, pk=transductor_id)
 
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # trocar por measurements
     data_list = EnergyTransductor.objects.get(id=transductor_id).energymeasurements_set.all()
 
     paginator = Paginator(data_list, 4)

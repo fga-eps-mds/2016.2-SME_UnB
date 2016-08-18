@@ -13,7 +13,7 @@ import thread
 
 class Transductor(models.Model):
     serie_number = models.IntegerField(default=None)
-    ip_address = models.CharField(max_length=15)
+    ip_address = models.CharField(max_length=15, unique=True)
     description = models.TextField(max_length=150)
     creation_date = models.DateTimeField('date published')
     data_collection = models.BooleanField(default=False)
@@ -26,17 +26,6 @@ class EnergyTransductor(Transductor):
 
     def __str__(self):
         return self.description
-
-    def validate_unique_ip_address(self, exclude=None):
-        energy_transductors = EnergyTransductor.objects.filter(ip_address=self.ip_address)
-
-        if energy_transductors.filter(ip_address=self.ip_address).exists():
-            raise ValidationError('Ip address must be unique per Energy Transductor')
-
-    def save(self, *args, **kwargs):
-        self.validate_unique_ip_address()
-
-        super(EnergyTransductor, self).save(*args, **kwargs)
 
 
 class Observer():
@@ -127,8 +116,6 @@ class CommunicationProtocol(models.Model):
             messages.append(message_received[0])
             # alarm.observe('new data received', alarm.verify_voltage)
             # Event('new data received', value)
-
-            # self.transductor.measurements_set.create(voltage_a=value, collection_date=timezone.now())
 
         collection_time = timezone.now()
         self._create_measurements_from_data_collected(messages, collection_time)
@@ -253,7 +240,6 @@ class EnergyMeasurements(Measurements):
         return '{0:.3f}'.format(ap_total)
 
 
-@receiver(post_save, sender=Transductor)
+@receiver(post_save, sender=EnergyTransductor)
 def transductor_saved(sender, instance, **kwargs):
-    if not instance.data_collection:
-        instance.communicationprotocol_set.first().start_data_collection()
+    instance.communicationprotocol_set.first().start_data_collection()
