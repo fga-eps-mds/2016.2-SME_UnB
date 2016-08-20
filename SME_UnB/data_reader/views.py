@@ -1,25 +1,26 @@
 from django.views import generic
-from .models import Transductor, TransductorManager
+from .models import EnergyTransductor
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
-from .forms import PostForm
+from .forms import EnergyForm
 from django.utils import timezone
 
 
-class IndexView(generic.ListView):
+def index(request):
     template_name = 'data_reader/index.html'
-    context_object_name = 'transductors_list'
+    transductors_list = EnergyTransductor.objects.all()
 
-    def get_queryset(self):
-        return Transductor.objects.all()
+    return render(request, template_name, {'transductors_list': transductors_list})
 
 
 def detail(request, transductor_id):
     template_name = 'data_reader/detail.html'
-    transductor = get_object_or_404(Transductor, pk=transductor_id)
-    data_list = Transductor.objects.get(id=transductor_id).measurements_set.all()
+    transductor = get_object_or_404(EnergyTransductor, pk=transductor_id)
+
+    data_list = EnergyTransductor.objects.get(id=transductor_id).energymeasurements_set.all()
 
     paginator = Paginator(data_list, 4)
     page = request.GET.get('page')
@@ -35,39 +36,52 @@ def detail(request, transductor_id):
 
 
 def new(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            transductor = form.save(commit=False)
-            transductor.creation_date = timezone.now()
-            transductor.transductor_manager = TransductorManager.objects.all().first()
-            transductor.save()
+    if request.POST:
+        form = EnergyForm(request.POST)
 
-            # Fix communication protocol
-            # cp = CommunicationProtocol.all().first()
+        if form.is_valid():
+            transductor = EnergyTransductor()
+            transductor.serie_number = form.cleaned_data['serie_number']
+            transductor.ip_address = form.cleaned_data['ip_address']
+            transductor.description = form.cleaned_data['description']
+            transductor.creation_date = timezone.now()
+
+            try:
+                transductor.save()
+            except ValidationError, err:
+                errors = '; '.join(err.messages)
+                return render(request, 'data_reader/new.html', {'form': form, 'errors': errors})
 
             return redirect('data_reader:detail', transductor_id=transductor.id)
     else:
-        form = PostForm()
+        form = EnergyForm()
     return render(request, 'data_reader/new.html', {'form': form})
 
 
 def edit(request, pk):
-    post = get_object_or_404(Transductor, pk=pk)
-    if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
+    transductor = get_object_or_404(EnergyTransductor, pk=pk)
+
+    if request.POST:
+        form = EnergyForm(request.POST, instance=transductor)
+
         if form.is_valid():
-            transductor = form.save(commit=False)
-            transductor.transductor_manager = TransductorManager.objects.all().first()
-            transductor.save()
-            return redirect('/data_reader')
+            edited_transductor = form.save(commit=False)
+
+            try:
+                edited_transductor.save()
+            except ValidationError, err:
+                errors = '; '.join(err.messages)
+                return render(request, 'data_reader/new.html', {'form': form, 'errors': errors})
+
+            return redirect('data_reader:index')
     else:
-        form = PostForm(instance=post)
+        form = EnergyForm(instance=transductor)
+
     return render(request, 'data_reader/new.html', {'form': form})
 
 
 def delete(request, pk):
-    transductor = get_object_or_404(Transductor, pk=pk)
+    transductor = get_object_or_404(EnergyTransductor, pk=pk)
     transductor.delete()
 
     return HttpResponseRedirect(reverse('data_reader:index'))
