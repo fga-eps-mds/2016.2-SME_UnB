@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from django.core.exceptions import ValidationError
+from django.contrib.postgres.fields import ArrayField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
@@ -11,12 +11,22 @@ import sys
 import thread
 
 
+class TransductorInfo(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    internet_protocol = models.CharField(max_length=50)
+    serial_protocol = models.CharField(max_length=50)
+    register_addresses = ArrayField(models.IntegerField())
+
+    def __str__(self):
+        return self.name
+
+
 class Transductor(models.Model):
+    info = models.ForeignKey(TransductorInfo)
     serie_number = models.IntegerField(default=None)
     ip_address = models.CharField(max_length=15, unique=True)
     description = models.TextField(max_length=150)
     creation_date = models.DateTimeField('date published')
-    data_collection = models.BooleanField(default=False)
 
     class Meta:
         abstract = True

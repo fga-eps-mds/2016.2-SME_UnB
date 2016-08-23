@@ -1,4 +1,3 @@
-from django.views import generic
 from .models import EnergyTransductor
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect
