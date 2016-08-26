@@ -21,5 +21,5 @@ git clone https://github.com/sethvargo/chef-sugar.git
 
 cd .. && vagrant up
 
-vagrant ssh -c "/vagrant/after_installation.sh"
+vagrant ssh -c "/vagrant/after_installation_script.sh"
 vagrant ssh
