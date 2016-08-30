@@ -172,6 +172,6 @@ class CommunicationProtocol(models.Model):
         return final_crc
 
 
-@receiver(post_save, sender=EnergyTransductor)
-def transductor_saved(sender, instance, **kwargs):
-    instance.communicationprotocol_set.first().start_data_collection()
+# @receiver(post_save, sender=EnergyTransductor)
+# def transductor_saved(sender, instance, **kwargs):
+#     instance.communicationprotocol_set.first().start_data_collection()

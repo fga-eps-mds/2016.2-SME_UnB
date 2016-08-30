@@ -8,7 +8,6 @@
 <div class="col-md-6">
   <table class="table table-striped">
     {% if transductors_models %}
-      <p><a href="{% url 'transductor:model_new' %}" class="btn btn-primary">Create Transductor Model</a></p>
       <thead>
         <th>Name</th>
         <th>Internet Protocol</th>
@@ -27,7 +26,6 @@
       <div class="container">
         <div class="starter-template">
           <h1>Nothing Registered</h1>
-          <p class="lead">To create a new transductor model click <a href="{% url 'transductor:model_new' %}" >here</a></p>
         </div>
       </div>
     {% endif %}

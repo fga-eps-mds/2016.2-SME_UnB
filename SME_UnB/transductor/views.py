@@ -1,4 +1,4 @@
-from .models import EnergyTransductor, TransductorInfo
+from .models import EnergyTransductor, TransductorModel
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
@@ -43,6 +43,7 @@ def new(request):
             transductor.serie_number = form.cleaned_data['serie_number']
             transductor.ip_address = form.cleaned_data['ip_address']
             transductor.description = form.cleaned_data['description']
+            transductor.model = form.cleaned_data['transductor_model']
             transductor.creation_date = timezone.now()
 
             try:
@@ -54,6 +55,7 @@ def new(request):
             return redirect('transductor:detail', transductor_id=transductor.id)
     else:
         form = EnergyForm()
+
     return render(request, 'transductor/new.html', {'form': form})
 
 
@@ -88,29 +90,6 @@ def delete(request, transductor_id):
 
 def model_index(request):
     template_name = 'transductor/model_index.html'
-    transductors_models = TransductorInfo.objects.all()
+    transductors_models = TransductorModel.objects.all()
 
     return render(request, template_name, {'transductors_models': transductors_models})
-
-
-def model_new(request):
-    if request.POST:
-        form = EnergyForm(request.POST)
-
-        if form.is_valid():
-            transductor = EnergyTransductor()
-            transductor.serie_number = form.cleaned_data['serie_number']
-            transductor.ip_address = form.cleaned_data['ip_address']
-            transductor.description = form.cleaned_data['description']
-            transductor.creation_date = timezone.now()
-
-            try:
-                transductor.save()
-            except ValidationError, err:
-                errors = '; '.join(err.messages)
-                return render(request, 'transductor/new.html', {'form': form, 'errors': errors})
-
-            return redirect('transductor:detail', transductor_id=transductor.id)
-    else:
-        form = EnergyForm()
-    return render(request, 'transductor/new.html', {'form': form})    

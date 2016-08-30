@@ -27,8 +27,8 @@
           <td>{{transductor.ip_address}}</td>
           <td>{{transductor.serie_number}}</td>
           <td>
-            <a title="Click here to edit" href="{% url 'transductor:edit' pk=transductor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a title="Click here to delete" href="{% url 'transductor:delete' pk=transductor.id %}" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash" ></span></a>
+            <a title="Click here to edit" href="{% url 'transductor:edit' transductor_id=transductor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a title="Click here to delete" href="{% url 'transductor:delete' transductor_id=transductor.id %}" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash" ></span></a>
           </td>
         </tr>
       </tbody>

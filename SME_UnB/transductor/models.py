@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
 
-class TransductorInfo(models.Model):
+class TransductorModel(models.Model):
     name = models.CharField(max_length=50, unique=True)
     internet_protocol = models.CharField(max_length=50)
     serial_protocol = models.CharField(max_length=50)
@@ -15,7 +15,7 @@ class TransductorInfo(models.Model):
 
 
 class Transductor(models.Model):
-    info = models.ForeignKey(TransductorInfo)
+    model = models.ForeignKey(TransductorModel)
     serie_number = models.IntegerField(default=None)
     ip_address = models.CharField(max_length=15, unique=True)
     description = models.TextField(max_length=150)
