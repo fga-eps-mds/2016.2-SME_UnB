@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
@@ -10,20 +11,18 @@ import sys
 import thread
 
 
-class TransductorManager(models.Model):
-    description = models.CharField(max_length=150)
-
-    def __str__(self):
-        return self.description
-
-
 class Transductor(models.Model):
-    transductor_manager = models.ForeignKey(TransductorManager)
     serie_number = models.IntegerField(default=None)
-    ip_address = models.CharField(max_length=15)
+    ip_address = models.CharField(max_length=15, unique=True)
     description = models.TextField(max_length=150)
     creation_date = models.DateTimeField('date published')
     data_collection = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+
+class EnergyTransductor(Transductor):
 
     def __str__(self):
         return self.description
@@ -45,12 +44,12 @@ class VoltageObserver(Observer):
         Observer.__init__(self)
 
     def verify_voltage(self, voltage):
-        low_voltage = False
+        high_voltage = False
 
-        if voltage < 220.0:
-            low_voltage = True
+        if voltage > 230.0:
+            high_voltage = True
 
-        return low_voltage
+        return high_voltage
 
 
 class Event():
@@ -67,7 +66,7 @@ class Event():
 
 
 class CommunicationProtocol(models.Model):
-    transductor = models.ForeignKey(Transductor)
+    transductor = models.ForeignKey(EnergyTransductor)
     protocol_type = models.CharField(max_length=50)
     port = models.IntegerField(default=1001)
     timeout = models.FloatField(default=30.0)
@@ -118,8 +117,6 @@ class CommunicationProtocol(models.Model):
             # alarm.observe('new data received', alarm.verify_voltage)
             # Event('new data received', value)
 
-            # self.transductor.measurements_set.create(voltage_a=value, collection_date=timezone.now())
-
         collection_time = timezone.now()
         self._create_measurements_from_data_collected(messages, collection_time)
 
@@ -128,21 +125,21 @@ class CommunicationProtocol(models.Model):
 
         data.transductor = self.transductor
 
-        data.voltage_a = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[0])))
-        data.voltage_b = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[1])))
-        data.voltage_c = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[2])))
+        data.voltage_a = float("{0:.3f}".format(self._get_float_value_from_response(messages[0])))
+        data.voltage_b = float("{0:.3f}".format(self._get_float_value_from_response(messages[1])))
+        data.voltage_c = float("{0:.3f}".format(self._get_float_value_from_response(messages[2])))
 
-        data.current_a = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[3])))
-        data.current_b = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[4])))
-        data.current_c = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[5])))
+        data.current_a = float("{0:.3f}".format(self._get_float_value_from_response(messages[3])))
+        data.current_b = float("{0:.3f}".format(self._get_float_value_from_response(messages[4])))
+        data.current_c = float("{0:.3f}".format(self._get_float_value_from_response(messages[5])))
 
-        data.active_power_a = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[6])))
-        data.active_power_b = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[7])))
-        data.active_power_c = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[8])))
+        data.active_power_a = float("{0:.3f}".format(self._get_float_value_from_response(messages[6])))
+        data.active_power_b = float("{0:.3f}".format(self._get_float_value_from_response(messages[7])))
+        data.active_power_c = float("{0:.3f}".format(self._get_float_value_from_response(messages[8])))
 
-        data.reactive_power_a = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[9])))
-        data.reactive_power_b = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[10])))
-        data.reactive_power_c = float("{0:.3f}".format(self._get_float_value_from_response_message(messages[11])))
+        data.reactive_power_a = float("{0:.3f}".format(self._get_float_value_from_response(messages[9])))
+        data.reactive_power_b = float("{0:.3f}".format(self._get_float_value_from_response(messages[10])))
+        data.reactive_power_c = float("{0:.3f}".format(self._get_float_value_from_response(messages[11])))
 
         data.apparent_power_a = float("{0:.3f}".format(sqrt(data.active_power_a**2 + data.reactive_power_a**2)))
         data.apparent_power_b = float("{0:.3f}".format(sqrt(data.active_power_b**2 + data.reactive_power_b**2)))
@@ -152,7 +149,7 @@ class CommunicationProtocol(models.Model):
 
         data.save()
 
-    def _get_float_value_from_response_message(self, message_received_data):
+    def _get_float_value_from_response(self, message_received_data):
         n_bytes = struct.unpack("1B", message_received_data[2])[0]
 
         msg = bytearray(message_received_data[3:-2])
@@ -194,7 +191,15 @@ class CommunicationProtocol(models.Model):
 
 class Measurements(models.Model):
 
-    transductor = models.ForeignKey(Transductor, on_delete=models.CASCADE)
+    collection_date = models.DateTimeField('date published')
+
+    class Meta:
+        abstract = True
+
+
+class EnergyMeasurements(Measurements):
+
+    transductor = models.ForeignKey(EnergyTransductor, on_delete=models.CASCADE)
 
     voltage_a = models.FloatField(default=None)
     voltage_b = models.FloatField(default=None)
@@ -216,8 +221,6 @@ class Measurements(models.Model):
     apparent_power_b = models.FloatField(default=None)
     apparent_power_c = models.FloatField(default=None)
 
-    collection_date = models.DateTimeField('date published')
-
     def __str__(self):
         return '%s' % self.collection_date
 
@@ -237,7 +240,6 @@ class Measurements(models.Model):
         return '{0:.3f}'.format(ap_total)
 
 
-@receiver(post_save, sender=Transductor)
+@receiver(post_save, sender=EnergyTransductor)
 def transductor_saved(sender, instance, **kwargs):
-    if not instance.data_collection:
-        instance.communicationprotocol_set.first().start_data_collection()
+    instance.communicationprotocol_set.first().start_data_collection()

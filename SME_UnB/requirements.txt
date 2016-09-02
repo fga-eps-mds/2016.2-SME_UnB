@@ -1,0 +1,4 @@
+requests[security]
+Django==1.9.8
+django-bootstrap3
+psycopg2
