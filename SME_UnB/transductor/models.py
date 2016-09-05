@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core.validators import RegexValidator
 from django.contrib.postgres.fields import ArrayField
 
 
@@ -17,7 +18,13 @@ class TransductorModel(models.Model):
 class Transductor(models.Model):
     model = models.ForeignKey(TransductorModel)
     serie_number = models.IntegerField(default=None)
-    ip_address = models.CharField(max_length=15, unique=True)
+    ip_address = models.CharField(max_length=15, unique=True, validators=[
+        RegexValidator(
+            regex='^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$',
+            message='Incorrect IP address format',
+            code='invalid_ip_address'
+        ),
+    ])
     description = models.TextField(max_length=150)
     creation_date = models.DateTimeField('date published')
 
