@@ -20,5 +20,5 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^admin/', admin.site.urls),
-    url(r'^data_reader/', include('data_reader.urls', namespace="data_reader")),
+    url(r'^transductor/', include('transductor.urls', namespace="transductor")),
 ]

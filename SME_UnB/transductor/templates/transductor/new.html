@@ -15,6 +15,6 @@
         {% csrf_token %}
         {{form.as_p}}
         <button type="submit" class="save btn btn-default">Save</button>
-        <a href="{% url 'data_reader:index' %}" class="save btn btn-default">Cancel</button>
+        <a href="{% url 'transductor:index' %}" class="save btn btn-default">Cancel</button>
     </form>
 {% endblock %}
