@@ -52,26 +52,28 @@ class Event():
 class SerialProtocol(object):
     __metaclass__ = ABCMeta
 
-    def __init__(self, transductor, port):
+    def __init__(self, transductor, port, timeout):
         self.transductor = transductor
         self.port = port
+        self.timeout = timeout
 
     @abstractmethod
     def create_messages(self):
         pass
 
     @abstractmethod
-    def get_int_value_from_response(self, message_received_data):
+    def get_int_value_from_response(self):
         pass
 
     @abstractmethod
-    def get_float_value_from_response(self, message_received_data):
+    def get_float_value_from_response(self):
         pass
 
 
 class ModbusRTU(SerialProtocol):
-    def __init__(self, transductor, port=1001):
-        super(ModbusRTU, self).__init__(transductor, port)
+
+    def __init__(self, transductor, port=1001, timeout=10.0):
+        super(ModbusRTU, self).__init__(transductor, port, timeout)
 
     def create_messages(self):
         registers = self.transductor.model.register_addresses
@@ -93,41 +95,21 @@ class ModbusRTU(SerialProtocol):
                 # TODO: add exception
                 pass
 
-            crc = struct.pack("<H", self._computate_crc(packaged_message))
+            crc = self._computate_crc(packaged_message)
 
             packaged_message = packaged_message + crc
 
             messages_to_send.append(packaged_message)
 
+            print register
+
         return messages_to_send
 
-    def get_int_value_from_response(self,  message_received_data):
+    def get_int_value_from_response(self):
         pass
 
-    def get_float_value_from_response(self, message_received_data):
-        n_bytes = struct.unpack("1B", message_received_data[2])[0]
-
-        msg = bytearray(message_received_data[3:-2])
-
-        for i in range(0, n_bytes, 4):
-            if sys.byteorder == "little":
-                msb = msg[i]
-                msg[i] = msg[i+1]
-                msg[i+1] = msb
-
-                msb = msg[i+2]
-                msg[i+2] = msg[i+3]
-                msg[i+3] = msb
-            else:
-                msb = msg[i]
-                lsb = msg[i+1]
-                msg[i] = msg[i+2]
-                msg[i+1] = msg[i+3]
-                msg[i+2] = msb
-                msg[i+3] = lsb
-
-        value = struct.unpack("1f", msg)[0]
-        return value
+    def get_float_value_from_response(self):
+        pass
 
     def _computate_crc(self, packaged_message):
         crc = 0xFFFF
@@ -141,10 +123,13 @@ class ModbusRTU(SerialProtocol):
                 if lsb:
                     crc ^= 0xA001
 
-        return crc
+        final_crc = struct.pack("<H", crc)
 
-    def _check_crc(self, packaged_message):
-        return (self._computate_crc(packaged_message) == 0)
+        return final_crc
+
+    def _check_crc(self):
+        pass
+
 
 class CommunicationProtocol(models.Model):
     transductor = models.ForeignKey(EnergyTransductor)
