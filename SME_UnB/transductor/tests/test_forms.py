@@ -9,7 +9,7 @@ class EnergyTransductorForm(TestCase):
         t_model.name = "TR 4020"
         t_model.internet_protocol = "UDP"
         t_model.serial_protocol = "Modbus RTU"
-        t_model.register_addresses = [68, 70, 72, 74, 76, 78, 80, 82, 84, 88, 90, 92]
+        t_model.register_addresses = [[68, 0], [70, 1]]
         t_model.save()
 
     def test_valid_form(self):

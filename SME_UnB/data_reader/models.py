@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from abc import ABCMeta, abstractmethod
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
@@ -46,6 +47,87 @@ class Event():
         for observer in Observer._observers:
             if self.name in observer._observables:
                 observer._observables[self.name](self.data)
+
+
+class SerialProtocol(object):
+    __metaclass__ = ABCMeta
+
+    def __init__(self, transductor, port, timeout):
+        self.transductor = transductor
+        self.port = port
+        self.timeout = timeout
+
+    @abstractmethod
+    def create_messages(self):
+        pass
+
+    @abstractmethod
+    def get_int_value_from_response(self):
+        pass
+
+    @abstractmethod
+    def get_float_value_from_response(self):
+        pass
+
+
+class ModbusRTU(SerialProtocol):
+    def __init__(self, transductor, port=1001, timeout=10.0):
+        super(ModbusRTU, self).__init__(transductor, port, timeout)
+
+    def create_messages(self):
+        registers = self.transductor.model.register_addresses
+
+        messages_to_send = []
+
+        int_addr = 0
+        float_addr = 1
+
+        address_value = 0
+        address_type = 1
+
+        for register in registers:
+            if register[address_type] == int_addr:
+                packaged_message = struct.pack("2B", 0x01, 0x03) + struct.pack(">2H", register[address_value], 1)
+            elif register[address_type] == float_addr:
+                packaged_message = struct.pack("2B", 0x01, 0x03) + struct.pack(">2H", register[address_value], 2)
+            else:
+                # TODO: add exception
+                pass
+
+            crc = self._computate_crc(packaged_message)
+
+            packaged_message = packaged_message + crc
+
+            messages_to_send.append(packaged_message)
+
+            print register
+
+        return messages_to_send
+
+    def get_int_value_from_response(self):
+        pass
+
+    def get_float_value_from_response(self):
+        pass
+
+    def _computate_crc(self, packaged_message):
+        crc = 0xFFFF
+
+        for index, item in enumerate(bytearray(packaged_message)):
+            next_byte = item
+            crc ^= next_byte
+            for i in range(8):
+                lsb = crc & 1
+                crc >>= 1
+                if lsb:
+                    crc ^= 0xA001
+
+        final_crc = struct.pack("<H", crc)
+
+        return final_crc
+
+    def _check_crc(self):
+        pass
 
 
 class CommunicationProtocol(models.Model):
