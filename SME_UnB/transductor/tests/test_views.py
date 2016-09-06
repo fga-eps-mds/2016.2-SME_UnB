@@ -29,13 +29,7 @@ class EnergyTransductorViewsTestCase(TestCase):
     def test_index_with_transductor(self):
         t_model = TransductorModel.objects.get(name="TR 4020")
 
-        transductor = EnergyTransductor()
-        transductor.serie_number = "1"
-        transductor.description = "Test"
-        transductor.creation_date = timezone.now()
-        transductor.model = t_model
-        transductor.ip_address = "111.111.111.111"
-        transductor.save()
+        transductor = self.create_energy_transductor(1, "Test", "111.111.111.111", t_model)
 
         url = reverse('transductor:index')
         response = self.client.get(url)
@@ -44,8 +38,12 @@ class EnergyTransductorViewsTestCase(TestCase):
 
     def test_not_create_energy_transductor_without_params(self):
         url = reverse('transductor:new')
+
         params = {
-            'serie_number': u''
+            'serie_number': u'',
+            'ip_address': u'',
+            'description': u'',
+            'transductor_model': u''
         }
 
         response = self.client.post(url, params)
@@ -78,6 +76,24 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         self.assertRedirects(response, detail_url)
 
+    def test_not_create_transductor_with_same_ip_address(self):
+        t_model = TransductorModel.objects.get(name="TR 4020")
+
+        transductor = self.create_energy_transductor(1, "Test", "111.111.111.111", t_model)
+
+        url = reverse('transductor:new')
+
+        params = {
+            'serie_number': 1,
+            'ip_address': '111.111.111.111',
+            'description': 'Test',
+            'transductor_model': t_model.id
+        }
+
+        response = self.client.post(url, params)
+
+        self.assertFormError(response, 'form', 'ip_address', 'Energy transductor with this Ip address already exists.')
+
     def test_not_create_transductor_with_wrong_ip_address(self):
         t_model = TransductorModel.objects.get(name="TR 4020")
 
@@ -97,16 +113,21 @@ class EnergyTransductorViewsTestCase(TestCase):
     def test_energy_transductor_detail(self):
         t_model = TransductorModel.objects.get(name="TR 4020")
 
-        transductor = EnergyTransductor()
-        transductor.serie_number = "1"
-        transductor.description = "Test"
-        transductor.creation_date = timezone.now()
-        transductor.model = t_model
-        transductor.ip_address = "111.111.111.111"
-        transductor.save()
+        transductor = self.create_energy_transductor(1, "Test", "111.111.111.111", t_model)
 
         url = reverse('transductor:detail', kwargs={'transductor_id': transductor.id})
         response = self.client.get(url)
 
         self.assertEqual(200, response.status_code)
         self.assertIn("No measurement avaiable", response.content)
+
+    def create_energy_transductor(self, serie_number, description, ip_address, t_model):
+        transductor = EnergyTransductor()
+        transductor.serie_number = serie_number
+        transductor.description = description
+        transductor.creation_date = timezone.now()
+        transductor.ip_address = ip_address
+        transductor.model = t_model
+        transductor.save()
+
+        return transductor
