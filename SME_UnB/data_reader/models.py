@@ -52,10 +52,9 @@ class Event():
 class SerialProtocol(object):
     __metaclass__ = ABCMeta
 
-    def __init__(self, transductor, port, timeout):
+    def __init__(self, transductor, port):
         self.transductor = transductor
         self.port = port
-        self.timeout = timeout
 
     @abstractmethod
     def create_messages(self):
@@ -71,8 +70,8 @@ class SerialProtocol(object):
 
 
 class ModbusRTU(SerialProtocol):
-    def __init__(self, transductor, port=1001, timeout=10.0):
-        super(ModbusRTU, self).__init__(transductor, port, timeout)
+    def __init__(self, transductor, port=1001):
+        super(ModbusRTU, self).__init__(transductor, port)
 
     def create_messages(self):
         registers = self.transductor.model.register_addresses
@@ -107,8 +106,30 @@ class ModbusRTU(SerialProtocol):
     def get_int_value_from_response(self):
         pass
 
-    def get_float_value_from_response(self):
-        pass
+    def get_float_value_from_response(self, message_received_data):
+        n_bytes = struct.unpack("1B", message_received_data[2])[0]
+
+        msg = bytearray(message_received_data[3:-2])
+
+        for i in range(0, n_bytes, 4):
+            if sys.byteorder == "little":
+                msb = msg[i]
+                msg[i] = msg[i+1]
+                msg[i+1] = msb
+
+                msb = msg[i+2]
+                msg[i+2] = msg[i+3]
+                msg[i+3] = msb
+            else:
+                msb = msg[i]
+                lsb = msg[i+1]
+                msg[i] = msg[i+2]
+                msg[i+1] = msg[i+3]
+                msg[i+2] = msb
+                msg[i+3] = lsb
+
+        value = struct.unpack("1f", msg)[0]
+        return value
 
     def _computate_crc(self, packaged_message):
         crc = 0xFFFF
@@ -239,21 +260,6 @@ class CommunicationProtocol(models.Model):
 
         value = struct.unpack("1f", msg)[0]
         return value
-
-    def _computate_crc(self, message_send):
-        crc = 0xFFFF
-        for index, item in enumerate(bytearray(message_send)):
-            next_byte = item
-            crc ^= next_byte
-            for i in range(8):
-                lsb = crc & 1
-                crc >>= 1
-                if lsb:
-                    crc ^= 0xA001
-        final_crc = struct.pack("<H", crc)
-
-        return final_crc
-
 
 # @receiver(post_save, sender=EnergyTransductor)
 # def transductor_saved(sender, instance, **kwargs):
