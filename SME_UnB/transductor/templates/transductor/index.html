@@ -8,7 +8,7 @@
 <div class="col-md-6">
   <table class="table table-striped">
     {% if transductors_list %}
-      <p><a href="{% url 'data_reader:new' %}" class="btn btn-primary">Create Transductor</a></p>
+      <p><a href="{% url 'transductor:new' %}" class="btn btn-primary">Create Transductor</a></p>
       <thead>
         <tr>
           <th>#</th>
@@ -23,12 +23,12 @@
       <tbody>
         <tr>
           <td>{{transductor.id}}</td>
-          <td><a href="{% url 'data_reader:detail' transductor.id %}">{{transductor.description}}</a></td>
+          <td><a href="{% url 'transductor:detail' transductor.id %}">{{transductor.description}}</a></td>
           <td>{{transductor.ip_address}}</td>
           <td>{{transductor.serie_number}}</td>
           <td>
-            <a title="Click here to edit" href="{% url 'data_reader:edit' pk=transductor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a title="Click here to delete" href="{% url 'data_reader:delete' pk=transductor.id %}" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash" ></span></a>
+            <a title="Click here to edit" href="{% url 'transductor:edit' transductor_id=transductor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a title="Click here to delete" href="{% url 'transductor:delete' transductor_id=transductor.id %}" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash" ></span></a>
           </td>
         </tr>
       </tbody>
@@ -37,7 +37,7 @@
       <div class="container">
         <div class="starter-template">
           <h1>No Registered Transducer</h1>
-          <p class="lead">To create a new transductor click <a href="{% url 'data_reader:new' %}" >here</a></p>
+          <p class="lead">To create a new transductor click <a href="{% url 'transductor:new' %}" >here</a></p>
         </div>
       </div>
     {% endif %}
