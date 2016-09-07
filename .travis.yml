@@ -1,10 +1,37 @@
-language: python
+# Main liguage of the project
+language:
+    python
+
+# Versions of python wich your project accepted
 python:
     - "2.7"
+
+# Setting Django environment
 env:
     - DJANGO_VERSION=1.9.8
+
+# Install some packages before install django
+before_install:
+    - sudo apt-get -qq update
+    - sudo apt-get install -y git
+    - sudo apt-get install -y vim
+    - sudo apt-get install -y build-essential
+    - sudo apt-get install -y libpq-dev
+    - sudo apt-get install -y python-psycopg2
+    - sudo apt-get install postgresql-9.4 -y
+
+    # Call a script to configure the database
+    - ./.travis/config_db.sh
+
 install:
+    # Install project dependencies
     - pip install -r SME_UnB/requirements.txt
+    # Install a tool to run unit testes
     - pip install nose
+    # Create the data base conform the configuration
+    - python SME_UnB/manage.py migrate
+
+# Run all scripts to testing the application: unit test, coverage,
+# Acceptance Tests and outhers
 script:
     - nosetests
