@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>SME - UnB</title>
+{% endblock %}
+
+{% if user.is_authenticated %}
+{% block body %}
+<div class="pure-g-r content-ribbon">
+    <div class="pure-u-1">
+        <ul class="breadcrumb">
+            {% block breadcrumb %}
+            <li><a href="{% url 'index' %}">HOME</a></li>
+            <li><a href="{% url 'users:logout' %}">Logout</a></li>
+            {% endblock %}
+        </ul>
+    </div>
+    <div class="pure-u-2-3">
+        <div class="inner">
+            {% block dashboard_content %}
+            <p><strong>Usuário</strong>: {{ user }}</p>
+            <p><strong>E-mail</strong>: {{ user.email }}</p>
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% else %}
+<p><a href="{% url 'users:login' %}">Login</a>.</p>
+{% endif %}
