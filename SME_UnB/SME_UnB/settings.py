@@ -105,8 +105,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# Auth
 AUTH_USER_MODEL = "users.MyUser"
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_URL = 'users:logout'
+
 
 
 # Internationalization
