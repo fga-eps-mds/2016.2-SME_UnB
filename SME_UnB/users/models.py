@@ -20,12 +20,19 @@ class EmailUserManager(BaseUserManager):
 
     def create_superuser(self, *args, **kwargs):
         user = self.create_user(**kwargs)
+        user.is_staff = True
         user.is_superuser = True
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
 
 class MyUser(PermissionsMixin, AbstractBaseUser):
+    is_staff = models.BooleanField(
+        verbose_name= ('staff status'),
+        blank=False,
+        default=False,
+    )
     email = models.EmailField(
         verbose_name=_('Email address'),
         unique=True,
@@ -44,3 +51,6 @@ class MyUser(PermissionsMixin, AbstractBaseUser):
     )
     USERNAME_FIELD = 'email'
     objects = EmailUserManager()
+
+    def get_short_name(self):
+        return self.first_name
