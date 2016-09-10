@@ -9,11 +9,6 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.urlresolvers import reverse_lazy, reverse
 
-from users.models import MyUser
-
-"""from .forms import CustomUserCreationForm"""
-
-
 def home(request):
     return render(request, 'users/home.html')
 
@@ -25,11 +20,10 @@ def dashboard(request):
 def login_view(request, *args, **kwargs):
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('users:dashboard'))
-
-    kwargs['extra_context'] = {'next': reverse('users:dashboard')}
-    kwargs['template_name'] = 'users/login.html'
-    return login(request, *args, **kwargs)
-
+    else:
+        kwargs['extra_context'] = {'next': reverse('users:dashboard')}
+        kwargs['template_name'] = 'users/login.html'
+        return login(request, *args, **kwargs)
 
 def logout_view(request, *args, **kwargs):
     kwargs['next_page'] = reverse('index')

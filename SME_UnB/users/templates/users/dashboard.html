@@ -12,7 +12,6 @@
             {% block breadcrumb %}
             <li><a href="{% url 'index' %}">HOME</a></li>
             {% if request.user.is_staff %}
-            <li><a href="{% url 'users:update' %}">EDITAR USUARIO</a></li>
             {% endif %}
             <li><a href="{% url 'users:logout' %}">Logout</a></li>
             <li><a href="{% url 'users:register' %}">Registrar</a></li>
