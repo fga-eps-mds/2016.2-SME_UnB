@@ -46,7 +46,10 @@ def register(request):
         password = form.get('password')
         email = form.get('email')
         
-        user = MyUser.objects.create_user(first_name=first_name,last_name=last_name,password=password,email=email)
+        try:
+            user = MyUser.objects.create_user(first_name=first_name,last_name=last_name,password=password,email=email)
+        except: 
+            return render(request,'userRegister/register.html', {'falha':'Email invalido!'})
         user.save()
 
         return render(request,'users/home.html')
