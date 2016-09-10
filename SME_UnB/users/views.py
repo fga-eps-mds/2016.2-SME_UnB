@@ -54,10 +54,28 @@ def register(request):
 
         return render(request,'users/home.html')
 
+def list_user(request):
 
-"""
-class RegistrationView(CreateView):
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy('users:login')
-    template_name = "users/register.html"
-"""
+    users = MyUser.objects.all()
+    return render(request,'users/list_user.html',{'users':users})
+
+def edit_user(request,user_id):
+
+    user = MyUser.objects.get(id=user_id)
+    if request.method == "GET":
+        return render(request,'users/edit_user.html',{'user':user})
+    else:
+        form = request.POST
+        first_name = form.get('first_name')
+        last_name =  form.get('last_name')
+        password = form.get('password')
+        email = form.get('email')
+
+        user.first_name = first_name
+        user.last_name  =last_name
+        user.set_password(password)
+        user.email = email
+
+        user.save()
+
+        return render(request,'users/edit_user.html',{'info':'usuario modificado com sucesso'})
