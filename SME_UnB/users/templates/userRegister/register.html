@@ -15,14 +15,16 @@
 
 
       <h1> </h1>
-    <form class="col-md-6 configdiv" action="registro.html" method="post">
+    <form class="col-md-6 configdiv" action="register" method="post">
+        <p2>{{falha}}</p2>
 
+        {% csrf_token %}
         <div class="form-group">
             <input type="text" name= "first_name" placeholder="Primeiro nome" class="form-control">
         </div>
 
         <div class="form-group">
-            <input type="text" name= "last_name" placeholder="Último nome" class="form-control">
+            <input type="text" name= "last_name" placeholder="ultimo nome" class="form-control">
         </div>
 
         <div class="form-group">
@@ -31,14 +33,12 @@
 
 
         <div class="form-group">
-            <input type="password" name ="Password" placeholder="Senha" class="form-control">
+            <input type="password" name ="password" placeholder="Senha" class="form-control">
         </div>
 
         <div class="form-group">
-            <input type="password" name ="confirmPassword" placeholder="Confirmar senha" class="form-control">
+            <input type="password" name ="confirmPassword" placeholder="confirmar senha" class="form-control">
         </div>
-
-
 
         <p1>Tipo de usuario:</p1>
         <div class="form-group">
@@ -60,7 +60,9 @@
             <label class="checkbox-inline checkbox-success">
                 <input type="checkbox" id="inlineCheckbox2" value="option2"> Gerar Relatorios
             </label>
-
+            <label class="checkbox-inline checkbox-success">
+                <input type="checkbox" id="inlineCheckbox3" value="option3"> Depois Penso
+            </label>
 
         </div>
 

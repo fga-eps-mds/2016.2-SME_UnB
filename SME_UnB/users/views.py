@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.urlresolvers import reverse_lazy, reverse
 
+from users.models import MyUser
+
 """from .forms import CustomUserCreationForm"""
 
 
@@ -32,6 +34,23 @@ def login_view(request, *args, **kwargs):
 def logout_view(request, *args, **kwargs):
     kwargs['next_page'] = reverse('index')
     return logout(request, *args, **kwargs)
+
+def register(request):
+
+    if request.method == "GET":
+        return render(request,'userRegister/register.html')
+    else:
+        form = request.POST
+        first_name = form.get('first_name')
+        last_name =  form.get('last_name')
+        password = form.get('password')
+        email = form.get('email')
+        
+        user = MyUser.objects.create_user(first_name=first_name,last_name=last_name,password=password,email=email)
+        user.save()
+
+        return render(request,'users/home.html')
+
 
 """
 class RegistrationView(CreateView):
