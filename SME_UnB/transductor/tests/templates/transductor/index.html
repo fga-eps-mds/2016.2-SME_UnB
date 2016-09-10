@@ -28,8 +28,12 @@
           <td>{{transductor.ip_address}}</td>
           <td>{{transductor.serie_number}}</td>
           <td>
-            <a title="{% trans "Click here to edit" %} " href="{% url 'transductor:edit' transductor_id=transductor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a title="{% trans "Click here to edit" %}Click here to delete" href="{% url 'transductor:delete' transductor_id=transductor.id %}" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash" ></span></a>
+            <a title="{% trans "Click here to edit" %}" href="{% url 'transductor:edit' transductor_id=transductor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <form id="deleteform" action="{% url 'transductor:delete' transductor_id=transductor.id %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="delete" value="value">
+              <button onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash"></button>
+            </form>
           </td>
         </tr>
       </tbody>

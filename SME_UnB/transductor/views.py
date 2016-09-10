@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
-from .forms import EnergyForm
+from .forms import EnergyForm, DeleteEnergyForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
@@ -82,7 +82,12 @@ def edit(request, transductor_id):
 @login_required
 def delete(request, transductor_id):
     transductor = get_object_or_404(EnergyTransductor, pk=transductor_id)
-    transductor.delete()
+
+    if request.POST:
+        form = DeleteEnergyForm(request.POST, instance=transductor)
+
+        if form.is_valid():
+            transductor.delete()
 
     return HttpResponseRedirect(reverse('transductor:index'))
 
