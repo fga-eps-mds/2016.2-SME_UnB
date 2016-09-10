@@ -15,6 +15,10 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         self.t_model = t_model
 
+        transductor = self.create_energy_transductor(1, "Test Transductor", "1.1.1.1", t_model)
+
+        self.transductor = transductor
+
     def test_index_access_and_template(self):
         url = reverse('transductor:index')
         response = self.client.get(url)
@@ -22,21 +26,21 @@ class EnergyTransductorViewsTestCase(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'transductor/index.html')
 
-    def test_index_without_transductor(self):
-        url = reverse('transductor:index')
-        response = self.client.get(url)
-
-        self.assertIn("No Registered Transducer", response.content)
-
     def test_index_with_transductor(self):
-        t_model = self.t_model
-
-        transductor = self.create_energy_transductor(1, "Test", "111.111.111.111", t_model)
+        transductor = self.transductor
 
         url = reverse('transductor:index')
+
         response = self.client.get(url)
 
         self.assertIn(transductor.description, response.content)
+
+    def test_transductor_creation_page(self):
+        url = reverse('transductor:new')
+
+        response = self.client.get(url)
+
+        self.assertEqual(200, response.status_code)
 
     def test_not_create_energy_transductor_without_params(self):
         url = reverse('transductor:new')
@@ -81,7 +85,7 @@ class EnergyTransductorViewsTestCase(TestCase):
     def test_not_create_transductor_with_same_ip_address(self):
         t_model = self.t_model
 
-        transductor = self.create_energy_transductor(1, "Test", "111.111.111.111", t_model)
+        transductor = self.transductor
 
         url = reverse('transductor:new')
 
@@ -122,6 +126,50 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertIn("No measurement avaiable", response.content)
+
+    def test_transductor_editing_page(self):
+        transductor = self.transductor
+
+        url = reverse('transductor:edit', kwargs={'transductor_id': transductor.id})
+
+        response = self.client.get(url)
+
+        self.assertEqual(200, response.status_code)
+
+    def test_edit_transductor(self):
+        t_model = self.t_model
+
+        url = reverse('transductor:edit', kwargs={'transductor_id': self.transductor.id})
+
+        params = {
+            'serie_number': 2,
+            'ip_address': '222.222.222.222',
+            'description': 'Another Test',
+            'transductor_model': t_model.id
+        }
+
+        self.client.post(url, params)
+
+        transductor = EnergyTransductor.objects.get(ip_address='222.222.222.222')
+
+        self.assertEqual(2, transductor.serie_number)
+        self.assertEqual("Another Test", transductor.description)
+
+    def test_not_edit_transductor_with_wrong_params(self):
+        t_model = self.t_model
+
+        url = reverse('transductor:edit', kwargs={'transductor_id': self.transductor.id})
+
+        params = {
+            'serie_number': 2,
+            'ip_address': 'Wrong Ip Addres',
+            'description': 'Another Test',
+            'transductor_model': t_model.id
+        }
+
+        response = self.client.post(url, params)
+
+        self.assertFormError(response, 'form', 'ip_address', 'Incorrect IP address format')
 
     def test_delete_energy_transductor(self):
         t_model = self.t_model
