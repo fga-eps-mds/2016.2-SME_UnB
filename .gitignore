@@ -16,6 +16,7 @@ tests/report/
 cookbooks/
 Vagrantfile
 
+<<<<<<< b81a1eb0772e82399ff4ae63654e8948fb36b19d
 SME_UnB/cover/
 SME_UnB/.coverage
 SME_UnB/.cache
@@ -23,3 +24,7 @@ SME_UnB/.cache
 SME_UnB/htmlcov/
 .coverage
 htmlcov/
+=======
+SME_UnB/.coverage
+SME_UnB/htmlcov/
+>>>>>>> Add tests to delete transductor and refactored some tests

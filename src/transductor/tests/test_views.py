@@ -127,6 +127,7 @@ class EnergyTransductorViewsTestCase(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertIn("No measurement avaiable", response.content)
 
+<<<<<<< b81a1eb0772e82399ff4ae63654e8948fb36b19d:src/transductor/tests/test_views.py
     def test_transductor_editing_page(self):
         transductor = self.transductor
 
@@ -181,6 +182,8 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         self.assertFormError(response, 'form', 'ip_address', 'Incorrect IP address format')
 
+=======
+>>>>>>> Add tests to delete transductor and refactored some tests:SME_UnB/transductor/tests/test_views.py
     def test_delete_energy_transductor(self):
         t_model = self.t_model
 
@@ -211,6 +214,7 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         self.assertEqual(transductor_count, EnergyTransductor.objects.count())
 
+<<<<<<< b81a1eb0772e82399ff4ae63654e8948fb36b19d:src/transductor/tests/test_views.py
     def test_transductor_model_index(self):
         t_model = self.t_model
 
@@ -220,6 +224,8 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         self.assertIn(t_model.name, response.content)
 
+=======
+>>>>>>> Add tests to delete transductor and refactored some tests:SME_UnB/transductor/tests/test_views.py
     def create_energy_transductor(self, serie_number, description, ip_address, t_model):
         transductor = EnergyTransductor()
         transductor.serie_number = serie_number

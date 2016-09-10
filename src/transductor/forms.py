@@ -9,7 +9,6 @@ class EnergyForm(forms.ModelForm):
 
     model = forms.ModelChoiceField(queryset=TransductorModel.objects.all(), required=True, initial=0)
 
-
 class DeleteEnergyForm(forms.ModelForm):
     class Meta:
         model = EnergyTransductor

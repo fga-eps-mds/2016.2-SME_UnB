@@ -14,6 +14,8 @@ class EnergyTransductorTestCase(TestCase):
         t_model.register_addresses = [[68, 0], [70, 1]]
         t_model.save()
 
+        self.t_model = t_model
+
         transductor = EnergyTransductor()
         transductor.serie_number = "1"
         transductor.description = "Test"
@@ -22,8 +24,10 @@ class EnergyTransductorTestCase(TestCase):
         transductor.ip_address = "111.111.111.111"
         transductor.save()
 
+        self.transductor = transductor
+
     def test_should_not_create_transductor_with_wrong_ip_address(self):
-        t_model = TransductorModel.objects.get(name="TR 4020")
+        t_model = self.t_model
 
         transductor = EnergyTransductor()
         transductor.serie_number = "1"
@@ -35,7 +39,7 @@ class EnergyTransductorTestCase(TestCase):
         self.assertRaises(ValidationError, transductor.full_clean)
 
     def test_should_not_create_transductor_with_same_ip_address(self):
-        t_model = TransductorModel.objects.get(name="TR 4020")
+        t_model = self.t_model
 
         transductor = EnergyTransductor()
         transductor.serie_number = "2"
@@ -47,11 +51,11 @@ class EnergyTransductorTestCase(TestCase):
         self.assertRaises(IntegrityError, transductor.save)
 
     def test_str_from_transductor_model(self):
-        t_model = TransductorModel.objects.get(name="TR 4020")
+        t_model = self.t_model
 
         self.assertEqual(t_model.name, t_model.__str__())
 
     def test_str_from_energy_transductor(self):
-        transductor = EnergyTransductor.objects.get(ip_address="111.111.111.111")
+        transductor = self.transductor
 
         self.assertEqual(transductor.description, transductor.__str__())
