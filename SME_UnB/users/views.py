@@ -51,7 +51,6 @@ def make_login(request):
 
     return context
 
-
 def logout_view(request, *args, **kwargs):
     kwargs['next_page'] = reverse('index')
     return logout(request, *args, **kwargs)
