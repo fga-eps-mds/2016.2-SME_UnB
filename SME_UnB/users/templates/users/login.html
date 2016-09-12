@@ -26,11 +26,18 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
               </ul>
-              <form role="form" class="form" method="POST" action="{{ request.path }}{% if next %}?next={{ next }}{% endif %}">
-              {% csrf_token %}
-              {{ form.as_p }}
-              <button type="submit" class="btn btn-warning"><i class="fa fa-plus" aria-hidden="true"></i> Login</button>
-              </form>
+
+              <form class="form-signin" method="POST" action="{% url "users:login"%}">
+            {% csrf_token %}
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="user" id="inputEmail" name="email" class="form-control" placeholder="Username" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+          
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          </form>
+
             </div>
           </div>
         </nav>
