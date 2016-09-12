@@ -1,17 +1,22 @@
+from django.shortcuts import render
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import CreateView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.views import login
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 from django.contrib.auth.views import logout
 from django.contrib.auth.decorators import login_required
 
 from django.core.urlresolvers import reverse_lazy, reverse
 
-from users.models import MyUser
+def home(request):
+    return render(request, 'users/home.html')
 
-"""from .forms import CustomUserCreationForm"""
+@login_required
+def dashboard(request):
+    return render(request, 'users/dashboard.html')
+
 
 def show_login(request):
     if request.method == "GET":
@@ -20,16 +25,16 @@ def show_login(request):
         context = make_login(request)
 
         if context.get('is_logged'):
-            return redirect(reverse("users:dashboard"))
+            return HttpResponseRedirect(reverse("users:dashboard"))
         else:
             return render(request, "users/login.html", context)
 
 def make_login(request):
     form = request.POST
-    email = form.get('email')
+    username = form.get('username')
     password = form.get('password')
 
-    user = authenticate(email=email, password=password)
+    user = authenticate(username=username, password=password)
     is_logged = False
 
     if user is not None:
@@ -45,8 +50,6 @@ def make_login(request):
     }
 
     return context
-
-
 
 
 def home(request):
@@ -142,3 +145,6 @@ def edit_user(request,user_id):
         user.save()
 
         return render(request,'users/edit_user.html',{'info':'usuario modificado com sucesso'})
+def logout_view(request, *args, **kwargs):
+    kwargs['next_page'] = reverse('index')
+    return logout(request, *args, **kwargs)
