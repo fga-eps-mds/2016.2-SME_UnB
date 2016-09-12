@@ -12,7 +12,6 @@
             {% block breadcrumb %}
             <li><a href="{% url 'index' %}">HOME</a></li>
             {% if request.user.is_staff %}
-            
             {% endif %}
             {% endblock %}
         </ul>

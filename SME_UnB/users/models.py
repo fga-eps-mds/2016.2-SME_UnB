@@ -1,56 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 
 class EmailUserManager(BaseUserManager):
-    def create_user(self, *args, **kwargs):
-        email = kwargs["email"]
-        email = self.normalize_email(email)
-        password = kwargs["password"]
-        kwargs.pop("password")
+    pass
 
-        if not email:
-            raise ValueError(_('Users must have an email address'))
-
-        user = self.model(**kwargs)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, *args, **kwargs):
-        user = self.create_user(**kwargs)
-        user.is_staff = True
-        user.is_superuser = True
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-
-class MyUser(PermissionsMixin, AbstractBaseUser):
-    is_staff = models.BooleanField(
-        verbose_name= ('staff status'),
-        blank=False,
-        default=False,
-    )
-    email = models.EmailField(
-        verbose_name=_('Email address'),
-        unique=True,
-    )
-    first_name = models.CharField(
-        verbose_name=_('Nome'),
-        max_length=50,
-        blank=False,
-        help_text=_('Inform your name'),
-    )
-    last_name = models.CharField(
-        verbose_name=_('Sobrenome'),
-        max_length=50,
-        blank=False,
-        help_text=_('Inform your last name'),
-    )
-    USERNAME_FIELD = 'email'
-    objects = EmailUserManager()
-
-    def get_short_name(self):
-        return self.first_name
+class UserPermissions(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    can_acess_graphics = models. BooleanField()
+    can_acess_report = models. BooleanField()
