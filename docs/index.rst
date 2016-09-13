@@ -13,6 +13,7 @@ Contents:
 
    modules/data_reader_models.rst
    modules/transductor_models.rst
+   modules/modules.rst
 
 Indices and tables
 ==================
