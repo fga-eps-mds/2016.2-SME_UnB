@@ -15,7 +15,8 @@
             {% endif %}
             <li><a href="{% url 'users:logout' %}">Logout</a></li>
             <li><a href="{% url 'users:register' %}">Registrar</a></li>
-            <li><a href="{% url 'users:list_user' %}">Editar Usuarios</a></li>
+            <li><a href="{% url 'users:list_user_edit' %}">Editar Usuarios</a></li>
+            <li><a href="{% url 'users:list_user_delete' %}">Deletar Usuarios</a></li>
 
             {% endblock %}
         </ul>
