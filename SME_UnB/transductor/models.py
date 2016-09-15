@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.postgres.fields import ArrayField
+from polymorphic.models import PolymorphicModel
 
 
 class TransductorModel(models.Model):
@@ -83,12 +84,10 @@ class EnergyTransductor(Transductor):
         return self.description
 
 
-class Measurements(models.Model):
+class Measurements(PolymorphicModel):
 
     collection_date = models.DateTimeField('date published')
-
-    class Meta:
-        abstract = True
+    collection_minute = models.IntegerField(default=None)
 
 
 class EnergyMeasurements(Measurements):
