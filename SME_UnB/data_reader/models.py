@@ -99,8 +99,6 @@ class ModbusRTU(SerialProtocol):
 
             messages_to_send.append(packaged_message)
 
-            print register
-
         return messages_to_send
 
     def get_int_value_from_response(self):
@@ -149,7 +147,6 @@ class ModbusRTU(SerialProtocol):
 
     def _check_crc(self):
         pass
-
 
 class CommunicationProtocol(models.Model):
     transductor = models.ForeignKey(EnergyTransductor)
@@ -260,7 +257,6 @@ class CommunicationProtocol(models.Model):
 
         value = struct.unpack("1f", msg)[0]
         return value
-
 # @receiver(post_save, sender=EnergyTransductor)
 # def transductor_saved(sender, instance, **kwargs):
 #     instance.communicationprotocol_set.first().start_data_collection()

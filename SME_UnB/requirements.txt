@@ -9,3 +9,4 @@ unipath
 pusher
 coverage==3.6
 Sphinx
+django-polymorphic

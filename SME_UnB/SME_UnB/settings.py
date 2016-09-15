@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'data_reader.apps.DataReaderConfig',
     'transductor.apps.TransductorConfig',
     'bootstrap3',
+    'polymorphic',
 ]
 ### Email log module -
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
