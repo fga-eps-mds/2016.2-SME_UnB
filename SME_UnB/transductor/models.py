@@ -16,9 +16,10 @@ class TransductorModel(models.Model):
             - internet_protocol(str): The internet protocol.
             - serial_protocol(str): The serial protocol.
             - register_addresses(list): Registers with data to be collected.
-                This attribute must meet the following pattern:
+                .. note::
+                    This attribute must meet the following pattern:
 
-                [[Register Number, Register Type]]
+                    [[Register Address(int), Register Type(int)]]
 
                 Where:
                     - Register Address: register address itself.
@@ -51,7 +52,7 @@ class Transductor(models.Model):
             - serie_number(int): The serie number.
             - ip_address(str): The ip address.
             - description(str): A succint description.
-            - creation_date(datetime): The date/time creation.
+            - creation_date(datetime): The exactly creation time.
     """
     model = models.ForeignKey(TransductorModel)
     serie_number = models.IntegerField(default=None)
@@ -87,13 +88,67 @@ class EnergyTransductor(Transductor):
 
 
 class Measurements(PolymorphicModel):
+    """
+        Class responsible to create a base for measurements and optimize performance from queries
+        using the django-polymorphic.
 
+        .. note::
+
+            It's not necessary create instances of this class.
+
+        Attributes:
+            - collection_date(datetime): The exactly collection time.
+            - collection_minute(int): The minute from collection.
+
+        Example of Polymorphic search using child class EnergyMeasurements:
+
+        >>> from django.utils import timezone
+        >>> t_model = TransductorModel.objects.create(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+        >>> e_transductor = EnergyTransductor.objects.create(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
+        >>> time = timezone.now()
+        >>> EnergyMeasurements.objects.create(transductor=e_transductor, voltage_a=122.875, voltage_b=122.784, voltage_c=121.611, current_a=22.831, current_b=17.187, current_c= 3.950, active_power_a=2.794, active_power_b=1.972, active_power_c=3.950, reactive_power_a=-0.251, reactive_power_b=-0.752, reactive_power_c=-1.251, apparent_power_a=2.805, apparent_power_b=2.110, apparent_power_c=4.144, collection_date=time, collection_minute=time.minute)
+        <EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>
+        >>> Measurements.objects.all()
+        [<EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>]
+        >>> Measurements.objects.instance_of(EnergyMeasurements)
+        [<EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>]
+
+        Click `here <https://django-polymorphic.readthedocs.io/en/stable/quickstart.html>`_ to see full django-polymorphic documentation.
+    """
     collection_date = models.DateTimeField('date published')
     collection_minute = models.IntegerField(default=None)
 
 
 class EnergyMeasurements(Measurements):
+    """
+        Class responsible to store energy measurements, considering a three-phase energy system.
 
+        Attributes:
+            - voltage_a(float): The voltage on phase A.
+            - voltage_b(float): The voltage on phase B.
+            - voltage_c(float): The voltage on phase C.
+            - current_a(float): The current on phase A.
+            - current_b(float): The current on phase B.
+            - current_c(float): The current on phase C.
+            - active_power_a(float): The active power on phase A.
+            - active_power_b(float): The active power on phase B.
+            - active_power_c(float): The active power on phase C.
+            - reactive_power_a(float): The reactive power on phase A.
+            - reactive_power_b(float): The reactive power on phase B.
+            - reactive_power_c(float): The reactive power on phase C.
+            - apparent_power_a(float): The apparent power on phase A.
+            - apparent_power_b(float): The apparent power on phase B.
+            - apparent_power_c(float): The apparent power on phase C.
+
+        Example of use:
+
+        >>> from django.utils import timezone
+        >>> t_model = TransductorModel.objects.create(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+        >>> e_transductor = EnergyTransductor.objects.create(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
+        >>> time = timezone.now()
+        >>> EnergyMeasurements.objects.create(transductor=e_transductor, voltage_a=122.875, voltage_b=122.784, voltage_c=121.611, current_a=22.831, current_b=17.187, current_c= 3.950, active_power_a=2.794, active_power_b=1.972, active_power_c=3.950, reactive_power_a=-0.251, reactive_power_b=-0.752, reactive_power_c=-1.251, apparent_power_a=2.805, apparent_power_b=2.110, apparent_power_c=4.144, collection_date=time, collection_minute=time.minute)
+        <EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>
+    """
     transductor = models.ForeignKey(EnergyTransductor, on_delete=models.CASCADE)
 
     voltage_a = models.FloatField(default=None)
