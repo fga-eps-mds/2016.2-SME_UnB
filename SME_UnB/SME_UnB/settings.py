@@ -28,9 +28,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'bootstrap3',
-    'data_reader.apps.DataReaderConfig',
-    'transductor.apps.TransductorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +38,9 @@ INSTALLED_APPS = [
     'report',
     'alerts',
     'django_nose',
+    'data_reader.apps.DataReaderConfig',
+    'transductor.apps.TransductorConfig',
+    'bootstrap3',
 ]
 ### Email log module -
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -6,6 +6,32 @@ from django.contrib.postgres.fields import ArrayField
 
 
 class TransductorModel(models.Model):
+    """
+        Class responsible to define a transductor model which contains crucial informations about the
+        transductor itself.
+
+        Attributes:
+            - name(str): The factory name.
+            - internet_protocol(str): The internet protocol.
+            - serial_protocol(str): The serial protocol.
+            - register_addresses(list): Registers with data to be collected.
+                This attribute must meet the following pattern:
+
+                [[Register Number, Register Type]]
+
+                Where:
+                    - Register Address: register address itself.
+                    - Register Type: register data type.
+                        - 0 - Integer
+                        - 1 - Float
+
+                Example: [[68, 0], [70, 1]]
+
+        Example of use:
+
+        >>> TransductorModel(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+        <TransductorModel: Test Name>
+    """
     name = models.CharField(max_length=50, unique=True)
     internet_protocol = models.CharField(max_length=50)
     serial_protocol = models.CharField(max_length=50)
@@ -16,6 +42,16 @@ class TransductorModel(models.Model):
 
 
 class Transductor(models.Model):
+    """
+        Base class responsible to create an abstraction of a transductor.
+
+        Attributes:
+            - model(TransductorModel): The transductor model.
+            - serie_number(int): The serie number.
+            - ip_address(str): The ip address.
+            - description(str): A succint description.
+            - creation_date(datetime): The date/time creation.
+    """
     model = models.ForeignKey(TransductorModel)
     serie_number = models.IntegerField(default=None)
     ip_address = models.CharField(max_length=15, unique=True, validators=[
@@ -35,7 +71,16 @@ class Transductor(models.Model):
         )
 
 class EnergyTransductor(Transductor):
+    """
+        Class responsible to represent a Energy Transductor which will collect energy measurements.
 
+        Example of use:
+
+        >>> from django.utils import timezone
+        >>> t_model = TransductorModel(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+        >>> EnergyTransductor(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
+        <EnergyTransductor: Energy Transductor Test>
+    """
     def __str__(self):
         return self.description
 
