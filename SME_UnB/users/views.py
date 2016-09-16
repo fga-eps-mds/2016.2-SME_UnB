@@ -103,7 +103,7 @@ def register(request):
 
         user = MyUser.objects.create_user(first_name=first_name,last_name=last_name,password=password,email=email)
         try:
-            user = MyUser.objects.create_user(first_name=first_name,last_name=last_name,password=password,email=email)
+            user = User.objects.create_user(first_name=first_name,last_name=last_name,password=password,username=email)
         except:
             return render(request,'userRegister/register.html', {'falha':'Email invalido!'})
 
@@ -153,7 +153,7 @@ def edit_user(request,user_id):
         user.first_name = first_name
         user.last_name  =last_name
         user.set_password(password)
-        user.email = email
+        user.username = email
 
         user.save()
 
