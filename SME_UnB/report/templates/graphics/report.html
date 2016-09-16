@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Grafico</title>
+{% endblock %}
+
+
+{% block body %}
+
+<h1>Relatorio</h1>
+
+
+<p1>Grafico de Voltagem</p1>
+<div class="form-group">
+    {% load staticfiles %}
+    <img src="{% static 'currentGraphic.png' %}"/>
+
+</div>
+
+<p1>Grafico de corrente</p1>
+<div class="form-group">
+    {% load staticfiles %}
+    <img src="{% static 'voltageGraphic.png' %}"/>
+
+</div>
+
+
+{% endblock %}
