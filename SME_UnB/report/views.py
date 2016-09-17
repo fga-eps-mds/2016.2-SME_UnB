@@ -23,22 +23,34 @@ from matplotlib.dates import DateFormatter
 
 from transductor.models import EnergyMeasurements
 
-def create_graphic(path,array_data,array_date, label):
+def create_graphic(path,array_date, array_dateb, array_datec, array_data, label):
     title = 'Monitoramento de ' + label
 
     fig=Figure()
 
     ax=fig.add_subplot(111)
+    bx=fig.add_subplot(111)
+    cx=fig.add_subplot(111)
     x=[]
     y=[]
-
+    yb=[]
+    yc=[]
+    xb=[]
+    xc=[]
 
     for i in range(len(array_data)) :
-        x.append(array_date[i])
-        y.append(array_data[i])
+        x.append(array_data[i])
+        y.append(array_date[i])
+        xb.append(array_data[i])
+        xc.append(array_data[i])
+        yb.append(array_dateb[i])
+        yc.append(array_datec[i])
+
 
 
     ax.plot_date(x, y, '-')
+    bx.plot_date(xb, yb, '-')
+    cx.plot_date(xc, yc, '-')
     ax.set_title(title)
     ax.set_xlabel('Data')
     ax.set_ylabel(label)
@@ -64,6 +76,10 @@ def generatePdf():
     Story=[]
     logo = "report/static/currentGraphic.png"
     logo2 = "report/static/voltageGraphic.png"
+    logo3 = "report/static/activePowerGraphic.png"
+    logo4 = "report/static/reactivePowerGraphic.png"
+    logo5 = "report/static/apparentPowerGraphic.png"
+
     magName = "Pythonista"
     issueNum = 12
     subPrice = "99.00"
@@ -76,8 +92,15 @@ def generatePdf():
 
     im = Image(logo, 8*inch, 5*inch)
     im2 = Image(logo2, 8*inch, 5*inch)
+    im3 = Image(logo3, 8*inch, 5*inch)
+    im4 = Image(logo4, 8*inch, 5*inch)
+    im5 = Image(logo5, 8*inch, 5*inch)
+
     Story.append(im)
     Story.append(im2)
+    Story.append(im3)
+    Story.append(im4)
+    Story.append(im5)
 
     styles=getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
@@ -151,11 +174,11 @@ def report(request):
 
     data = [4, 6, 23, 7, 4, 2]
 
-    create_graphic('report/static/currentGraphic.png', current_a, date, 'Corrente')
-    create_graphic('report/static/voltageGraphic.png', voltage_a, date,'Voltagem' )
-    create_graphic('report/static/activePowerGraphic.png', active_power_a, date,'Potencia Ativa' )
-    create_graphic('report/static/reactivePowerGraphic.png', reactive_power_a, date,'Potencia Reativa' )
-    create_graphic('report/static/apparentPowerGraphic.png', apparent_power_a, date ,'Potencia Aparente' )
+    create_graphic('report/static/currentGraphic.png', current_a, current_b, current_c, date, 'Corrente')
+    create_graphic('report/static/voltageGraphic.png', voltage_a, voltage_b, voltage_c, date,'Voltagem' )
+    create_graphic('report/static/activePowerGraphic.png', active_power_a, active_power_b, active_power_c, date,'Potencia Ativa' )
+    create_graphic('report/static/reactivePowerGraphic.png', reactive_power_a, reactive_power_b, reactive_power_c, date,'Potencia Reativa' )
+    create_graphic('report/static/apparentPowerGraphic.png', apparent_power_a, apparent_power_b, apparent_power_c, date ,'Potencia Aparente' )
 
 
 
