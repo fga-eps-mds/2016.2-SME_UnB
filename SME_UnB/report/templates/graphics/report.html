@@ -10,19 +10,44 @@
 <h1>Relatorio</h1>
 
 
-<p1>Grafico de Voltagem</p1>
+<p1>Grafico de Corrente</p1>
 <div class="form-group">
     {% load staticfiles %}
     <img src="{% static 'currentGraphic.png' %}"/>
 
 </div>
 
-<p1>Grafico de corrente</p1>
+<p1>Grafico de Voltagem</p1>
 <div class="form-group">
     {% load staticfiles %}
     <img src="{% static 'voltageGraphic.png' %}"/>
 
 </div>
+
+<p1>Grafico de Potencia Ativa</p1>
+<div class="form-group">
+    {% load staticfiles %}
+    <img src="{% static 'activePowerGraphic.png' %}"/>
+
+</div>
+
+<p1>Grafico de Potencia Reativa</p1>
+<div class="form-group">
+    {% load staticfiles %}
+    <img src="{% static 'reactivePowerGraphic.png' %}"/>
+
+</div>
+
+<p1>Grafico de Potencia Aparente</p1>
+<div class="form-group">
+    {% load staticfiles %}
+    <img src="{% static 'apparentPowerGraphic.png' %}"/>
+
+</div>
+
+
+
+
 
 
 {% endblock %}
