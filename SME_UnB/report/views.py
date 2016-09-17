@@ -12,7 +12,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 import sys
 import PIL
-
+from django.http import HttpResponse
 import random
 import django
 import datetime
@@ -198,3 +198,10 @@ def report(request):
     generatePdf()
 
     return render(request,'graphics/report.html')
+
+def open_pdf(request):
+    with open('report/static/Relatorio.pdf', 'r') as pdf:
+        response = HttpResponse(pdf.read(),content_type='application/pdf')
+        response['Content-Disposition'] = 'filename=Relatorio.pdf'
+        return response
+    pdf.closed
