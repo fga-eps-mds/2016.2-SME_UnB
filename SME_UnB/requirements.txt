@@ -3,3 +3,4 @@ Django==1.9.8
 django-bootstrap3
 psycopg2==2.6.1
 matplotlib
+reportlab
