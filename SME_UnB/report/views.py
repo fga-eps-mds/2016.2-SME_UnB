@@ -17,66 +17,43 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
 
-def create_voltage_graphic():
+def create_graphic(path,array_data,array_date):
 
     fig=Figure()
     ax=fig.add_subplot(111)
     x=[]
     y=[]
 
+    for i in range(len(array_data)) :
+        x.append(array_date[i])
+        y.append(array_data[i])
 
-    now=datetime.datetime.now()
-    delta=datetime.timedelta(days=1)
-
-    for i in range(10):
-        x.append(now)
-        now+=delta
-        y.append(random.randint(0, 1000))
 
     ax.plot_date(x, y, '-')
     ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
     fig.autofmt_xdate()
     canvas=FigureCanvas(fig)
-    response=django.http.HttpResponse(content_type='image/png')
-    canvas.print_png(response)
 
-
-    path = 'report/static/voltageGraphic.png'
-    fig.savefig(path)
-    return path
-
-
-def create_current_graphic():
-
-    fig=Figure()
-    ax=fig.add_subplot(111)
-    x=[]
-    y=[]
-
-
-    now=datetime.datetime.now()
-    delta=datetime.timedelta(days=1)
-
-    for i in range(10):
-        x.append(now)
-        now+=delta
-        y.append(random.randint(0, 1000))
-
-    ax.plot_date(x, y, '-')
-    ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
-    fig.autofmt_xdate()
-    canvas=FigureCanvas(fig)
-    response=django.http.HttpResponse(content_type='image/png')
-    canvas.print_png(response)
-
-
-    path = 'report/static/currentGraphic.png'
     fig.savefig(path)
 
     return path
 
 def report(request):
-    create_voltage_graphic()
-    create_current_graphic()
+
+
+    now=datetime.datetime.now()
+    delta=datetime.timedelta(days=1)
+
+    date = []
+    for i in range(6):
+        date.append(now)
+        now+=delta
+
+
+    data = [4, 6, 23, 7, 4, 2]
+
+    create_graphic('report/static/currentGraphic.png', data, date)
+    create_graphic('report/static/voltageGraphic.png', data, date)
+
 
     return render(request,'graphics/report.html')
