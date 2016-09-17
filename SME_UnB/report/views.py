@@ -20,6 +20,7 @@ import datetime
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
+import matplotlib.patches as mpatches
 
 from transductor.models import EnergyMeasurements
 
@@ -51,6 +52,18 @@ def create_graphic(path,array_date, array_dateb, array_datec, array_data, label)
     ax.plot_date(x, y, '-')
     bx.plot_date(xb, yb, '-')
     cx.plot_date(xc, yc, '-')
+
+
+    patch1 = mpatches.Patch(color='blue', label='Fase A')
+    patch2 = mpatches.Patch(color='green', label='Fase B')
+    patch3 = mpatches.Patch(color='red', label='Fase C')
+
+    z = [patch1,patch2,patch3]
+
+    cx.legend(handles=z,loc=1)
+
+
+
     ax.set_title(title)
     ax.set_xlabel('Data')
     ax.set_ylabel(label)
