@@ -21,6 +21,8 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
 
+from transductor.models import EnergyMeasurements
+
 def create_graphic(path,array_data,array_date, label):
     title = 'Monitoramento de ' + label
 
@@ -108,15 +110,54 @@ def report(request):
     delta=datetime.timedelta(days=1)
 
     date = []
-    for i in range(6):
-        date.append(now)
-        now+=delta
+    data = []
 
+    voltage_a = []
+    voltage_b = []
+    voltage_c = []
+    current_a = []
+    current_b = []
+    current_c = []
+    active_power_a = []
+    active_power_b = []
+    active_power_c = []
+    reactive_power_a = []
+    reactive_power_b = []
+    reactive_power_c = []
+    apparent_power_a = []
+    apparent_power_b = []
+    apparent_power_c = []
+
+    for i in EnergyMeasurements.objects.all():
+
+        date.append(i.collection_date)
+        voltage_a.append(i.voltage_a)
+        voltage_b.append(i.voltage_b)
+        voltage_c.append(i.voltage_c)
+        current_a.append(i.current_a)
+        current_b.append(i.current_b)
+        current_c.append(i.current_c)
+        active_power_a.append(i.active_power_a)
+        active_power_b.append(i.active_power_b)
+        active_power_c.append(i.active_power_c)
+        reactive_power_a.append(i.reactive_power_a)
+        reactive_power_b.append(i.reactive_power_b)
+        reactive_power_c.append(i.reactive_power_c)
+        apparent_power_a.append(i.apparent_power_a)
+        apparent_power_b.append(i.apparent_power_b)
+        apparent_power_c.append(i.apparent_power_c)
+
+        #now+=delta
 
     data = [4, 6, 23, 7, 4, 2]
 
-    create_graphic('report/static/currentGraphic.png', data, date, 'Corrente')
-    create_graphic('report/static/voltageGraphic.png', data, date, 'Voltagem' )
+    create_graphic('report/static/currentGraphic.png', current_a, date, 'Corrente')
+    create_graphic('report/static/voltageGraphic.png', voltage_a, date,'Voltagem' )
+    create_graphic('report/static/activePowerGraphic.png', active_power_a, date,'Potencia Ativa' )
+    create_graphic('report/static/reactivePowerGraphic.png', reactive_power_a, date,'Potencia Reativa' )
+    create_graphic('report/static/apparentPowerGraphic.png', apparent_power_a, date ,'Potencia Aparente' )
+
+
 
     generatePdf()
 
