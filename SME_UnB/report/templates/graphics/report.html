@@ -7,8 +7,13 @@
 
 {% block body %}
 
-<h1>Relatorio</h1>
 
+<div class="form-group">
+    <h1>Relatorio</h1>
+    <h1> </h1>
+    <a class="btn btn-primary btn-lg" href="{% url 'report:open_pdf' %}" target="_blank" role="button">Gerar pdf &raquo;</a>
+    <h1> </h1>
+</div>
 
 <p1>Grafico de Corrente</p1>
 <div class="form-group">
