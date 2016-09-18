@@ -11,6 +11,8 @@
         <ul class="breadcrumb">
             {% block breadcrumb %}
             <li><a href="{% url 'index' %}">HOME</a></li>
+            <li><a href="{% url 'report:report' %}">Relatorio</a></li>
+
             {% if request.user.is_staff %}
             {% endif %}
             {% endblock %}
