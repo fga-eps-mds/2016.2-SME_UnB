@@ -89,7 +89,7 @@ def register(request):
             return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail nao esta em um formato valido'})
         if User.objects.filter(email=email).exists():
             return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
-        if len(password) <6 and password!=confirPassword:
+        if len(password) <6:
             return render(request,'userRegister/register.html', {'falha':'Senha Invalida, digite uma senha com no minimo 6 letras'})
         if password !=confirPassword:
             return render(request,'userRegister/register.html', {'falha':'Senha invalida! Senhas de cadastros diferentes'})
@@ -98,7 +98,7 @@ def register(request):
         user = User.objects.create_user(username=first_name,password=password,email=email)
         user.save()
 
-        return render(request,'users/home.html')
+        return render(request,'users/dashboard.html')
 
 @login_required
 def list_user_edit(request):
@@ -149,7 +149,7 @@ def edit_user(request,user_id):
             user.username = email
 
         if password != '':
-            if len(password) <6 and password!=confirPassword:
+            if len(password) < 6:
                 return render(request,'users/edit_user.html', {'falha':'Senha Invalida, digite uma senha com no minimo 6 letras','user':user})
             if password !=confirPassword:
                 return render(request,'users/edit_user.html', {'falha':'Senha invalida! Senhas de cadastros diferentes', 'user':user})
