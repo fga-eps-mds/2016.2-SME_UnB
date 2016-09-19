@@ -201,6 +201,15 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         self.assertEqual(transductor_count, EnergyTransductor.objects.count())
 
+    def test_transductor_model_index(self):
+        t_model = self.t_model
+
+        url = reverse('transductor:model_index')
+
+        response = self.client.get(url)
+
+        self.assertIn(t_model.name, response.content)
+
     def create_energy_transductor(self, serie_number, description, ip_address, t_model):
         transductor = EnergyTransductor()
         transductor.serie_number = serie_number
