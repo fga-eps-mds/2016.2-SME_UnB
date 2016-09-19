@@ -1,10 +1,10 @@
 from django.shortcuts import render
-
 from django.shortcuts import render
 from django.views.generic import CreateView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.views import login
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from django.contrib.auth.views import logout
 from django.contrib.auth.decorators import login_required
 
@@ -84,16 +84,13 @@ def register(request):
         password = form.get('password')
         confirPassword = form.get('confirmPassword')
         email = form.get('email')
-        try:
-            user = MyUser.objects.create_user(first_name=first_name,last_name=last_name,password=password,email=email)
-        except: 
-            return render(request,'userRegister/register.html', {'falha':'Email invalido!'})
+
 
         if not first_name.isalpha() or not last_name.isalpha():
             return render(request,'userRegister/register.html', {'falha':'Nome deve conter apenas letras'})
         if '@' not in email or '.' not in email or ' ' in email:
             return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail nao esta em um formato valido'})
-        if MyUser.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
         if len(password) <6 and password!=confirPassword:
             return render(request,'userRegister/register.html', {'falha':'Senha Invalida, digite uma senha com no minimo 6 letras'})
@@ -101,12 +98,7 @@ def register(request):
             return render(request,'userRegister/register.html', {'falha':'Senha invalida! Senhas de cadastros diferentes'})
 
 
-        user = MyUser.objects.create_user(first_name=first_name,last_name=last_name,password=password,email=email)
-        try:
-            user = User.objects.create_user(first_name=first_name,last_name=last_name,password=password,username=email)
-        except:
-            return render(request,'userRegister/register.html', {'falha':'Email invalido!'})
-
+        user = User.objects.create_user(username=first_name,password=password,email=email)
         user.save()
 
         return render(request,'users/home.html')
@@ -114,19 +106,19 @@ def register(request):
 @login_required
 def list_user_edit(request):
 
-    users = MyUser.objects.all()
+    users = User.objects.all()
     return render(request,'users/list_user_edit.html',{'users':users})
 
 @login_required
 def list_user_delete(request):
 
-    users = MyUser.objects.all()
+    users = User.objects.all()
     return render(request,'users/list_user_delete.html',{'users':users})
 
 @login_required
 def edit_user(request,user_id):
 
-    user = MyUser.objects.get(id=user_id)
+    user = User.objects.get(id=user_id)
     if request.method == "GET":
         return render(request,'users/edit_user.html',{'user':user})
     else:
@@ -141,7 +133,7 @@ def edit_user(request,user_id):
             return render(request,'userRegister/register.html', {'falha':'Nome deve conter apenas letras'})
         if '@' not in email or '.' not in email or ' ' in email:
             return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail nao esta em um formato valido'})
-        if MyUser.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
         if len(password) <6 and password!=confirPassword:
             return render(request,'userRegister/register.html', {'falha':'Senha Invalida, digite uma senha com no minimo 6 letras'})
@@ -166,7 +158,7 @@ def logout_view(request, *args, **kwargs):
 @login_required
 def delete_user(request,user_id):
 
-    user = MyUser.objects.get(id=user_id)
+    user = User.objects.get(id=user_id)
     if request.method == "GET":
         return render(request,'users/delete_user.html',{'user':user})
     else:
