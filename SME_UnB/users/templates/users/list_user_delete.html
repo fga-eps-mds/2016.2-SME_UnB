@@ -1,0 +1,11 @@
+{% extends 'users/dashboard.html' %}
+
+{% block dashboard_content %}
+
+    <h1>Lista de usuarios cadastrados</h>
+
+        {% for user in users %}
+            <p><a class="btn btn-primary btn-lg" href="{% url 'users:delete_user' user.id %}" role="button" style="width: 1000px; height: 100px">{{user}} &raquo;</a></p>
+        {% endfor %}
+
+{% endblock %}
