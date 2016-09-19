@@ -126,27 +126,42 @@ def edit_user(request,user_id):
         confirPassword = form.get('confirmPassword')
         email = form.get('email')
 
-        if not first_name.isalpha() or not last_name.isalpha():
-            return render(request,'userRegister/register.html', {'falha':'Nome deve conter apenas letras'})
-        if '@' not in email or '.' not in email or ' ' in email:
-            return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail nao esta em um formato valido'})
-        if User.objects.filter(email=email).exists():
-            return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
-        if len(password) <6 and password!=confirPassword:
-            return render(request,'userRegister/register.html', {'falha':'Senha Invalida, digite uma senha com no minimo 6 letras'})
-        if password !=confirPassword:
-            return render(request,'userRegister/register.html', {'falha':'Senha invalida! Senhas de cadastros diferentes'})
+
+        if first_name != "":
+            if not first_name.isalpha():
+                return render(request,'users/edit_user.html', {'falha':'Nome deve conter apenas letras','user':user})
+
+            user.first_name = first_name
+
+        if last_name != "":
+            if not last_name.isalpha():
+                return render(request,'users/edit_user.html', {'falha':'Nome deve conter apenas letras','user':user})
+
+            user.last_name  =last_name
+
+
+        if email != '':
+            if '@' not in email or '.' not in email or ' ' in email:
+                return render(request,'users/edit_user.html', {'falha':'Email invalido! Esse e-mail nao esta em um formato valido','user':user})
+            if User.objects.filter(email=email).exists():
+                return render(request,'users/edit_user.html', {'falha':'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados','user':user})
+
+            user.username = email
+
+        if password != '':
+            if len(password) <6 and password!=confirPassword:
+                return render(request,'users/edit_user.html', {'falha':'Senha Invalida, digite uma senha com no minimo 6 letras','user':user})
+            if password !=confirPassword:
+                return render(request,'users/edit_user.html', {'falha':'Senha invalida! Senhas de cadastros diferentes', 'user':user})
+
+            user.set_password(password)
 
 
 
-        user.first_name = first_name
-        user.last_name  =last_name
-        user.set_password(password)
-        user.username = email
 
         user.save()
 
-        return render(request,'users/edit_user.html',{'info':'usuario modificado com sucesso'})
+        return render(request,'users/edit_user.html',{'info':'usuario modificado com sucesso', 'user':user})
 
 @login_required
 def delete_user(request,user_id):
