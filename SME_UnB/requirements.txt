@@ -4,3 +4,5 @@ django-bootstrap3
 psycopg2==2.6.1
 matplotlib
 reportlab
+django-nose
+coverage
