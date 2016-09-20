@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
-from transductor.models import EnergyTransductor, TransductorModel
+from transductor.models import EnergyTransductor, TransductorModel, EnergyOperations, EnergyMeasurements
 
 
 class EnergyTransductorTestCase(TestCase):
@@ -59,3 +59,53 @@ class EnergyTransductorTestCase(TestCase):
         transductor = self.transductor
 
         self.assertEqual(transductor.description, transductor.__str__())
+
+    def test_energy_operations(self):
+        e_measurement = self.create_energy_measurement()
+
+        colection_date = '%s' % e_measurement.collection_date
+
+        self.assertEqual(colection_date, e_measurement.__str__())
+
+        energy_operations = EnergyOperations(e_measurement)
+
+        total_active_power = energy_operations.calculate_total_active_power()
+        total_reactive_power = energy_operations.calculate_total_reactive_power()
+        total_apparent_power = energy_operations.calculate_total_apparent_power()
+
+        self.assertAlmostEqual(8.716, total_active_power, places=3, msg=None, delta=None)
+        self.assertAlmostEqual(-2.254, total_reactive_power, places=3, msg=None, delta=None)
+        self.assertAlmostEqual(9.059, total_apparent_power, places=3, msg=None, delta=None)
+
+    def create_energy_measurement(self):
+        time = timezone.now()
+
+        e_measurement = EnergyMeasurements()
+        e_measurement.transductor = self.transductor
+
+        e_measurement.voltage_a = 122.875
+        e_measurement.voltage_b = 122.784
+        e_measurement.voltage_c = 121.611
+
+        e_measurement.current_a = 22.831
+        e_measurement.current_b = 17.187
+        e_measurement.current_c = 3.950
+
+        e_measurement.active_power_a = 2.794
+        e_measurement.active_power_b = 1.972
+        e_measurement.active_power_c = 3.950
+
+        e_measurement.reactive_power_a = -0.251
+        e_measurement.reactive_power_b = -0.752
+        e_measurement.reactive_power_c = -1.251
+
+        e_measurement.apparent_power_a = 2.805
+        e_measurement.apparent_power_b = 2.110
+        e_measurement.apparent_power_c = 4.144
+
+        e_measurement.collection_date = time
+        e_measurement.collection_minute = time.minute
+
+        e_measurement.save()
+
+        return e_measurement
