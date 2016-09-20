@@ -8,8 +8,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import CreateView
 
+
 def home(request):
     return render(request, 'users/home.html')
+
 
 @login_required
 def dashboard(request):
@@ -26,6 +28,7 @@ def show_login(request):
             return HttpResponseRedirect(reverse("users:dashboard"))
         else:
             return render(request, "users/login.html", context)
+
 
 def make_login(request):
     form = request.POST
@@ -48,22 +51,6 @@ def make_login(request):
     }
 
     return context
-
-def home(request):
-    return render(request, 'users/home.html')
-
-@login_required
-def dashboard(request):
-    return render(request, 'users/dashboard.html')
-
-
-def login_view(request, *args, **kwargs):
-    if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('users:dashboard'))
-    else:
-        kwargs['extra_context'] = {'next': reverse('users:dashboard')}
-        kwargs['template_name'] = 'users/login.html'
-        return login(request, *args, **kwargs)
 
 def logout_view(request, *args, **kwargs):
     kwargs['next_page'] = reverse('index')
