@@ -77,12 +77,39 @@ def register(request):
         if '@' not in email or '.' not in email or ' ' in email:
             return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail nao esta em um formato valido'})
         if User.objects.filter(email=email).exists():
-            return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
-        if len(password) <6:
-            return render(request,'userRegister/register.html', {'falha':'Senha Invalida, digite uma senha com no minimo 6 letras'})
-        if password !=confirPassword:
-            return render(request,'userRegister/register.html', {'falha':'Senha invalida! Senhas de cadastros diferentes'})
+            return render(request, 'userRegister/register.html', {'falha': 'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
+        if len(password) < 6 and password != confirPassword:
+            return render(request, 'userRegister/register.html', {'falha': 'Senha Invalida, digite uma senha com no minimo 6 letras'})
+        if password != confirPassword:
+            return render(request, 'userRegister/register.html', {'falha': 'Senha invalida! Senhas de cadastros diferentes'})
+        # Fim do bloco que saira da view
 
+        try:
+            user = User.objects.create_user(
+                first_name=first_name, last_name=last_name, password=password, username=email)
+        except:
+            return render(request, 'userRegister/register.html', {'falha': 'Email invalido!'})
+
+        """ Edit this if block in case of adding more permissions"""
+        if (form.get('report_checkbox') == "generate_reports"):
+            has_report_permission = Permission.objects.get(
+                codename='can_generate')
+            user.user_permissions.add(has_report_permission)
+
+        if (form.get('transductor_checkbox') == "manage_transductors"):
+            has_transductor_permission = Permission.objects.get(
+                codename='can_view_transductors')
+            user.user_permissions.add(has_transductor_permission)
+
+        if (form.get('editUser_checkbox') == "edit_user"):
+            has_editUser_permission = Permission.objects.get(
+                codename='can_edit_user')
+            user.user_permissions.add(has_editUser_permission)
+
+        if (form.get('deleteUser_checkbox') == "delete_user"):
+            has_deleteUser_permission = Permissions.objects.get(
+                codename='can_delete_user')
+            user.user_permissions.add(has_deleteUser_permission)
 
         user = User.objects.create_user(username=first_name,password=password,email=email)
         user.last_name = last_name
