@@ -61,11 +61,11 @@ class SerialProtocol(object):
         pass
 
     @abstractmethod
-    def get_int_value_from_response(self):
+    def get_int_value_from_response(self, message_received_data):
         pass
 
     @abstractmethod
-    def get_float_value_from_response(self):
+    def get_float_value_from_response(self, message_received_data):
         pass
 
 
@@ -93,7 +93,7 @@ class ModbusRTU(SerialProtocol):
                 # TODO: add exception
                 pass
 
-            crc = self._computate_crc(packaged_message)
+            crc = struct.pack("<H", self._computate_crc(packaged_message))
 
             packaged_message = packaged_message + crc
 
@@ -101,7 +101,7 @@ class ModbusRTU(SerialProtocol):
 
         return messages_to_send
 
-    def get_int_value_from_response(self):
+    def get_int_value_from_response(self,  message_received_data):
         pass
 
     def get_float_value_from_response(self, message_received_data):
@@ -141,12 +141,10 @@ class ModbusRTU(SerialProtocol):
                 if lsb:
                     crc ^= 0xA001
 
-        final_crc = struct.pack("<H", crc)
+        return crc
 
-        return final_crc
-
-    def _check_crc(self):
-        pass
+    def _check_crc(self, packaged_message):
+        return (self._computate_crc(packaged_message) == 0)
 
 class CommunicationProtocol(models.Model):
     transductor = models.ForeignKey(EnergyTransductor)
