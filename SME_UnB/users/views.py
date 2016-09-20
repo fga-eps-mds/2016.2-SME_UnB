@@ -90,10 +90,10 @@ def register(request):
         except:
             return render(request, 'userRegister/register.html', {'falha': 'Email invalido!'})
 
-        report_checkbox = form.get('report_checkbox')
-        transductor_checkbox = form.get('transductor_checkbox')
-        edit_user_checkbox = form.get('editUser_checkbox')
-        delete_user_checkbox = form.get('deleteUser_checkbox')
+        report_checkbox = form.get('can_generate')
+        transductor_checkbox = form.get('view_transductors')
+        edit_user_checkbox = form.get('edit_users')
+        delete_user_checkbox = form.get('delete_users')
 
         
         """ Edit this if block in case of adding more permissions"""
