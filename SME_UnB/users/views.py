@@ -96,6 +96,8 @@ def register(request):
 
 
         user = User.objects.create_user(username=first_name,password=password,email=email)
+        user.last_name = last_name
+        user.first_name = first_name
         user.save()
 
         return render(request,'users/dashboard.html')
