@@ -3,56 +3,49 @@
 {% bootstrap_messages %}
 
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}" />
 
 <head>
-{% block title %}
-{% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static "css/style.css" %}"  media="screen,projection"/>
+    {% block title %}
+    {% endblock %}
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-static-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="/">SME - UnB</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-              </ul>
+	<div class="container">
+	    <div class="navbar-header">
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		    <span class="sr-only">Toggle navigation</span>
+		    <span class="icon-bar"></span>
+		    <span class="icon-bar"></span>
+		    <span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="/">SME - UnB</a>
+	    </div>
+	    <div id="navbar" class="navbar-collapse collapse">
+		<ul class="nav navbar-nav">
+		    <li><a href="#about">About</a></li>
+		    <li><a href="#contact">Contact</a></li>
+		</ul>
 
 
-            </div>
-          </div>
-        </nav>
-        </div><!--/.nav-collapse -->
-      </div>
+	    </div>
+	</div>
     </nav>
+    <div class="container">
+	<form class="form-signin" method="POST" action="{% url "users:login"%}">
+	    {% csrf_token %}
+	    <h2 class="form-signin-heading text-center">Log in</h2>
+	    <label for="inputEmail" class="sr-only">Email address</label>
+	    <input type="user" id="inputUsername" name="username" class="form-control" placeholder="Email" required autofocus>
+	    <label for="inputPassword" class="sr-only">Password</label>
+	    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
 
-    <div class="flex-align"><!-- começa o flex -->
-    <div class="container span7 text-center col-md-8 col-md-offset-3" style="margin: 0 auto;float: none; border: 3px solid black">
-        <div class="row">
-         <form class="form-signin" method="POST" action="{% url "users:login"%}" style="margin: 100px">
-             {% csrf_token %}
-             <h2 class="form-signin-heading">Log in</h2>
-             <label for="inputEmail" class="sr-only">Email address</label>
-             <input type="user" id="inputUsername" name="username" class="form-control" placeholder="Email" style = "width: 650px; height: 50px" required autofocus>
-             <label for="inputPassword" class="sr-only">Password</label>
-             <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" style = "width: 650px; height: 50px" required>
-             <h1> </h1>
-             <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
-         </form>
-        </div>
+	    <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+	</form>
+
     </div>
-</div><!-- termina o flex -->
 
-
-{% block body %}
-{% endblock %}
+    {% block body %}
+    {% endblock %}
 </body>
