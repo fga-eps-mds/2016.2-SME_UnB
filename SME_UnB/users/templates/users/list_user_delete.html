@@ -1,33 +1,31 @@
 {% extends 'users/dashboard.html' %}
 
 {% block dashboard_content %}
+    <div class="margin">
+	<h1 class="text-center">Lista de usuarios cadastrados:</h>
+    </div>
+    <div class="row">
+	<div class="col-md-8 col-md-offset-2">
+	    <div class="margin">
+		<table class ="table table-bordered">
+		    <tr>
+			<th>Primeiro Nome</th>
+			<th>Ultimo Nome</th>
+			<th>Email</th>
+			<th>Editar</th>
+		    </tr>
+		    {% for user in users %}
+			<tr>
+			    <td>{{user.first_name}}</td>
+			    <td>{{user.last_name}}</td>
+			    <td>{{user.email}}</td>
+			    <td><a  class="glyphicon glyphicon-trash" href="{% url 'users:delete_user' user.id %}"></a></td>
+			</tr>
+		    {% endfor %}
+		</table>
+	    </div>
 
-
-<div class="margin">
-    <h1 margin: "10px">Lista de usuarios cadastrados:&nbsp;&nbsp;&nbsp;</h>
-</div>
-
-<div class="margin">
-
-    <table class ="table table-bordered">
-        <tr>
-            <th>Primeiro Nome</th>
-            <th>Ultimo Nome</th>
-            <th>Email</th>
-            <th>Editar</th>
-
-        </tr>
-        {% for user in users %}
-        <tr>
-            <td>{{user.first_name}}</td>
-            <td>{{user.last_name}}</td>
-            <td>{{user.email}}</td>
-            <td><a  class="glyphicon glyphicon-trash" href="{% url 'users:delete_user' user.id %}"></a></td>
-        </tr>
-        {% endfor %}
-
-        </tab
-</div>
-
+	</div>
+    </div>
 
 {% endblock %}

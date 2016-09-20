@@ -28,29 +28,6 @@
     </div>
 </div><!-- termina o flex -->
 
-
-<!--<div class="jumbotron">
-  <div class="container">
-
-
-
-      <h1>Deletar usuario</h1>
-      <p2>{{info}}</p2>
-
-      <h1> </h1>
-    <form class="col-md-6 configdiv" action="delete" method="post">
-        <p2>{{falha}}</p2>
-
-        {% csrf_token %}
-
-        </div>
-          <button type="submit" class="btn btn-danger" href="{% url 'users:list_user_delete' %}" style="width: 520px; height: 50px">Apagar</button>
-        <p><a class="btn btn-primary btn-lg" href="{% url 'users:list_user_delete' %}" role="button" style="width: 520px; height: 50px">Cancelar &raquo;</a></p>
-
-    </form>
-
-  </div>
-</div>-->
 {% endblock %}
 {% block login %}
 <form class="navbar-form navbar-right" action="login" method="post">
