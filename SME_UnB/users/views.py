@@ -1,3 +1,5 @@
+""" Represents the User's views, and it contains all the elements
+as the interface. For example buttons, text, boxes, etc."""
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
