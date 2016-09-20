@@ -174,16 +174,50 @@ class EnergyMeasurements(Measurements):
     def __str__(self):
         return '%s' % self.collection_date
 
+
+class EnergyOperations(object):
+    """
+        Class responsible to perform energy mathematical operations.
+
+        Atributtes:
+            - energy_measurement(EnergyMeasurements): Energy measurements related to a specific instant of time.
+    """
+    def __init__(self, e_measurement):
+        self.energy_measurement = e_measurement
+
     def calculate_total_active_power(self):
-        return (self.active_power_a + self.active_power_b + self.active_power_c)
+        """
+            Instance method responsible to calculate the total active power of a time instant.
+
+            :returns: float -- the total active power.
+        """
+        active_power_a = self.energy_measurement.active_power_a
+        active_power_b = self.energy_measurement.active_power_b
+        active_power_c = self.energy_measurement.active_power_c
+
+        return (active_power_a + active_power_b + active_power_c)
 
     def calculate_total_reactive_power(self):
-        return (self.reactive_power_a + self.reactive_power_b + self.reactive_power_c)
+        """
+            Instance method responsible to calculate the total reactive power of a time instant.
+
+            :returns: float -- the total reactive power.
+        """
+        reactive_power_a = self.energy_measurement.reactive_power_a
+        reactive_power_b = self.energy_measurement.reactive_power_b
+        reactive_power_c = self.energy_measurement.reactive_power_c
+
+        return (reactive_power_a + reactive_power_b + reactive_power_c)
 
     def calculate_total_apparent_power(self):
-        ap_phase_a = self.apparent_power_a
-        ap_phase_b = self.apparent_power_b
-        ap_phase_c = self.apparent_power_c
+        """
+            Instance method responsible to calculate the total apparent power of a time instant.
+
+            :returns: float -- the total apparent power.
+        """
+        ap_phase_a = self.energy_measurement.apparent_power_a
+        ap_phase_b = self.energy_measurement.apparent_power_b
+        ap_phase_c = self.energy_measurement.apparent_power_c
 
         ap_total = (ap_phase_a + ap_phase_b + ap_phase_c)
 
