@@ -90,25 +90,27 @@ def register(request):
         except:
             return render(request, 'userRegister/register.html', {'falha': 'Email invalido!'})
 
+        report_checkbox = form.get('report_checkbox')
+        transductor_checkbox = form.get('transductor_checkbox')
+        edit_user_checkbox = form.get('editUser_checkbox')
+        delete_user_checkbox = form.get('deleteUser_checkbox')
+
+        
         """ Edit this if block in case of adding more permissions"""
-        if (form.get('report_checkbox') == "generate_reports"):
-            has_report_permission = Permission.objects.get(
-                codename='can_generate')
+        if report_checkbox == "on":
+            has_report_permission = Permission.objects.get(codename='can_generate')
             user.user_permissions.add(has_report_permission)
 
-        if (form.get('transductor_checkbox') == "manage_transductors"):
-            has_transductor_permission = Permission.objects.get(
-                codename='can_view_transductors')
+        if transductor_checkbox == "on":
+            has_transductor_permission = Permission.objects.get(codename='can_view_transductors')
             user.user_permissions.add(has_transductor_permission)
 
-        if (form.get('editUser_checkbox') == "edit_user"):
-            has_editUser_permission = Permission.objects.get(
-                codename='can_edit_user')
+        if  edit_user_checkbox == "on":
+            has_editUser_permission = Permission.objects.get(codename='can_edit_user')
             user.user_permissions.add(has_editUser_permission)
 
-        if (form.get('deleteUser_checkbox') == "delete_user"):
-            has_deleteUser_permission = Permissions.objects.get(
-                codename='can_delete_user')
+        if delete_user_checkbox == "on":
+            has_deleteUser_permission = Permission.objects.get(codename='can_delete_user')
             user.user_permissions.add(has_deleteUser_permission)
 
         user = User.objects.create_user(username=first_name,password=password,email=email)
@@ -155,7 +157,25 @@ def edit_user(request,user_id):
             if not last_name.isalpha():
                 return render(request,'users/edit_user.html', {'falha':'Nome deve conter apenas letras','user':user})
 
-            user.last_name  =last_name
+        report_checkbox = form.get('report_checkbox')
+        transductor_checkbox = form.get('transductor_checkbox')
+        edit_user_checkbox = form.get('editUser_checkbox')
+        delete_user_checkbox = form.get('deleteUser_checkbox')
+
+        """If has_permission append on html in order to mark checkbox"""
+        report_checkbox = "checked" if user.has_perm('report.can_generate') else ''
+        
+        transductor_checkbox = "checked" if user.has_perm('transductor.can_view_transductors') else ''
+        
+        edit_user_checkbox = "checked" if user.has_perm('UserPermission.has_edit_permission') else ''
+        
+        delete_user_checkbox = "checked" if user.has_perm('UserPermisison.has_delete_permission') else ''
+
+
+        user.first_name = first_name
+        user.last_name  =last_name
+        user.set_password(password)
+        user.username = email
 
 
         if email != '':
