@@ -11,7 +11,9 @@
         <ul class="breadcrumb">
             {% block breadcrumb %}
             <li><a href="{% url 'index' %}">HOME</a></li>
-            <li><a href="{% url 'report:report' %}">Relatorio</a></li>
+            {%if perms.report.can_generate%}
+		<li><a href="{% url 'report:report' %}">Relatorio</a></li>
+	    {%endif%}
 
             {% if request.user.is_staff %}
             {% endif %}
@@ -19,11 +21,9 @@
             {% endif %}
             <li><a href="{% url 'users:logout' %}">Logout</a></li>
             <li><a href="{% url 'users:register' %}">Registrar</a></li>
-            
             {%if perms.users.can_edit_user%}
             <li><a href="{% url 'users:list_user_edit' %}">Editar Usuarios</a></li>
             {%endif%}
-            
             {%if perms.user.can_delete_user%}
             <li><a href="{% url 'users:list_user_delete' %}">Deletar Usuarios</a></li>
             {%endif%}
