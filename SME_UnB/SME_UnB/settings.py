@@ -41,6 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'report',
+    'django_nose',
+]
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=users,report',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -87,6 +95,9 @@ DATABASES = {
     }
 }
 
+import sys
+if 'test' in sys.argv or 'test_coverage' in sys.argv: #Covers regular testing and django-coverage
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

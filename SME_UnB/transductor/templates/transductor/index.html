@@ -6,6 +6,7 @@
 
 {% block body %}
 <div class="col-md-6">
+            {%if perms.transductor.can_view_transductors%}
   <table class="table table-striped">
     {% if transductors_list %}
       <p><a href="{% url 'transductor:new' %}" class="btn btn-primary">Create Transductor</a></p>
@@ -42,5 +43,8 @@
       </div>
     {% endif %}
 </table>
+{%else%}
+    <h1>Sem permissao para ver os transdutores</h1>
+{% endif %}
 </div>
 {% endblock %}
