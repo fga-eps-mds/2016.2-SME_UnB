@@ -7,7 +7,7 @@ from django.contrib.auth.views import login
 from django.contrib.auth.views import logout
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 
 
@@ -118,7 +118,7 @@ def register(request):
         user.first_name = first_name
         user.save()
 
-        return render(request,'users/dashboard.html')
+        return render(request, 'users/dashboard.html')
 
 @login_required
 def list_user_edit(request):
@@ -132,12 +132,36 @@ def list_user_delete(request):
     users = User.objects.all()
     return render(request,'users/list_user_delete.html',{'users':users})
 
+
+def check_permissions(request, user_id):
+
+        user = User.objects.get(id=user_id)
+        
+        has_report_permission = 'checked' if user.has_perm('report.can_generate') else ''
+        has_transductor_permission = 'checked' if user.has_perm('transductor.can_view_transductors') else ''
+        has_edit_user_permission = 'checked' if user.has_perm('users.can_edit_user') else ''
+        has_delete_user_permission = 'checked' if user.has_perm('users.can_delete_user') else ''
+
+        user_perm = []
+
+        user_perm.append({
+            "can_generate": has_report_permission,
+            "view_transductors": has_transductor_permission,
+            "edit_users": has_edit_user_permission,
+            "delete_users": has_delete_user_permission,
+        })
+        context = {"users": user_perm}
+
+        return render(request, 'users/edit_user.html', context)
+
+
 @login_required
-def edit_user(request,user_id):
+def edit_user(request, user_id):
 
     user = User.objects.get(id=user_id)
+
     if request.method == "GET":
-        return render(request,'users/edit_user.html',{'user':user})
+        return render(request, 'users/edit_user.html', {'user':user})
     else:
         form = request.POST
         first_name = form.get('first_name')
@@ -145,7 +169,6 @@ def edit_user(request,user_id):
         password = form.get('password')
         confirPassword = form.get('confirmPassword')
         email = form.get('email')
-
 
         if first_name != "":
             if not first_name.isalpha():
@@ -189,20 +212,63 @@ def edit_user(request,user_id):
         if password != '':
             if len(password) < 6:
                 return render(request,'users/edit_user.html', {'falha':'Senha Invalida, digite uma senha com no minimo 6 letras','user':user})
-            if password !=confirPassword:
+            if password != confirPassword:
                 return render(request,'users/edit_user.html', {'falha':'Senha invalida! Senhas de cadastros diferentes', 'user':user})
 
             user.set_password(password)
 
-
-
-
         user.save()
+        
+        return render(request,'users/edit_user.html',{'info':'usuario modificado com sucesso', 'user': user})
 
-        return render(request,'users/edit_user.html',{'info':'usuario modificado com sucesso', 'user':user})
+
+def give_permission(request, user_id):
+
+    user = User.objects.get(id=user_id)
+
+    report_checkbox = request.POST.get('can_generate')        
+    transductor_checkbox = request.POST.get('view_transductors')
+    useredit_checkbox = request.POST.get('edit_users')
+    userdelete_checkbox = request.POST.get('delete_users')
+
+    has_report_permission = 'checked' if user.has_perm('report.can_generate') else ''
+    has_transductor_permission = 'checked' if user.has_perm('transductor.can_view_transductors') else ''
+    has_edit_user_permission = 'checked' if user.has_perm('users.can_edit_user') else ''
+    has_delete_user_permission = 'checked' if user.has_perm('users.can_delete_user') else ''
+            
+    user_perm = []            
+    #toappend -> (?)
+    user_perm.append({
+        "report_checkbox": has_report_permission,
+        "transductor_checkbox": has_transductor_permission,
+        "useredit_checkbox": has_edit_user_permission,
+        "userdelete_checkbox": has_delete_user_permission,
+    })
+
+    user.user_permissions.clear()
+
+    if report_checkbox == 'checked':
+        has_report_permission = Permission.objects.get(codename='can_generate')
+        user.user_permissions.add(has_report_permission)
+
+    if transductor_checkbox == 'checked':
+        has_transductor_permission = Permission.objects.get(codename='can_view_transductors')
+        user.user_permissions.add(has_transductor_permission)
+
+    if  useredit_checkbox == 'checked':
+        has_editUser_permission = Permission.objects.get(codename='can_edit_user')
+        user.user_permissions.add(has_editUser_permission)
+
+    if userdelete_checkbox == 'checked':
+        has_deleteUser_permission = Permission.objects.get(codename='can_delete_user')
+        user.user_permissions.add(has_deleteUser_permission) 
+    
+    user.save()
+
+    return redirect(reverse("auth:users"))
 
 @login_required
-def delete_user(request,user_id):
+def delete_user(request, user_id):
 
     user = User.objects.get(id=user_id)
     if request.method == "GET":
