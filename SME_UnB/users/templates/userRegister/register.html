@@ -2,7 +2,7 @@
 
 {% block title %}
 {% endblock %}
-<title>Novo Usuario</title>
+<title>New User</title>
 
 {% block body %}
 
@@ -20,11 +20,11 @@
 
             {% csrf_token %}
             <div class="form-group">
-              <input type="text" name= "first_name" placeholder="Primeiro nome" class="form-control">
+              <input type="text" name= "first_name" placeholder="Fist Name" class="form-control">
             </div>
 
             <div class="form-group">
-              <input type="text" name= "last_name" placeholder="ultimo nome" class="form-control">
+              <input type="text" name= "last_name" placeholder="Last name" class="form-control">
             </div>
 
             <div class="form-group">
@@ -33,47 +33,47 @@
 
 
             <div class="form-group">
-              <input type="password" name ="password" placeholder="Senha" class="form-control">
+              <input type="password" name ="password" placeholder="Password" class="form-control">
             </div>
 
             <div class="form-group">
-              <input type="password" name ="confirmPassword" placeholder="confirmar senha" class="form-control">
+              <input type="password" name ="confirmPassword" placeholder="confirm password" class="form-control">
             </div>
 
             <p1>Tipo de usuario:</p1>
             <div class="form-group">
               <label class="radio-inline">
-                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Usuario Comum
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Commun User
               </label>
               <label class="radio-inline">
-                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Adiministrador
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Admin
               </label>
 
             </div>
 
-            <p1>Nivel de acesso:</p1>
+            <p1>Acess level:</p1>
             <div class="form-group">
               <div class="checkbox">
                 <label class="checkbox-inline checkbox-success">
-                  <input type="checkbox" id="permissions_checkbox1" name="can_generate" > Gerar Relatorios
+                  <input type="checkbox" id="permissions_checkbox1" name="can_generate" > Generate Report
                 </label>
               </div>
               <div class="checkbox">
                 <label class="checkbox-inline checkbox-success">
-                  <input type="checkbox" id="permissions_checkbox2" name="view_transductors"> Gerenciar Transdutores
+                  <input type="checkbox" id="permissions_checkbox2" name="view_transductors">  Manage Transdutors
                 </label>
               </div>
               <div class="checkbox">
                 <label class="checkbox-inline checkbox-success">
-                  <input type="checkbox" id="permissions_checkbox3" name="edit_users" > Editar Usuarios
+                  <input type="checkbox" id="permissions_checkbox3" name="edit_users" > Edit Users
                 </label>
               </div>
               <div class="checkbox">
                 <label class="checkbox-inline checkbox-success">
-                  <input type="checkbox" id="permissions_checkbox3" name="delete_users"> Deletar Usuarios
+                  <input type="checkbox" id="permissions_checkbox3" name="delete_users"> Delete Users
                 </label>
               </div>
-              <button type="submit" class="btn btn-success btn-lg btn-block" >Registrar</button>
+              <button type="submit" class="btn btn-success btn-lg btn-block" >Register</button>
 
             </div>
           </form>

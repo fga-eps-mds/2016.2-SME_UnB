@@ -2,14 +2,14 @@
 
 {% block title %}
 {% endblock %}
-<title>Novo Usuario</title>
+<title>New User</title>
 
 {% block body %}
 
 <div class="jumbotron">
   <div class="container">
 
-    <h1>Editar usuario</h1>
+    <h1>Edit user</h1>
     <p2>{{info}}</p2>
 
     <h1> </h1>
@@ -41,10 +41,10 @@
       <p1>Tipo de usuario:</p1>
       <div class="form-group">
         <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Usuario Comum
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Commun User
         </label>
         <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Adiministrador
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Adiministrator
         </label>
 
       </div>
@@ -52,23 +52,23 @@
       <p1>Nivel de acesso:</p1>
       <div class="form-group">
         <label class="checkbox-inline checkbox-success">
-          <input type="checkbox" id="permissions_checkbox1" name="can_generate" {{can_generate}} > Gerar Relatorios
+          <input type="checkbox" id="permissions_checkbox1" name="can_generate" {{can_generate}} > Generate Reports
         </label>
         <label class="checkbox-inline checkbox-success">
-          <input type="checkbox" id="permissions_checkbox2" name="view_transductors" {{view_transductors}}> Gerenciar Transdutores
+          <input type="checkbox" id="permissions_checkbox2" name="view_transductors" {{view_transductors}}> Manage Transductors
         </label>
         <label class="checkbox-inline checkbox-success">
-          <input type="checkbox" id="permissions_checkbox3" name="edit_users" {{edit_users}} > Editar Usuarios
+          <input type="checkbox" id="permissions_checkbox3" name="edit_users" {{edit_users}} > Edit Users
         </label>
         <label class="checkbox-inline checkbox-success">
-          <input type="checkbox" id="permissions_checkbox3" name="delete_users" {{delete_users}}> Deletar Usuarios
+          <input type="checkbox" id="permissions_checkbox3" name="delete_users" {{delete_users}}> Delete Users
         </label>
 
 
       </div>
-      <button type="submit" class="btn btn-success" style="width: 520px; height: 50px">Registrar</button>
+      <button type="submit" class="btn btn-success" style="width: 520px; height: 50px">Register</button>
 
-      <p><a class="btn btn-primary btn-lg" href="{% url 'users:list_user_edit' %}" role="button" style="width: 520px; height: 50px">Cancelar &raquo;</a></p>
+      <p><a class="btn btn-primary btn-lg" href="{% url 'users:list_user_edit' %}" role="button" style="width: 520px; height: 50px">Cancel &raquo;</a></p>
 
 
     </form>
