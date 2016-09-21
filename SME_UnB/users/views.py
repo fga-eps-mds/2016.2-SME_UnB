@@ -89,7 +89,7 @@ def register(request):
                 first_name=first_name, last_name=last_name, password=password, username=email)
         except:
             return render(request, 'userRegister/register.html', {'falha': 'Email invalido!'})
-
+        
         report_checkbox = form.get('can_generate')
         transductor_checkbox = form.get('view_transductors')
         edit_user_checkbox = form.get('edit_users')
