@@ -9,69 +9,76 @@
 <div class="jumbotron">
   <div class="container">
 
+    <div class="wrapper">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
 
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
+          <h1>Registro de novo usuario</h1>
 
-        <h1>Registro de novo usuario</h1>
+          <form class="configdiv" action="register" method="post">
+            <p2>{{falha}}</p2>
 
-        <form class="configdiv" action="register" method="post">
-          <p2>{{falha}}</p2>
+            {% csrf_token %}
+            <div class="form-group">
+              <input type="text" name= "first_name" placeholder="Primeiro nome" class="form-control">
+            </div>
 
-          {% csrf_token %}
-          <div class="form-group">
-            <input type="text" name= "first_name" placeholder="Primeiro nome" class="form-control">
-          </div>
+            <div class="form-group">
+              <input type="text" name= "last_name" placeholder="ultimo nome" class="form-control">
+            </div>
 
-          <div class="form-group">
-            <input type="text" name= "last_name" placeholder="ultimo nome" class="form-control">
-          </div>
-
-          <div class="form-group">
-            <input type="text" name= "email" placeholder="Email" class="form-control">
-          </div>
+            <div class="form-group">
+              <input type="text" name= "email" placeholder="Email" class="form-control">
+            </div>
 
 
-          <div class="form-group">
-            <input type="password" name ="password" placeholder="Senha" class="form-control">
-          </div>
+            <div class="form-group">
+              <input type="password" name ="password" placeholder="Senha" class="form-control">
+            </div>
 
-          <div class="form-group">
-            <input type="password" name ="confirmPassword" placeholder="confirmar senha" class="form-control">
-          </div>
+            <div class="form-group">
+              <input type="password" name ="confirmPassword" placeholder="confirmar senha" class="form-control">
+            </div>
 
-          <p1>Tipo de usuario:</p1>
-          <div class="form-group">
-            <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Usuario Comum
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Adiministrador
-            </label>
+            <p1>Tipo de usuario:</p1>
+            <div class="form-group">
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Usuario Comum
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Adiministrador
+              </label>
 
-          </div>
+            </div>
 
-          <p1>Nivel de acesso:</p1>
-          <div class="form-group">
+            <p1>Nivel de acesso:</p1>
+            <div class="form-group">
+              <div class="checkbox">
+                <label class="checkbox-inline checkbox-success">
+                  <input type="checkbox" id="permissions_checkbox1" name="can_generate" > Gerar Relatorios
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="checkbox-inline checkbox-success">
+                  <input type="checkbox" id="permissions_checkbox2" name="view_transductors"> Gerenciar Transdutores
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="checkbox-inline checkbox-success">
+                  <input type="checkbox" id="permissions_checkbox3" name="edit_users" > Editar Usuarios
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="checkbox-inline checkbox-success">
+                  <input type="checkbox" id="permissions_checkbox3" name="delete_users"> Deletar Usuarios
+                </label>
+              </div>
+              <button type="submit" class="btn btn-success btn-lg btn-block" >Registrar</button>
 
-            <label class="checkbox-inline checkbox-success">
-              <input type="checkbox" id="permissions_checkbox1" name="can_generate" > Gerar Relatorios
-            </label>
-            <label class="checkbox-inline checkbox-success">
-              <input type="checkbox" id="permissions_checkbox2" name="view_transductors"> Gerenciar Transdutores
-            </label>
-            <label class="checkbox-inline checkbox-success">
-              <input type="checkbox" id="permissions_checkbox3" name="edit_users" > Editar Usuarios
-            </label>
-            <label class="checkbox-inline checkbox-success">
-              <input type="checkbox" id="permissions_checkbox3" name="delete_users"> Deletar Usuarios
-            </label>
+            </div>
+          </form>
 
-            <button type="submit" class="btn btn-success btn-lg btn-block" >Registrar</button>
-
-          </div>
-        </form>
-
+        </div>
       </div>
     </div>
   </div>
