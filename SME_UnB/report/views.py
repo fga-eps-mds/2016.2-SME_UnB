@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.shortcuts import render
 from django.views.generic import CreateView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.views import login
@@ -10,11 +9,8 @@ from cStringIO import StringIO
 from reportlab.platypus.flowables import Image
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
-import sys
-import PIL
 from django.http import HttpResponse
-import random
-import django
+
 import datetime
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
@@ -24,20 +20,21 @@ import matplotlib.patches as mpatches
 
 from transductor.models import EnergyMeasurements
 
-def create_graphic(path,array_date, array_dateb, array_datec, array_data, label):
+
+def create_graphic(path, array_date, array_dateb, array_datec, array_data, label):
     title = 'Monitoramento de ' + label
 
-    fig=Figure()
+    fig = Figure()
 
-    ax=fig.add_subplot(111)
-    bx=fig.add_subplot(111)
-    cx=fig.add_subplot(111)
-    x=[]
-    y=[]
-    yb=[]
-    yc=[]
-    xb=[]
-    xc=[]
+    ax = fig.add_subplot(111)
+    bx = fig.add_subplot(111)
+    cx = fig.add_subplot(111)
+    x = []
+    y = []
+    yb = []
+    yc = []
+    xb = []
+    xc = []
 
     for i in range(len(array_data)) :
         x.append(array_data[i])
@@ -47,33 +44,29 @@ def create_graphic(path,array_date, array_dateb, array_datec, array_data, label)
         yb.append(array_dateb[i])
         yc.append(array_datec[i])
 
-
-
     ax.plot_date(x, y, '-')
     bx.plot_date(xb, yb, '-')
     cx.plot_date(xc, yc, '-')
-
 
     patch1 = mpatches.Patch(color='blue', label='Fase A')
     patch2 = mpatches.Patch(color='green', label='Fase B')
     patch3 = mpatches.Patch(color='red', label='Fase C')
 
-    z = [patch1,patch2,patch3]
+    z = [patch1, patch2, patch3]
 
-    cx.legend(handles=z,loc=1)
-
-
+    cx.legend(handles=z, loc=1)
 
     ax.set_title(title)
     ax.set_xlabel('Data')
     ax.set_ylabel(label)
     ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
     fig.autofmt_xdate()
-    canvas=FigureCanvas(fig)
+    canvas = FigureCanvas(fig)
 
     fig.savefig(path)
 
     return path
+
 
 def generatePdf():
     import time
@@ -115,7 +108,7 @@ def generatePdf():
     Story.append(im4)
     Story.append(im5)
 
-    styles=getSampleStyleSheet()
+    styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
     ptext = '<font size=12>%s</font>' % formatted_time
 
@@ -137,13 +130,11 @@ def generatePdf():
     doc.build(Story)
 
 
-
-
 def report(request):
 
 
-    now=datetime.datetime.now()
-    delta=datetime.timedelta(days=1)
+    now = datetime.datetime.now()
+    delta = datetime.timedelta(days=1)
 
     date = []
     data = []
@@ -187,21 +178,52 @@ def report(request):
 
     data = [4, 6, 23, 7, 4, 2]
 
-    create_graphic('report/static/currentGraphic.png', current_a, current_b, current_c, date, 'Corrente')
-    create_graphic('report/static/voltageGraphic.png', voltage_a, voltage_b, voltage_c, date,'Voltagem' )
-    create_graphic('report/static/activePowerGraphic.png', active_power_a, active_power_b, active_power_c, date,'Potencia Ativa' )
-    create_graphic('report/static/reactivePowerGraphic.png', reactive_power_a, reactive_power_b, reactive_power_c, date,'Potencia Reativa' )
-    create_graphic('report/static/apparentPowerGraphic.png', apparent_power_a, apparent_power_b, apparent_power_c, date ,'Potencia Aparente' )
+    create_graphic(
+        'report/static/currentGraphic.png',
+        current_a,
+        current_b,
+        current_c,
+        date,
+        'Corrente')
 
+    create_graphic(
+        'report/static/voltageGraphic.png',
+        voltage_a,
+        voltage_b,
+        voltage_c,
+        date,
+        'Voltagem')
 
+    create_graphic(
+        'report/static/activePowerGraphic.png',
+        active_power_a,
+        active_power_b,
+        active_power_c,
+        date,
+        'Potencia Ativa')
+    create_graphic(
+        'report/static/reactivePowerGraphic.png',
+        reactive_power_a,
+        reactive_power_b,
+        reactive_power_c,
+        date,
+        'Potencia Reativa')
+    create_graphic(
+        'report/static/apparentPowerGraphic.png',
+        apparent_power_a,
+        apparent_power_b,
+        apparent_power_c,
+        date,
+        'Potencia Aparente')
 
     generatePdf()
 
-    return render(request,'graphics/report.html')
+    return render(request, 'graphics/report.html')
+
 
 def open_pdf(request):
     with open('report/static/Relatorio.pdf', 'r') as pdf:
-        response = HttpResponse(pdf.read(),content_type='application/pdf')
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'filename=Relatorio.pdf'
         return response
     pdf.closed

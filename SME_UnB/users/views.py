@@ -54,34 +54,50 @@ def make_login(request):
 
     return context
 
+
 def logout_view(request, *args, **kwargs):
     kwargs['next_page'] = reverse('index')
     return logout(request, *args, **kwargs)
+
 
 @login_required
 def register(request):
 
     if request.method == "GET":
-        return render(request,'userRegister/register.html')
+        return render(request, 'userRegister/register.html')
     else:
         form = request.POST
         first_name = form.get('first_name')
-        last_name =  form.get('last_name')
+        last_name = form.get('last_name')
         password = form.get('password')
         confirPassword = form.get('confirmPassword')
         email = form.get('email')
 
-
         if not first_name.isalpha() or not last_name.isalpha():
-            return render(request,'userRegister/register.html', {'falha':'Nome deve conter apenas letras'})
+            return render(
+                request,
+                'userRegister/register.html',
+                {'falha': 'Nome deve conter apenas letras'})
         if '@' not in email or '.' not in email or ' ' in email:
-            return render(request,'userRegister/register.html', {'falha':'Email invalido! Esse e-mail nao esta em um formato valido'})
+            return render(
+                request,
+                'userRegister/register.html',
+                {'falha': 'Email invalido! Esse e-mail nao esta em um formato valido'})
         if User.objects.filter(email=email).exists():
-            return render(request, 'userRegister/register.html', {'falha': 'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
+            return render(
+                request,
+                'userRegister/register.html',
+                {'falha': 'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
         if len(password) < 6 and password != confirPassword:
-            return render(request, 'userRegister/register.html', {'falha': 'Senha Invalida, digite uma senha com no minimo 6 letras'})
+            return render(
+                request,
+                'userRegister/register.html',
+                {'falha': 'Senha Invalida, digite uma senha com no minimo 6 letras'})
         if password != confirPassword:
-            return render(request, 'userRegister/register.html', {'falha': 'Senha invalida! Senhas de cadastros diferentes'})
+            return render(
+                request,
+                'userRegister/register.html',
+                {'falha': 'Senha invalida! Senhas de cadastros diferentes'})
         # Fim do bloco que saira da view
 
         try:
@@ -102,13 +118,13 @@ def register(request):
 def list_user_edit(request):
 
     users = User.objects.all()
-    return render(request,'users/list_user_edit.html',{'users':users})
+    return render(request, 'users/list_user_edit.html', {'users':users})
 
 @login_required
 def list_user_delete(request):
 
     users = User.objects.all()
-    return render(request,'users/list_user_delete.html',{'users':users})
+    return render(request, 'users/list_user_delete.html', {'users':users})
 
 
 def check_permissions(user):
@@ -148,29 +164,29 @@ def edit_user(request, user_id):
 
         if first_name != "":
             if not first_name.isalpha():
-                return render(request,'users/edit_user.html', {'falha':'Nome deve conter apenas letras','user':user})
+                return render(request, 'users/edit_user.html', {'falha': 'Nome deve conter apenas letras', 'user': user})
 
             user.first_name = first_name
 
         if last_name != "":
             if not last_name.isalpha():
-                return render(request,'users/edit_user.html', {'falha':'Nome deve conter apenas letras','user':user})
-
+                return render(request, 'users/edit_user.html', {'falha': 'Nome deve conter apenas letras', 'user': user})
+            user.last_name = last_name
 
         if email != '':
             if '@' not in email or '.' not in email or ' ' in email:
-                return render(request,'users/edit_user.html', {'falha':'Email invalido! Esse e-mail nao esta em um formato valido','user':user})
+                return render(request, 'users/edit_user.html', {'falha': 'Email invalido! Esse e-mail nao esta em um formato valido', 'user': user})
             if User.objects.filter(email=email).exists():
-                return render(request,'users/edit_user.html', {'falha':'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados','user':user})
+                return render(request, 'users/edit_user.html', {'falha': 'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados', 'user': user})
 
             user.username = email
-            user.email= email
+            user.email = email
 
         if password != '':
             if len(password) < 6:
-                return render(request,'users/edit_user.html', {'falha':'Senha Invalida, digite uma senha com no minimo 6 letras','user':user})
+                return render(request, 'users/edit_user.html', {'falha': 'Senha Invalida, digite uma senha com no minimo 6 letras', 'user':user})
             if password != confirPassword:
-                return render(request,'users/edit_user.html', {'falha':'Senha invalida! Senhas de cadastros diferentes', 'user':user})
+                return render(request, 'users/edit_user.html', {'falha': 'Senha invalida! Senhas de cadastros diferentes', 'user': user})
 
             user.set_password(password)
 
@@ -179,7 +195,7 @@ def edit_user(request, user_id):
         context = check_permissions(user)
         context['info'] = 'usuario modificado com sucesso'
 
-        return render(request,'users/edit_user.html', context)
+        return render(request, 'users/edit_user.html', context)
 
 
 def give_permission(request, user):
@@ -188,8 +204,6 @@ def give_permission(request, user):
     transductor_checkbox = request.POST.get('view_transductors')
     useredit_checkbox = request.POST.get('edit_users')
     userdelete_checkbox = request.POST.get('delete_users')
-
-    print report_checkbox, transductor_checkbox, useredit_checkbox, userdelete_checkbox
 
     user.user_permissions.clear()
 
@@ -216,8 +230,8 @@ def delete_user(request, user_id):
 
     user = User.objects.get(id=user_id)
     if request.method == "GET":
-        return render(request,'users/delete_user.html',{'user':user})
+        return render(request, 'users/delete_user.html', {'user': user})
     else:
         user.delete()
 
-    return render (request, 'users/dashboard.html',{'info':'usuario deletado com sucesso'})
+    return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
