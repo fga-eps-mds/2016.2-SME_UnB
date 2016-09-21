@@ -6,86 +6,86 @@
 
 {% block body %}
 
-    <div class="jumbotron">
-	<div class="container">
+<div class="jumbotron">
+  <div class="container">
 
-	    <h1>Editar usuario</h1>
-	    <p2>{{info}}</p2>
+    <h1>Editar usuario</h1>
+    <p2>{{info}}</p2>
 
-	    <h1> </h1>
-	    <form class="col-md-6 configdiv" action="register" method="post">
-		<p2>{{falha}}</p2>
+    <h1> </h1>
+    <form class="col-md-6 configdiv" action="register" method="post">
+      <p2>{{falha}}</p2>
 
-		{% csrf_token %}
-		<div class="form-group">
-		    <input type="text" name= "first_name" placeholder="{{user.first_name}}" class="form-control">
-		</div>
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="text" name= "first_name" placeholder="{{user.first_name}}" class="form-control">
+      </div>
 
-		<div class="form-group">
-		    <input type="text" name= "last_name" placeholder="{{user.last_name}}" class="form-control">
-		</div>
+      <div class="form-group">
+        <input type="text" name= "last_name" placeholder="{{user.last_name}}" class="form-control">
+      </div>
 
-		<div class="form-group">
-		    <input type="text" name= "email" placeholder="{{user.email}}" class="form-control">
-		</div>
-
-
-		<div class="form-group">
-		    <input type="password" name ="password" placeholder="Nova Senha" class="form-control">
-		</div>
-
-		<div class="form-group">
-		    <input type="password" name ="confirmPassword" placeholder="confirmar nova senha" class="form-control">
-		</div>
-
-		<p1>Tipo de usuario:</p1>
-		<div class="form-group">
-		    <label class="radio-inline">
-			<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Usuario Comum
-		    </label>
-		    <label class="radio-inline">
-			<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Adiministrador
-		    </label>
-
-		</div>
-
-		<p1>Nivel de acesso:</p1>
-		<div class="form-group">
-		    <label class="checkbox-inline checkbox-success">
-			<input type="checkbox" id="permissions_checkbox1" name="can_generate" {{can_generate}} > Gerar Relatorios
-		    </label>
-			<label class="checkbox-inline checkbox-success">
-			    <input type="checkbox" id="permissions_checkbox2" name="view_transductors" {{view_transductors}}> Gerenciar Transdutores
-			</label>
-			<label class="checkbox-inline checkbox-success">
-			    <input type="checkbox" id="permissions_checkbox3" name="edit_users" {{edit_users}} > Editar Usuarios
-			</label>
-			    <label class="checkbox-inline checkbox-success">
-				<input type="checkbox" id="permissions_checkbox3" name="delete_users" {{delete_users}}> Deletar Usuarios
-			    </label>
+      <div class="form-group">
+        <input type="text" name= "email" placeholder="{{user.email}}" class="form-control">
+      </div>
 
 
-		</div>
-		<button type="submit" class="btn btn-success" style="width: 520px; height: 50px">Registrar</button>
+      <div class="form-group">
+        <input type="password" name ="password" placeholder="Nova Senha" class="form-control">
+      </div>
 
-		<p><a class="btn btn-primary btn-lg" href="{% url 'users:list_user_edit' %}" role="button" style="width: 520px; height: 50px">Cancelar &raquo;</a></p>
+      <div class="form-group">
+        <input type="password" name ="confirmPassword" placeholder="confirmar nova senha" class="form-control">
+      </div>
+
+      <p1>Tipo de usuario:</p1>
+      <div class="form-group">
+        <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Usuario Comum
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Adiministrador
+        </label>
+
+      </div>
+
+      <p1>Nivel de acesso:</p1>
+      <div class="form-group">
+        <label class="checkbox-inline checkbox-success">
+          <input type="checkbox" id="permissions_checkbox1" name="can_generate" {{can_generate}} > Gerar Relatorios
+        </label>
+        <label class="checkbox-inline checkbox-success">
+          <input type="checkbox" id="permissions_checkbox2" name="view_transductors" {{view_transductors}}> Gerenciar Transdutores
+        </label>
+        <label class="checkbox-inline checkbox-success">
+          <input type="checkbox" id="permissions_checkbox3" name="edit_users" {{edit_users}} > Editar Usuarios
+        </label>
+        <label class="checkbox-inline checkbox-success">
+          <input type="checkbox" id="permissions_checkbox3" name="delete_users" {{delete_users}}> Deletar Usuarios
+        </label>
 
 
-	    </form>
+      </div>
+      <button type="submit" class="btn btn-success" style="width: 520px; height: 50px">Registrar</button>
 
-	</div>
-    </div>
+      <p><a class="btn btn-primary btn-lg" href="{% url 'users:list_user_edit' %}" role="button" style="width: 520px; height: 50px">Cancelar &raquo;</a></p>
+
+
+    </form>
+
+  </div>
+</div>
 {% endblock %}
 {% block login %}
-    <form class="navbar-form navbar-right" action="login" method="post">
-	<p2 color="red" >{{falha}}</p2>
-	{% csrf_token %}
-	<div class="form-group">
-	    <input type="text" name= "Email" placeholder="Email" class="form-control">
-	</div>
-	<div class="form-group">
-	    <input type="password" name ="Password" placeholder="Password" class="form-control">
-	</div>
-	<button type="submit" class="btn btn-success">Sign in</button>
-    </form>
+<form class="navbar-form navbar-right" action="login" method="post">
+  <p2 color="red" >{{falha}}</p2>
+  {% csrf_token %}
+  <div class="form-group">
+    <input type="text" name= "Email" placeholder="Email" class="form-control">
+  </div>
+  <div class="form-group">
+    <input type="password" name ="Password" placeholder="Password" class="form-control">
+  </div>
+  <button type="submit" class="btn btn-success">Sign in</button>
+</form>
 {% endblock %}
