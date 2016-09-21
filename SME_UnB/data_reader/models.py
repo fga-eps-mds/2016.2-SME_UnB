@@ -70,7 +70,8 @@ class CommunicationProtocol(models.Model):
             if(initial_register == 86):
                 initial_register = initial_register + 2
             else:
-                packaged_message = struct.pack("2B", 0x01, 0x03) + struct.pack(">2H", initial_register, total_registers)
+                packaged_message = struct.pack("2B", 0x01, 0x03) + struct.pack(
+                    ">2H", initial_register, total_registers)
 
                 crc = self._computate_crc(packaged_message)
 
