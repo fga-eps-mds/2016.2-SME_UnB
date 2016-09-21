@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{% endblock %}
+<title>Deletar  Usuario</title>
+
+{% block body %}
+
+<div class="flex-align"><!-- começa o flex -->
+    <div class="container span7 text-center col-md-4 col-md-offset-3" style="margin: 0 auto;float: none; border: 3px solid red">
+        <div class="row">
+            <h1>Deletar usuario</h1>
+            <p2>{{info}}</p2>
+
+            <h1> </h1>
+          <form class="col-md-6 configdiv" action="delete" method="post">
+              <p2>{{falha}}</p2>
+
+              {% csrf_token %}
+
+              </div>
+                <button type="submit" class="btn btn-danger" href="{% url 'users:list_user_delete' %}" style="width: 250px; height: 50px">Deletar</button>
+                <h1> </h1>
+              <p><a class="btn btn-primary" href="{% url 'users:list_user_delete' %}" role="button" style="width: 250px; height: 50px">Cancelar</a></p>
+
+          </form>
+        </div>
+    </div>
+</div><!-- termina o flex -->
+
+{% endblock %}
+{% block login %}
+<form class="navbar-form navbar-right" action="login" method="post">
+    <p2 color="red" >{{falha}}</p2>
+    {% csrf_token %}
+    <div class="form-group">
+        <input type="password" name ="Password" placeholder="Password" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-success">Sign in</button>
+</form>
+{% endblock %}
