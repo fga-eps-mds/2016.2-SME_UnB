@@ -171,6 +171,7 @@ def edit_user(request, user_id):
         if last_name != "":
             if not last_name.isalpha():
                 return render(request, 'users/edit_user.html', {'falha': 'Nome deve conter apenas letras', 'user': user})
+            user.last_name = last_name
 
         if email != '':
             if '@' not in email or '.' not in email or ' ' in email:
