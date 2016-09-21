@@ -24,7 +24,8 @@
             {%if perms.users.can_edit_user%}
             <li><a href="{% url 'users:list_user_edit' %}">Editar Usuarios</a></li>
             {%endif%}
-            {%if perms.user.can_delete_user%}
+            <!-- fixing bug of users insted user -->
+            {%if perms.users.can_delete_user%}
             <li><a href="{% url 'users:list_user_delete' %}">Deletar Usuarios</a></li>
             {%endif%}
 
