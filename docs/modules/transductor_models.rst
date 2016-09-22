@@ -1,4 +1,4 @@
-Transductor Models
+Models
 ======
 .. automodule:: transductor.models
     :members:
