@@ -45,11 +45,7 @@ def new(request):
             transductor.model = form.cleaned_data['transductor_model']
             transductor.creation_date = timezone.now()
 
-            try:
-                transductor.save()
-            except ValidationError, err:
-                errors = '; '.join(err.messages)
-                return render(request, 'transductor/new.html', {'form': form, 'errors': errors})
+            transductor.save()
 
             return redirect('transductor:detail', transductor_id=transductor.id)
     else:
@@ -65,13 +61,7 @@ def edit(request, transductor_id):
         form = EnergyForm(request.POST, instance=transductor)
 
         if form.is_valid():
-            edited_transductor = form.save(commit=False)
-
-            try:
-                edited_transductor.save()
-            except ValidationError, err:
-                errors = '; '.join(err.messages)
-                return render(request, 'transductor/new.html', {'form': form, 'errors': errors})
+            form.save()
 
             return redirect('transductor:index')
     else:

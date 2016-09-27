@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    modules/data_reader_models.rst
+   modules/transductor_models.rst
 
 Indices and tables
 ==================

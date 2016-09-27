@@ -4,7 +4,8 @@
 
 O Sistema de Monitoramento Energético - Universidade de Brasília (SME-UnB), consiste em uma aplicação web desenvolvida para auxiliar o monitoramento energético de transdutores instalados em quadros da Universidade de Brasília. A ideia visa que cada campus contido na UnB possa ser capaz de utilizar a ferramenta e ter um maior conhecimento de como está o seu consumo energético ao longo do tempo, possibilitando, assim, elaborar possíveis estratégias que auxiliem em sua economia.
 
-## Principais Funcionalidades
+Principais Funcionalidades
+--------
 
 - Geração de relatórios
 - Gráficos de consumo, demanda e afins
@@ -13,17 +14,26 @@ O Sistema de Monitoramento Energético - Universidade de Brasília (SME-UnB), co
 - Sistema de alarme para eventos indesejados
 
 
-## Características Técnicas
+Características Técnicas
+--------
 
 - Banco de Dados: PostgreSQL
 - Linguagem de programação: Python
 - Web Framework: Django
 
-## Documentação
+Documentação
+--------
 TODO
 
-## Instalação
+Instalação
+--------
 https://gitlab.com/brenddongontijo/SME-UnB/wikis/instalation-guide
 
+<<<<<<< 64672632f2582e6437984b8ca66ff2044ae2b11f:README.md
 ## Licença
 https://gitlab.com/brenddongontijo/SME-UnB/blob/master/LICENSE
+=======
+Licença
+--------
+https://gitlab.com/brenddongontijo/SME-UnB/blob/master/LICENSE
+>>>>>>> Add Boilerplate structure and refactored transductor edit:README.rst

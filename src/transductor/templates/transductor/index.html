@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Transductors</title>
+{% endblock %}
+
+{% block body %}
+<div class="col-md-6">
+  <table class="table table-striped">
+    {% if transductors_list %}
+      <p><a href="{% url 'transductor:new' %}" class="btn btn-primary">Create Transductor</a></p>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Description</th>
+          <th>IP Address</th>
+          <th>Serie Number</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+
+      {% for transductor in transductors_list %}
+      <tbody>
+        <tr>
+          <td>{{transductor.id}}</td>
+          <td><a href="{% url 'transductor:detail' transductor.id %}">{{transductor.description}}</a></td>
+          <td>{{transductor.ip_address}}</td>
+          <td>{{transductor.serie_number}}</td>
+          <td>
+            <a title="Click here to edit" href="{% url 'transductor:edit' transductor_id=transductor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+
+            <form id="deleteform" action="{% url 'transductor:delete' transductor_id=transductor.id %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="delete" value="value">
+              <button onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash"></button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    {% else %}
+      <div class="container">
+        <div class="starter-template">
+          <h1>No Registered Transducer</h1>
+          <p class="lead">To create a new transductor click <a href="{% url 'transductor:new' %}" >here</a></p>
+        </div>
+      </div>
+    {% endif %}
+</table>
+</div>
+{% endblock %}

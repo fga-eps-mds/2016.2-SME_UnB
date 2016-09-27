@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Measurements Record</title>
+{% endblock %}
+
+{% block body %}
+  <div class="page-header">
+    <div class="starter-template">
+      <h1>{{transductor.description.title}}</h1>
+    </div>
+  </div>
+{% if measurements %}
+  <div class="col-md-6" style="text-align: center">
+  {% for measurement in measurements %}
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{ measurement.collection_date }}</h3>
+      </div>
+
+      <table class="table table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Phase A</th>
+          <th>Phase B</th>
+          <th>Phase C</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Voltage</td>
+          <td>{{ measurement.voltage_a }}</td>
+          <td>{{ measurement.voltage_b }}</td>
+          <td>{{ measurement.voltage_c }}</td>
+        </tr>
+        <tr>
+          <td>Current</td>
+          <td>{{ measurement.current_a }}</td>
+          <td>{{ measurement.current_b }}</td>
+          <td>{{ measurement.current_c }}</td>
+        </tr>
+        <tr>
+          <td>Active Power</td>
+          <td>{{ measurement.active_power_a }}</td>
+          <td>{{ measurement.active_power_b }}</td>
+          <td>{{ measurement.active_power_c }}</td>
+          <td>{{ measurement.calculate_total_active_power }}</td>
+        </tr>
+        <tr>
+          <td>Reactive Power</td>
+          <td>{{ measurement.reactive_power_a }}</td>
+          <td>{{ measurement.reactive_power_b }}</td>
+          <td>{{ measurement.reactive_power_c }}</td>
+          <td>{{ measurement.calculate_total_reactive_power }}</td>
+        </tr>
+        <tr>
+          <td>Apparent Power</td>
+          <td>{{ measurement.apparent_power_a }}</td>
+          <td>{{ measurement.apparent_power_b }}</td>
+          <td>{{ measurement.apparent_power_c }}</td>
+          <td>{{ measurement.calculate_total_apparent_power }}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  {% endfor %}
+    <div class="pagination">
+      <span class="step-links">
+        {% if measurement_list.has_previous %}
+          <a href="?page={{ measurement_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+          Page {{ measurement_list.number }} of {{ measurement_list.paginator.num_pages }}
+        </span>
+
+        {% if measurement_list.has_next %}
+          <a href="?page={{ measurement_list.next_page_number }}">next</a>
+        {% endif %}
+      </span>
+    </div>
+  </div>
+{% else %}
+  <div class="container">
+    <div class="starter-template">
+      <h1>No measurement avaiable</h1>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

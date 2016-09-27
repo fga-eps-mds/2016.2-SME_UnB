@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Transductors Models</title>
+{% endblock %}
+
+{% block body %}
+<div class="col-md-6">
+  <table class="table table-striped">
+    {% if transductors_models %}
+      <thead>
+        <th>Name</th>
+        <th>Internet Protocol</th>
+        <th>Serial Protocol</th>
+      </thead>
+      {% for model in transductors_models %}
+        <tbody>
+          <tr>
+            <td>{{model.name}}</td>
+            <td>{{model.internet_protocol}}</td>
+            <td>{{model.serial_protocol}}</td>
+          </tr>
+        </tbody>
+      {% endfor %}
+    {% else %}
+      <div class="container">
+        <div class="starter-template">
+          <h1>Nothing Registered</h1>
+        </div>
+      </div>
+    {% endif %}
+  </table>
+</div>
+{% endblock %}

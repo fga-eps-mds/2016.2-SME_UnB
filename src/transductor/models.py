@@ -64,7 +64,7 @@ class Transductor(models.Model):
         ),
     ])
     description = models.TextField(max_length=150)
-    creation_date = models.DateTimeField('date published')
+    creation_date = models.DateTimeField('date published', auto_now=True)
 
     class Meta:
         abstract = True
@@ -117,6 +117,10 @@ class Measurements(PolymorphicModel):
     """
     collection_date = models.DateTimeField('date published')
     collection_minute = models.IntegerField(default=None)
+
+
+class EnergyMeasurementsManager(models.Manager):
+    pass
 
 
 class EnergyMeasurements(Measurements):

@@ -1,4 +1,4 @@
-Models
+Data Reader Models
 ======
 .. autoclass:: data_reader.models.SerialProtocol
     :members:

@@ -21,3 +21,5 @@ SME_UnB/.coverage
 SME_UnB/.cache
 /SME_UnB/SME_UnB/logging.logging
 SME_UnB/htmlcov/
+.coverage
+htmlcov/
