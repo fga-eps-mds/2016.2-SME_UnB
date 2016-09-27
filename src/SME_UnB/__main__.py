@@ -12,7 +12,6 @@ def get_parser():
     parser.add_argument('--version', '-v', action='version', version=version)
     return parser
 
-
 def main(args=None):
     """
     Main entry point for your project.

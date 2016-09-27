@@ -53,10 +53,14 @@ def edit(request, transductor_id):
     if request.POST:
         form = EnergyForm(request.POST, instance=transductor, initial={'model': transductor.model})
 
+<<<<<<< 8471b2189d8685670084efcede1909c9c144b388:src/transductor/views.py
         if form.has_changed() and form.is_valid():
             for data in form.changed_data:
                 setattr(form.instance, data, form.cleaned_data[data])
 
+=======
+        if form.is_valid():
+>>>>>>> Add Boilerplate structure and refactored transductor edit:src/transductor/views.py
             form.save()
 
             return redirect('transductor:index')

@@ -1,7 +1,49 @@
 from __future__ import unicode_literals
 from abc import ABCMeta, abstractmethod
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from transductor.models import EnergyTransductor
+import socket
 import struct
 import sys
+import thread
+
+
+class Observer():
+    _observers = []
+
+    def __init__(self):
+        self._observers.append(self)
+        self._observables = {}
+
+    def observe(self, event_name, callback):
+        self._observables[event_name] = callback
+
+
+class VoltageObserver(Observer):
+    def __init__(self):
+        Observer.__init__(self)
+
+    def verify_voltage(self, voltage):
+        high_voltage = False
+
+        if voltage > 230.0:
+            high_voltage = True
+
+        return high_voltage
+
+
+class Event():
+    def __init__(self, name, data, autofire=True):
+        self.name = name
+        self.data = data
+        if autofire:
+            self.fire()
+
+    def fire(self):
+        for observer in Observer._observers:
+            if self.name in observer._observables:
+                observer._observables[self.name](self.data)
 
 
 class SerialProtocol(object):

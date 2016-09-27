@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
 from transductor.models import EnergyTransductor, TransductorModel, EnergyOperations, EnergyMeasurements
+import numpy
 
 
 class EnergyTransductorTestCase(TestCase):
@@ -25,6 +26,8 @@ class EnergyTransductorTestCase(TestCase):
         transductor.save()
 
         self.transductor = transductor
+
+        self.create_energy_measurements()
 
     def test_should_not_create_transductor_with_wrong_ip_address(self):
         t_model = self.t_model
@@ -61,7 +64,7 @@ class EnergyTransductorTestCase(TestCase):
         self.assertEqual(transductor.description, transductor.__str__())
 
     def test_energy_operations(self):
-        e_measurement = self.create_energy_measurement()
+        e_measurement = EnergyMeasurements.objects.get(voltage_a=122.875, voltage_b=122.784, voltage_c=121.611)
 
         colection_date = '%s' % e_measurement.collection_date
 
@@ -77,35 +80,39 @@ class EnergyTransductorTestCase(TestCase):
         self.assertAlmostEqual(-2.254, total_reactive_power, places=3, msg=None, delta=None)
         self.assertAlmostEqual(9.059, total_apparent_power, places=3, msg=None, delta=None)
 
-    def create_energy_measurement(self):
-        time = timezone.now()
+    def test_annual_energy_measurements(self):
+        data = EnergyMeasurements.mng_objects.average_annual(2016, 'voltage_a', 'voltage_b', 'voltage_c')
 
-        e_measurement = EnergyMeasurements()
-        e_measurement.transductor = self.transductor
+        average_result = numpy.array([124.375, 124.284, 123.111])
 
-        e_measurement.voltage_a = 122.875
-        e_measurement.voltage_b = 122.784
-        e_measurement.voltage_c = 121.611
+        self.assertTrue((data == average_result).all())
 
-        e_measurement.current_a = 22.831
-        e_measurement.current_b = 17.187
-        e_measurement.current_c = 3.950
+    def create_energy_measurements(self):
+        for index in range(0, 4):
+            e_measurement = EnergyMeasurements()
+            e_measurement.transductor = self.transductor
 
-        e_measurement.active_power_a = 2.794
-        e_measurement.active_power_b = 1.972
-        e_measurement.active_power_c = 3.950
+            e_measurement.voltage_a = 122.875 + index
+            e_measurement.voltage_b = 122.784 + index
+            e_measurement.voltage_c = 121.611 + index
 
-        e_measurement.reactive_power_a = -0.251
-        e_measurement.reactive_power_b = -0.752
-        e_measurement.reactive_power_c = -1.251
+            e_measurement.current_a = 22.831 + index
+            e_measurement.current_b = 17.187 + index
+            e_measurement.current_c = 3.950 + index
 
-        e_measurement.apparent_power_a = 2.805
-        e_measurement.apparent_power_b = 2.110
-        e_measurement.apparent_power_c = 4.144
+            e_measurement.active_power_a = 2.794 + index
+            e_measurement.active_power_b = 1.972 + index
+            e_measurement.active_power_c = 3.950 + index
 
-        e_measurement.collection_date = time
-        e_measurement.collection_minute = time.minute
+            e_measurement.reactive_power_a = -0.251 - index
+            e_measurement.reactive_power_b = -0.752 - index
+            e_measurement.reactive_power_c = -1.251 - index
 
-        e_measurement.save()
+            e_measurement.apparent_power_a = 2.805 + index
+            e_measurement.apparent_power_b = 2.110 + index
+            e_measurement.apparent_power_c = 4.144 + index
 
-        return e_measurement
+            time = timezone.now()
+            e_measurement.collection_minute = time.minute
+
+            e_measurement.save()

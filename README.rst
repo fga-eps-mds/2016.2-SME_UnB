@@ -29,11 +29,6 @@ Instalação
 --------
 https://gitlab.com/brenddongontijo/SME-UnB/wikis/instalation-guide
 
-<<<<<<< 64672632f2582e6437984b8ca66ff2044ae2b11f:README.md
 ## Licença
 https://gitlab.com/brenddongontijo/SME-UnB/blob/master/LICENSE
 =======
-Licença
---------
-https://gitlab.com/brenddongontijo/SME-UnB/blob/master/LICENSE
->>>>>>> Add Boilerplate structure and refactored transductor edit:README.rst
