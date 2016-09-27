@@ -49,7 +49,7 @@ class EnergyTransductorViewsTestCase(TestCase):
             'serie_number': u'',
             'ip_address': u'',
             'description': u'',
-            'transductor_model': u''
+            'model': u''
         }
 
         response = self.client.post(url, params)
@@ -57,7 +57,7 @@ class EnergyTransductorViewsTestCase(TestCase):
         self.assertFormError(response, 'form', 'serie_number', 'This field is required.')
         self.assertFormError(response, 'form', 'ip_address', 'This field is required.')
         self.assertFormError(response, 'form', 'description', 'This field is required.')
-        self.assertFormError(response, 'form', 'transductor_model', 'This field is required.')
+        self.assertFormError(response, 'form', 'model', 'This field is required.')
 
     def test_create_valid_energy_transductor(self):
         t_model = self.t_model
@@ -69,7 +69,7 @@ class EnergyTransductorViewsTestCase(TestCase):
             'serie_number': 1,
             'ip_address': '111.111.111.111',
             'description': 'Test',
-            'transductor_model': t_model.id
+            'model': t_model.id
         }
 
         response = self.client.post(url, params)
@@ -93,7 +93,7 @@ class EnergyTransductorViewsTestCase(TestCase):
             'serie_number': 1,
             'ip_address': transductor.ip_address,
             'description': 'Test',
-            'transductor_model': t_model.id
+            'model': t_model.id
         }
 
         response = self.client.post(url, params)
@@ -109,7 +109,7 @@ class EnergyTransductorViewsTestCase(TestCase):
             'serie_number': 1,
             'ip_address': '1',
             'description': 'Test',
-            'transductor_model': t_model.id
+            'model': t_model.id
         }
 
         response = self.client.post(url, params)
@@ -136,16 +136,25 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_edit_transductor(self):
-        t_model = self.t_model
+    def test_change_transductor_model(self):
+        t_model_1 = self.t_model
 
-        url = reverse('transductor:edit', kwargs={'transductor_id': self.transductor.id})
+        transductor = self.create_energy_transductor(1, "Test", "111.111.111.111", t_model_1)
+
+        t_model_2 = TransductorModel()
+        t_model_2.name = "Transductor Model 2"
+        t_model_2.internet_protocol = "TCP/IP"
+        t_model_2.serial_protocol = "Mosbus"
+        t_model_2.register_addresses = [[100, 0], [105, 1]]
+        t_model_2.save()
+
+        url = reverse('transductor:edit', kwargs={'transductor_id': transductor.id})
 
         params = {
             'serie_number': 2,
             'ip_address': '222.222.222.222',
             'description': 'Another Test',
-            'transductor_model': t_model.id
+            'model': t_model_2.id
         }
 
         self.client.post(url, params)
@@ -154,6 +163,7 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         self.assertEqual(2, transductor.serie_number)
         self.assertEqual("Another Test", transductor.description)
+        self.assertEqual(t_model_2, transductor.model)
 
     def test_not_edit_transductor_with_wrong_params(self):
         t_model = self.t_model
@@ -164,7 +174,7 @@ class EnergyTransductorViewsTestCase(TestCase):
             'serie_number': 2,
             'ip_address': 'Wrong Ip Addres',
             'description': 'Another Test',
-            'transductor_model': t_model.id
+            'model': t_model.id
         }
 
         response = self.client.post(url, params)

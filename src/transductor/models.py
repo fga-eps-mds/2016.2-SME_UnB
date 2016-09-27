@@ -1,9 +1,10 @@
 from __future__ import unicode_literals
-
+from polymorphic.manager import PolymorphicManager
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.postgres.fields import ArrayField
 from polymorphic.models import PolymorphicModel
+import numpy
 
 
 class TransductorModel(models.Model):
@@ -115,12 +116,46 @@ class Measurements(PolymorphicModel):
 
         Click `here <https://django-polymorphic.readthedocs.io/en/stable/quickstart.html>`_ to see full django-polymorphic documentation.
     """
-    collection_date = models.DateTimeField('date published')
+    collection_date = models.DateField('date published', auto_now=True)
     collection_minute = models.IntegerField(default=None)
 
 
-class EnergyMeasurementsManager(models.Manager):
-    pass
+class EnergyMeasurementsManager(PolymorphicManager):
+    def voltage_year(self, year):
+        qs = self.get_queryset().filter(collection_date__year=year)
+        data = qs.values_list('voltage_a', 'voltage_b', 'voltage_c').all()
+
+        return numpy.array(data)
+
+    def voltage_month(self, year, month):
+        qs = self.get_queryset().filter(collection_date__year=year, collection_date__month=month)
+        data = qs.values_list('voltage_a', 'voltage_b', 'voltage_c').all()
+
+        return numpy.array(data)
+
+    def voltage_day(self, date):
+        qs = self.get_queryset().filter(collection_date=date)
+        data = qs.values_list('voltage_a', 'voltage_b', 'voltage_c').all()
+
+        return numpy.array(data)
+
+    def current_year(self, year):
+        qs = self.get_queryset().filter(collection_date__year=year)
+        data = qs.values_list('current_a', 'current_b', 'current_c').all()
+
+        return numpy.array(data)
+
+    def current_month(self, year, month):
+        qs = self.get_queryset().filter(collection_date__year=year, collection_date__month=month)
+        data = qs.values_list('current_a', 'current_b', 'current_c').all()
+
+        return numpy.array(data)
+
+    def current_day(self, date):
+        qs = self.get_queryset().filter(collection_date=date)
+        data = qs.values_list('current_a', 'current_b', 'current_c').all()
+
+        return numpy.array(data)
 
 
 class EnergyMeasurements(Measurements):
@@ -149,10 +184,11 @@ class EnergyMeasurements(Measurements):
         >>> from django.utils import timezone
         >>> t_model = TransductorModel.objects.create(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
         >>> e_transductor = EnergyTransductor.objects.create(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
-        >>> time = timezone.now()
-        >>> EnergyMeasurements.objects.create(transductor=e_transductor, voltage_a=122.875, voltage_b=122.784, voltage_c=121.611, current_a=22.831, current_b=17.187, current_c= 3.950, active_power_a=2.794, active_power_b=1.972, active_power_c=3.950, reactive_power_a=-0.251, reactive_power_b=-0.752, reactive_power_c=-1.251, apparent_power_a=2.805, apparent_power_b=2.110, apparent_power_c=4.144, collection_date=time, collection_minute=time.minute)
+        >>> EnergyMeasurements.objects.create(transductor=e_transductor, voltage_a=122.875, voltage_b=122.784, voltage_c=121.611, current_a=22.831, current_b=17.187, current_c= 3.950, active_power_a=2.794, active_power_b=1.972, active_power_c=3.950, reactive_power_a=-0.251, reactive_power_b=-0.752, reactive_power_c=-1.251, apparent_power_a=2.805, apparent_power_b=2.110, apparent_power_c=4.144, collection_minute=timezone.now().minute
         <EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>
     """
+    mng_objects = EnergyMeasurementsManager()
+
     transductor = models.ForeignKey(EnergyTransductor, on_delete=models.CASCADE)
 
     voltage_a = models.FloatField(default=None)

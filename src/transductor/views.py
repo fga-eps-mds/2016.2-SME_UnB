@@ -1,7 +1,6 @@
 from .models import EnergyTransductor, TransductorModel
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect
-from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from .forms import EnergyForm, DeleteEnergyForm
@@ -38,14 +37,8 @@ def new(request):
         form = EnergyForm(request.POST)
 
         if form.is_valid():
-            transductor = EnergyTransductor()
-            transductor.serie_number = form.cleaned_data['serie_number']
-            transductor.ip_address = form.cleaned_data['ip_address']
-            transductor.description = form.cleaned_data['description']
-            transductor.model = form.cleaned_data['transductor_model']
-            transductor.creation_date = timezone.now()
-
-            transductor.save()
+            form.instance.model = form.cleaned_data['model']
+            transductor = form.save()
 
             return redirect('transductor:detail', transductor_id=transductor.id)
     else:
@@ -58,14 +51,20 @@ def edit(request, transductor_id):
     transductor = get_object_or_404(EnergyTransductor, pk=transductor_id)
 
     if request.POST:
-        form = EnergyForm(request.POST, instance=transductor)
+        form = EnergyForm(request.POST, instance=transductor, initial={'model': transductor.model})
 
-        if form.is_valid():
+        if form.has_changed() and form.is_valid():
+            for data in form.changed_data:
+                setattr(form.instance, data, form.cleaned_data[data])
+
             form.save()
 
             return redirect('transductor:index')
+        else:
+            # Add no changes error
+            pass
     else:
-        form = EnergyForm(instance=transductor)
+        form = EnergyForm(instance=transductor, initial={'model': transductor.model})
 
     return render(request, 'transductor/new.html', {'form': form})
 

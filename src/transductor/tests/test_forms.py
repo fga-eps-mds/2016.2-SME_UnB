@@ -19,7 +19,7 @@ class EnergyTransductorForm(TestCase):
             'serie_number': 1,
             'ip_address': "111.111.111.111",
             'description': "Test",
-            'transductor_model': self.t_model.id
+            'model': self.t_model.id
         }
 
         form = EnergyForm(data=data)
@@ -31,7 +31,7 @@ class EnergyTransductorForm(TestCase):
             'serie_number': u'',
             'ip_address': "1",
             'description': u'',
-            'transductor_model': u''
+            'model': u''
         }
 
         form = EnergyForm(data=data)
