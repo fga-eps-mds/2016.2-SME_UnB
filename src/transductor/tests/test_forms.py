@@ -20,7 +20,6 @@ class EnergyTransductorForm(TestCase):
             'ip_address': "111.111.111.111",
             'description': "Test",
             'model': self.t_model.id
-
         }
 
         form = EnergyForm(data=data)
