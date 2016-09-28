@@ -3,6 +3,7 @@ from polymorphic.manager import PolymorphicManager
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.postgres.fields import ArrayField
+from django.core.exceptions import FieldError
 from polymorphic.models import PolymorphicModel
 import numpy
 
@@ -119,39 +120,33 @@ class Measurements(PolymorphicModel):
 
 
 class EnergyMeasurementsManager(PolymorphicManager):
-    def voltage_year(self, year):
+    def annual(self, year, *args):
         qs = self.get_queryset().filter(collection_date__year=year)
-        data = qs.values_list('voltage_a', 'voltage_b', 'voltage_c').all()
+
+        try:
+            data = qs.values_list(*args).all()
+        except FieldError:
+            raise
 
         return numpy.array(data)
 
-    def voltage_month(self, year, month):
+    def monthly(self, year, month, *args):
         qs = self.get_queryset().filter(collection_date__year=year, collection_date__month=month)
-        data = qs.values_list('voltage_a', 'voltage_b', 'voltage_c').all()
+
+        try:
+            data = qs.values_list(*args).all()
+        except FieldError:
+            raise
 
         return numpy.array(data)
 
-    def voltage_day(self, date):
+    def daily(self, date, *args):
         qs = self.get_queryset().filter(collection_date=date)
-        data = qs.values_list('voltage_a', 'voltage_b', 'voltage_c').all()
 
-        return numpy.array(data)
-
-    def current_year(self, year):
-        qs = self.get_queryset().filter(collection_date__year=year)
-        data = qs.values_list('current_a', 'current_b', 'current_c').all()
-
-        return numpy.array(data)
-
-    def current_month(self, year, month):
-        qs = self.get_queryset().filter(collection_date__year=year, collection_date__month=month)
-        data = qs.values_list('current_a', 'current_b', 'current_c').all()
-
-        return numpy.array(data)
-
-    def current_day(self, date):
-        qs = self.get_queryset().filter(collection_date=date)
-        data = qs.values_list('current_a', 'current_b', 'current_c').all()
+        try:
+            data = qs.values_list(*args).all()
+        except FieldError:
+            raise
 
         return numpy.array(data)
 
