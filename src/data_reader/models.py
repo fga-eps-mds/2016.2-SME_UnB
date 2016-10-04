@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from abc import ABCMeta, abstractmethod
+import socket
 import struct
 import sys
 
@@ -10,13 +11,11 @@ class SerialProtocol(object):
 
         Attributes:
             - Transductor: The transductor which will hold communication.
-            - Port: The serial port used by the transductor.
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, transductor, port):
+    def __init__(self, transductor):
         self.transductor = transductor
-        self.port = port
 
     @abstractmethod
     def create_messages(self):
@@ -64,8 +63,8 @@ class ModbusRTU(SerialProtocol):
 
         Click `here <http://modbus.org/docs/PI_MBUS_300.pdf>`_ to read the reference guide.
     """
-    def __init__(self, transductor, port=1001):
-        super(ModbusRTU, self).__init__(transductor, port)
+    def __init__(self, transductor):
+        super(ModbusRTU, self).__init__(transductor)
 
     def create_messages(self):
         """
@@ -191,115 +190,55 @@ class ModbusRTU(SerialProtocol):
         """
         return (self._computate_crc(packaged_message) == 0)
 
-class CommunicationProtocol(models.Model):
-    transductor = models.ForeignKey(EnergyTransductor)
-    protocol_type = models.CharField(max_length=50)
-    port = models.IntegerField(default=1001)
-    timeout = models.FloatField(default=30.0)
+class TransportProtocol(object):
+    """
+        Base class for transport protocols.
 
-    def __str__(self):
-        return self.protocol_type
+        Attributes:
+            - serial_protocol: The serial protocol used in communication.
+            - transductor: The transductor which will hold communication.
+            - timeout: The serial port used by the transductor.
+            - port: The port used to communication.
+    """
+    __metaclass__ = ABCMeta
 
-    def start_data_collection(self):
-        new_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    def __init__(self, serial_protocol, timeout, port):
+        self.serial_protocol = serial_protocol
+        self.transductor = serial_protocol.transductor
+        self.timeout = timeout
+        self.port = port
+        self.socket = None
 
-        messages_to_send = []
+    @abstractmethod
+    def create_socket(self):
+        """
+            Abstract method responsible to create the respective transport socket.
+        """
+        pass
 
-        total_registers = 2
-        initial_register = 68
-        last_register = 93
 
-        while(initial_register < last_register):
-            if(initial_register == 86):
-                initial_register = initial_register + 2
-            else:
-                packaged_message = struct.pack("2B", 0x01, 0x03) + struct.pack(
-                    ">2H", initial_register, total_registers)
+class UdpProtocol(TransportProtocol):
+    def __init__(self, serial_protocol, timeout=10.0, port=1001):
+        super(UdpProtocol, self).__init__(serial_protocol, timeout, port)
 
-                crc = self._computate_crc(packaged_message)
+    def create_socket(self):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.settimeout(self.timeout)
 
-                packaged_message = packaged_message + crc
+    def send_messages(self):
+        messages_to_send = self.serial_protocol.create_messages()
 
-                messages_to_send.append(packaged_message)
-
-                initial_register = initial_register + 2
-
-        alarm = VoltageObserver()
-
-        try:
-            thread.start_new_thread(self._thread_data_collection, (new_socket, messages_to_send, alarm))
-        except:
-            print "Can't create thread"
-
-        return True
-
-    def _thread_data_collection(self, socket, messages_to_send, alarm):
         messages = []
 
         for i in range(len(messages_to_send)):
-            socket.sendto(messages_to_send[i], (self.transductor.ip_address, self.port))
-            message_received = socket.recvfrom(256)
+            try:
+                self.socket.sendto(messages_to_send[i], (self.transductor.ip_address, self.port))
+                message_received = self.socket.recvfrom(256)
+            except socket.timeout:
+                print "timeout"
+            except socket.error:
+                print "error"
 
             messages.append(message_received[0])
-            # alarm.observe('new data received', alarm.verify_voltage)
-            # Event('new data received', value)
 
-        collection_time = timezone.now()
-        self._create_measurements_from_data_collected(messages, collection_time)
-
-    def _create_measurements_from_data_collected(self, messages, collection_time):
-        data = Measurements()
-
-        data.transductor = self.transductor
-
-        data.voltage_a = self._get_float_value_from_response(messages[0])
-        data.voltage_b = self._get_float_value_from_response(messages[1])
-        data.voltage_c = self._get_float_value_from_response(messages[2])
-
-        data.current_a = self._get_float_value_from_response(messages[3])
-        data.current_b = self._get_float_value_from_response(messages[4])
-        data.current_c = self._get_float_value_from_response(messages[5])
-
-        data.active_power_a = self._get_float_value_from_response(messages[6])
-        data.active_power_b = self._get_float_value_from_response(messages[7])
-        data.active_power_c = self._get_float_value_from_response(messages[8])
-
-        data.reactive_power_a = self._get_float_value_from_response(messages[9])
-        data.reactive_power_b = self._get_float_value_from_response(messages[10])
-        data.reactive_power_c = self._get_float_value_from_response(messages[11])
-
-        data.apparent_power_a = sqrt(data.active_power_a**2 + data.reactive_power_a**2)
-        data.apparent_power_b = sqrt(data.active_power_b**2 + data.reactive_power_b**2)
-        data.apparent_power_c = sqrt(data.active_power_c**2 + data.reactive_power_c**2)
-
-        data.collection_date = collection_time
-
-        data.save()
-
-    def _get_float_value_from_response(self, message_received_data):
-        n_bytes = struct.unpack("1B", message_received_data[2])[0]
-
-        msg = bytearray(message_received_data[3:-2])
-
-        for i in range(0, n_bytes, 4):
-            if sys.byteorder == "little":
-                msb = msg[i]
-                msg[i] = msg[i+1]
-                msg[i+1] = msb
-
-                msb = msg[i+2]
-                msg[i+2] = msg[i+3]
-                msg[i+3] = msb
-            else:
-                msb = msg[i]
-                lsb = msg[i+1]
-                msg[i] = msg[i+2]
-                msg[i+1] = msg[i+3]
-                msg[i+2] = msb
-                msg[i+3] = lsb
-
-        value = struct.unpack("1f", msg)[0]
-        return value
-# @receiver(post_save, sender=EnergyTransductor)
-# def transductor_saved(sender, instance, **kwargs):
-#     instance.communicationprotocol_set.first().start_data_collection()
+        return messages
