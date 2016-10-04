@@ -122,7 +122,7 @@ class Measurements(PolymorphicModel):
 
 
 class EnergyMeasurementsManager(PolymorphicManager):
-    def annual(self, year, *args):
+    def average_annual(self, year, *args):
         qs = self.get_queryset().filter(collection_date__year=year)
 
         try:
@@ -130,9 +130,9 @@ class EnergyMeasurementsManager(PolymorphicManager):
         except FieldError:
             raise
 
-        return numpy.array(data)
+        return numpy.array(data).mean(axis=0)
 
-    def monthly(self, year, month, *args):
+    def average_monthly(self, year, month, *args):
         qs = self.get_queryset().filter(collection_date__year=year, collection_date__month=month)
 
         try:
@@ -140,9 +140,9 @@ class EnergyMeasurementsManager(PolymorphicManager):
         except FieldError:
             raise
 
-        return numpy.array(data)
+        return numpy.array(data).mean(axis=0)
 
-    def daily(self, date, *args):
+    def average_daily(self, date, *args):
         qs = self.get_queryset().filter(collection_date=date)
 
         try:
@@ -150,7 +150,7 @@ class EnergyMeasurementsManager(PolymorphicManager):
         except FieldError:
             raise
 
-        return numpy.array(data)
+        return numpy.array(data).mean(axis=0)
 
 
 class EnergyMeasurements(Measurements):
