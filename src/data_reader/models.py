@@ -61,7 +61,7 @@ class ModbusRTU(SerialProtocol):
 
         This protocol will be encapsulated in the data field of an transport protocol header.
 
-        Click `here <http://modbus.org/docs/PI_MBUS_300.pdf>`_ to read the reference guide.
+        `Modbus reference guide <http://modbus.org/docs/PI_MBUS_300.pdf>`_
     """
     def __init__(self, transductor):
         super(ModbusRTU, self).__init__(transductor)
@@ -159,7 +159,7 @@ class ModbusRTU(SerialProtocol):
             A cyclic redundancy check (CRC) is an error-detecting code commonly
             used in digital networks and storage devices to detect accidental changes to raw data.
 
-            Click `here: <http://www.modbustools.com/modbus.html#crc>`_ to read Modbus CRC documentation.
+            `Modbus CRC documentation: <http://www.modbustools.com/modbus.html#crc>`_
 
             `Code Source <http://pythonhosted.org/pyModbusTCP/_modules/pyModbusTCP/client.html>`_
 
@@ -217,17 +217,30 @@ class TransportProtocol(object):
         pass
 
 
+class SocketNotCreatedException(Exception):
+    def __init__(self, message):
+        super(SocketNotCreatedException, self).__init__(message)
+        self.message = message
+
+
 class UdpProtocol(TransportProtocol):
     def __init__(self, serial_protocol, timeout=10.0, port=1001):
         super(UdpProtocol, self).__init__(serial_protocol, timeout, port)
+        self.sending_attempts = 0
 
     def create_socket(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.settimeout(self.timeout)
 
-    def send_messages(self):
+    def prepare_send_messages(self):
+        if not self.socket:
+            raise SocketNotCreatedException("Socket must be create before send messages")
+
         messages_to_send = self.serial_protocol.create_messages()
 
+        self.send_messages(messages_to_send)
+
+    def send_messages(self, messages_to_send):
         messages = []
 
         for i in range(len(messages_to_send)):

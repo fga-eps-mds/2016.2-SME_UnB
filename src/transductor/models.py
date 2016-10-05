@@ -113,7 +113,7 @@ class Measurements(PolymorphicModel):
         >>> Measurements.objects.instance_of(EnergyMeasurements)
         [<EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>]
 
-        Click `here <https://django-polymorphic.readthedocs.io/en/stable/quickstart.html>`_ to see full django-polymorphic documentation.
+        `django-polymorphic documentation <https://django-polymorphic.readthedocs.io/en/stable/quickstart.html>`_
     """
     collection_date = models.DateField('date published', auto_now=True)
     collection_minute = models.IntegerField(default=None)
