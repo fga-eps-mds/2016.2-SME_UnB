@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}
-<title>SME - UnB</title>
-{% endblock %}
 
-{% if user.is_authenticated %}
 {% block body %}
 <div class="pure-g-r content-ribbon">
   <div class="pure-u-1">
@@ -42,6 +38,3 @@
   </div>
 </div>
 {% endblock %}
-{% else %}
-<p><a href="{% url 'users:login' %}">Login</a>.</p>
-{% endif %}

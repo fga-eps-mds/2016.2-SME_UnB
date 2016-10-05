@@ -6,8 +6,11 @@
 <link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}" />
 
 <head>
-{% block title %}
-{% endblock %}
+  {% block title %}
+  <title>SME - UnB</title>
+  {% endblock %}
+  <link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}" />
+  <link type="text/css" rel="stylesheet" href="{% static "css/style.css" %}"  media="screen,projection"/>
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-static-top">
@@ -28,9 +31,8 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li><a href="{% url 'users:dashboard'%}">Minha Conta</a></li>
-                  <li><a href="{% url 'users:logout'%}">SAIR</a></li>
+                <li><a href="{% url 'users:logout'%}">SAIR</a></li>
                 {% else %}
-                <li><a href="{% url 'transductor:index'%}">Transductors</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li><a href="{% url 'users:login'%}">Login</a></li>

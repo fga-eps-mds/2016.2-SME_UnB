@@ -1,37 +1,10 @@
-{% load bootstrap3 %}
-{% bootstrap_css %}
-{% bootstrap_messages %}
+{% extends 'base.html' %}
 
-{% load staticfiles %}
+{% block title %}
+    <title>SME - Login</title>
+{% endblock %}
 
-<head>
-  <link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}" />
-  <link type="text/css" rel="stylesheet" href="{% static "css/style.css" %}"  media="screen,projection"/>
-  {% block title %}
-  {% endblock %}
-</head>
-<body>
-  <nav class="navbar navbar-inverse navbar-static-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">SME - UnB</a>
-      </div>
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-
-
-      </div>
-    </div>
-  </nav>
+  {% block body %}
   <div class="container">
     <form class="form-signin" method="POST" action="{% url "users:login"%}">
       {% csrf_token %}
@@ -45,7 +18,4 @@
     </form>
 
   </div>
-
-  {% block body %}
   {% endblock %}
-</body>
