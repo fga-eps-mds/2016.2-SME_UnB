@@ -15,7 +15,6 @@
       {% endif %}
       {% if request.user.is_staff %}
       {% endif %}
-      <li><a href="{% url 'users:logout' %}">Logout</a></li>
       <li><a href="{% url 'users:register' %}">Register</a></li>
       {%if perms.users.can_edit_user%}
       <li><a href="{% url 'users:list_user_edit' %}">Edit Users</a></li>

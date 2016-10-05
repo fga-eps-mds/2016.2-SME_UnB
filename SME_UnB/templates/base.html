@@ -25,20 +25,29 @@
               <a class="navbar-brand" href="/">SME - UnB</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'transductor:index'%}">Transductors</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="{% url 'users:dashboard'%}">Minha Conta</a></li>
-                <li><a href="{% url 'users:logout'%}">SAIR</a></li>
+                  <ul class="nav navbar-nav">
+                    <li><a href="{% url 'transductor:index'%}">Transductors</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'users:dashboard'%}"><b>{{ user }}</b></a></li>
+                    <li><a href="{% url 'users:logout'%}">Logout</a></li>
+                  </ul>
                 {% else %}
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="{% url 'users:login'%}">Login</a></li>
+                  <ul class="nav navbar-nav">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                  </ul>
+
+                  <div class="navbar-right">
+                    <a href="{% url 'users:login'%}"><button type = "button" class = "btn btn-default navbar-btn">  Login </button> </a>
+                  </div>
                 {% endif %}
-              </ul>
+
             </div>
+
           </div>
         </nav>
         </div><!--/.nav-collapse -->
