@@ -4,7 +4,7 @@
 
 
 <div class="margin">
-  <h1 class="text-center">List of registered Users :</h>
+  <h1 class="text-center">{% trans "List of registered Users:" %}</h>
   </div>
 
   <br />
@@ -14,11 +14,10 @@
 
         <table class ="table table-bordered">
           <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Edit</th>
-
+              <th>{% trans "First Name" %}</th>
+              <th>{% trans "Last Name" %}</th>
+              <th>{% trans "Email" %}</th>
+              <th>{% trans "Edit" %}</th>
           </tr>
           {% for user in users %}
           <tr>

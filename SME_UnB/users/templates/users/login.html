@@ -15,7 +15,7 @@
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
+          <span class="sr-only">{% trans "Toggle navigation" %}</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -24,8 +24,8 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#about">{% trans "About" %}</a></li>
+          <li><a href="#contact">{% trans "Contact" %}</a></li>
         </ul>
 
 
@@ -35,13 +35,13 @@
   <div class="container">
     <form class="form-signin" method="POST" action="{% url "users:login"%}">
       {% csrf_token %}
-      <h2 class="form-signin-heading text-center">Log in</h2>
-      <label for="inputEmail" class="sr-only">Email address</label>
+      <h2 class="form-signin-heading text-center">{% trans "Log in" %}</h2>
+      <label for="inputEmail" class="sr-only">{% trans "Email address" %}</label>
       <input type="user" id="inputUsername" name="username" class="form-control" placeholder="Email" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
+      <label for="inputPassword" class="sr-only">{% trans "Password" %}</label>
       <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
 
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Log in" %}</button>
     </form>
 
   </div>

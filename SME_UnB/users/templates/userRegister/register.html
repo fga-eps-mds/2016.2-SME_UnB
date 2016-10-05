@@ -2,7 +2,7 @@
 
 {% block title %}
 {% endblock %}
-<title>New User</title>
+<title>{% trans "New User" %}</title>
 
 {% block body %}
 
@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
 
-          <h1>Registro de novo usuario</h1>
+          <h1>{% trans "Register new user" %}</h1>
 
           <form class="configdiv" action="register" method="post">
             <p2>{{falha}}</p2>
@@ -40,40 +40,40 @@
               <input type="password" name ="confirmPassword" placeholder="confirm password" class="form-control">
             </div>
 
-            <p1>Tipo de usuario:</p1>
+            <p1>{% trans "User type:" %}</p1>
             <div class="form-group">
               <label class="radio-inline">
-                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Commun User
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> {% trans "Commun User" %}
               </label>
               <label class="radio-inline">
-                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Admin
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">{% trans " Admin" %}
               </label>
 
             </div>
 
-            <p1>Acess level:</p1>
+            <p1>{% trans "Access level:" %}</p1>
             <div class="form-group">
               <div class="checkbox">
                 <label class="checkbox-inline checkbox-success">
-                  <input type="checkbox" id="permissions_checkbox1" name="can_generate" > Generate Report
+                  <input type="checkbox" id="permissions_checkbox1" name="can_generate" > {% trans "Generate Report" %}
                 </label>
               </div>
               <div class="checkbox">
                 <label class="checkbox-inline checkbox-success">
-                  <input type="checkbox" id="permissions_checkbox2" name="view_transductors">  Manage Transdutors
+                  <input type="checkbox" id="permissions_checkbox2" name="view_transductors">  {% trans "Manage Transdutors" %}
                 </label>
               </div>
               <div class="checkbox">
                 <label class="checkbox-inline checkbox-success">
-                  <input type="checkbox" id="permissions_checkbox3" name="edit_users" > Edit Users
+                  <input type="checkbox" id="permissions_checkbox3" name="edit_users" > {% trans "Edit Users" %}
                 </label>
               </div>
               <div class="checkbox">
                 <label class="checkbox-inline checkbox-success">
-                  <input type="checkbox" id="permissions_checkbox3" name="delete_users"> Delete Users
+                  <input type="checkbox" id="permissions_checkbox3" name="delete_users"> {% trans "Delete Users" %}
                 </label>
               </div>
-              <button type="submit" class="btn btn-success btn-lg btn-block" >Register</button>
+              <button type="submit" class="btn btn-success btn-lg btn-block" >{% trans "Register" %}</button>
 
             </div>
           </form>
@@ -94,6 +94,6 @@
   <div class="form-group">
     <input type="password" name ="Password" placeholder="Password" class="form-control">
   </div>
-  <button type="submit" class="btn btn-success">Sign in</button>
+  <button type="submit" class="btn btn-success">{% trans "Sign in" %}</button>
 </form>
 {% endblock %}
