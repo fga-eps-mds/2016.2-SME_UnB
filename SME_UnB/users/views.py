@@ -116,7 +116,7 @@ def register(request):
 
 @login_required
 def list_user_edit(request):
-    
+
     return __list__(request, 'users/list_user_edit.html')
 
 @login_required
@@ -236,3 +236,14 @@ def delete_user(request, user_id):
 def __list__(request, template):
     users = User.objects.all()
     return render(request, template, {'users':users})
+
+def __check__(variable, request, template, fail_message):
+
+    if variable != "":
+        if not variable.isalpha():
+            return render(request, template, {'falha': fail_message, 'user': user})
+
+def __permision__(permision_type, codename, user):
+    if permision_type == 'on':
+        permision = Permission.objects.get(codename=codename)
+        user.user_permissions.add(permision)
