@@ -160,30 +160,39 @@ def edit_user(request, user_id):
         email = form.get('email')
 
         if first_name != "":
+            
             if not first_name.isalpha():
-                return render(request, 'users/edit_user.html', {'falha': 'Nome deve conter apenas letras', 'user': user})
+
+                return __prepare_error_render__(request, 'Nome deve conter apenas letras', user)
 
             user.first_name = first_name
 
         if last_name != "":
             if not last_name.isalpha():
-                return render(request, 'users/edit_user.html', {'falha': 'Nome deve conter apenas letras', 'user': user})
+
+                return __prepare_error_render__(request, 'Nome deve conter apenas letras', user)
+
             user.last_name = last_name
 
         if email != '':
             if '@' not in email or '.' not in email or ' ' in email:
-                return render(request, 'users/edit_user.html', {'falha': 'Email invalido! Esse e-mail nao esta em um formato valido', 'user': user})
+
+                return __prepare_error_render__(request, 'Email invalido! Esse e-mail nao esta em um formato valido', user)
+
             if User.objects.filter(email=email).exists():
-                return render(request, 'users/edit_user.html', {'falha': 'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados', 'user': user})
+
+                return __prepare_error_render__(request, 'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados', user)
 
             user.username = email
             user.email = email
 
         if password != '':
             if len(password) < 6:
-                return render(request, 'users/edit_user.html', {'falha': 'Senha Invalida, digite uma senha com no minimo 6 letras', 'user':user})
+
+                return __prepare_error_render__(request, 'Senha Invalida, digite uma senha com no minimo 6 letras', user)
             if password != confirPassword:
-                return render(request, 'users/edit_user.html', {'falha': 'Senha invalida! Senhas de cadastros diferentes', 'user': user})
+
+                return __prepare_error_render__(request, 'Senha invalida! Senhas de cadastros diferentes', user)
 
             user.set_password(password)
 
@@ -204,21 +213,10 @@ def give_permission(request, user):
 
     user.user_permissions.clear()
 
-    if report_checkbox == 'on':
-        has_report_permission = Permission.objects.get(codename='can_generate')
-        user.user_permissions.add(has_report_permission)
-
-    if transductor_checkbox == 'on':
-        has_transductor_permission = Permission.objects.get(codename='can_view_transductors')
-        user.user_permissions.add(has_transductor_permission)
-
-    if  useredit_checkbox == 'on':
-        has_editUser_permission = Permission.objects.get(codename='can_edit_user')
-        user.user_permissions.add(has_editUser_permission)
-
-    if userdelete_checkbox == 'on':
-        has_deleteUser_permission = Permission.objects.get(codename='can_delete_user')
-        user.user_permissions.add(has_deleteUser_permission)
+    __permision__(report_checkbox, 'can_generate', user)
+    __permision__(transductor_checkbox, 'can_view_transductors', user)
+    __permision__(useredit_checkbox, 'can_edit_user', user)
+    __permision__(userdelete_checkbox, 'can_delete_user', user)
 
     user.save()
 
@@ -234,16 +232,16 @@ def delete_user(request, user_id):
     return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
 
 def __list__(request, template):
+
     users = User.objects.all()
     return render(request, template, {'users':users})
 
-def __check__(variable, request, template, fail_message):
+def __prepare_error_render__(request, fail_message, user):
 
-    if variable != "":
-        if not variable.isalpha():
-            return render(request, template, {'falha': fail_message, 'user': user})
+    return render(request, 'user/edit_user.html', {'falha': fail_message, 'user': user})
 
 def __permision__(permision_type, codename, user):
+
     if permision_type == 'on':
         permision = Permission.objects.get(codename=codename)
         user.user_permissions.add(permision)
