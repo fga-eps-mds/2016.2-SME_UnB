@@ -26,3 +26,4 @@ exclude_paths:
   - "SME_UnB/data_reader/**/*"
   - "SME_UnB/SME_UnB/**/*"
   - "SME_UnB/transductor/**/*"
+  - "SMW_UnB/**/tests.py"
