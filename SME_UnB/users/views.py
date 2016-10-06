@@ -116,16 +116,13 @@ def register(request):
 
 @login_required
 def list_user_edit(request):
-
-    users = User.objects.all()
-    return render(request, 'users/list_user_edit.html', {'users':users})
+    
+    return __list__(request, 'users/list_user_edit.html')
 
 @login_required
 def list_user_delete(request):
 
-    users = User.objects.all()
-    return render(request, 'users/list_user_delete.html', {'users':users})
-
+    return __list__(request, 'users/list_user_delete.html')
 
 def check_permissions(user):
 
@@ -235,3 +232,7 @@ def delete_user(request, user_id):
         user.delete()
 
     return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
+
+def __list__(request, template):
+    users = User.objects.all()
+    return render(request, template, {'users':users})
