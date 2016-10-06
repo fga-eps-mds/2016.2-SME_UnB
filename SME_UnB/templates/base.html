@@ -1,6 +1,7 @@
 {% load bootstrap3 %}
 {% bootstrap_css %}
 {% bootstrap_messages %}
+{% load i18n %}
 
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}" />
@@ -35,6 +36,7 @@
                 <li><a href="#contact">{% trans "Contact" %}</a></li>
                 <li><a href="{% url 'users:login'%}">{% trans "Login" %}</a></li>
                 {% endif %}
+                <li>{% include "languages.html" %}</li>
               </ul>
             </div>
           </div>

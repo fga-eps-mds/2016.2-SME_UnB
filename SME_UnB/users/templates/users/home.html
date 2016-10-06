@@ -1,4 +1,6 @@
 <!-- Arquivo: templates/users/home.html -->
+{% load i18n %}
+
 <p>OBRIGADO POR UTILIZAR O SME{% if user.is_authenticated %}{{ user.first_name }}{% else %}...{% endif %}</p>
 
 {% if user.is_authenticated %}
@@ -15,5 +17,5 @@
 <p><a href="{% url 'users:dashboard' %}">{% trans "Dashboard" %}</a>.</p>
 {% else %}
 <meta http-equiv="refresh" content=1;url="/">
-<p>{% trans "Redirecionando..." %}</p>
+<p>{% trans "Redirecting..." %}</p>
 {% endif %}
