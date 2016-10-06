@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^transductor/', include('transductor.urls', namespace="transductor")),
+    url(r'^accounts/', include('users.urls', namespace="users")),
+    url(r'^reports/', include('report.urls', namespace="report")),
 ]

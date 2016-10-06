@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from .forms import EnergyForm
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -14,7 +15,7 @@ def index(request):
 
     return render(request, template_name, {'transductors_list': transductors_list})
 
-
+@login_required
 def detail(request, transductor_id):
     template_name = 'transductor/detail.html'
     transductor = get_object_or_404(EnergyTransductor, pk=transductor_id)
@@ -33,7 +34,7 @@ def detail(request, transductor_id):
 
     return render(request, template_name, {'measurements': data, 'transductor': transductor})
 
-
+@login_required
 def new(request):
     if request.POST:
         form = EnergyForm(request.POST)
@@ -58,7 +59,7 @@ def new(request):
 
     return render(request, 'transductor/new.html', {'form': form})
 
-
+@login_required
 def edit(request, transductor_id):
     transductor = get_object_or_404(EnergyTransductor, pk=transductor_id)
 
@@ -80,7 +81,7 @@ def edit(request, transductor_id):
 
     return render(request, 'transductor/new.html', {'form': form})
 
-
+@login_required
 def delete(request, transductor_id):
     transductor = get_object_or_404(EnergyTransductor, pk=transductor_id)
     transductor.delete()

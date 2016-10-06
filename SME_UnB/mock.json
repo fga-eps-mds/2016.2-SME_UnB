@@ -1,0 +1,206 @@
+[{
+  "model": "transductor.TransductorModel",
+  "pk": 1,
+  "fields": {
+    "name": "Modelo Transdutor",
+    "internet_protocol": "FTP",
+    "serial_protocol": "COAN12310CM",
+    "register_addresses": [10, 123, 210]
+  }
+}, {
+  "model": "transductor.EnergyTransductor",
+  "pk": 1,
+  "fields": {
+    "model": 1,
+    "serie_number": 1,
+    "ip_address": "192.168.0.1",
+    "description": "Transdutor da parte inferios a biblioteca",
+    "creation_date": "2016-07-20 17:44:31"
+  }
+}, {
+  "model": "transductor.EnergyTransductor",
+  "pk": 2,
+  "fields": {
+    "model": 1,
+    "serie_number": 2,
+    "ip_address": "192.168.0.2",
+    "description": "Transdutor da reitoria",
+    "creation_date": "2016-07-20 17:44:31"
+  }
+}, {
+  "model": "transductor.EnergyMeasurements",
+  "pk": 1,
+  "fields": {
+    "collection_date": "2016-07-21 17:44:31",
+    "transductor": 1,
+    "voltage_a": 201.0,
+    "voltage_b": 231.0,
+    "voltage_c": 224.0,
+    "current_a": 10.0,
+    "current_b": 11.2,
+    "current_c": 5.8,
+    "active_power_a": 100.0,
+    "active_power_b": 120.0,
+    "active_power_c": 121.0,
+    "reactive_power_a": 1.2,
+    "reactive_power_b": 2.2,
+    "reactive_power_c": 0.9,
+    "apparent_power_a": 100.1,
+    "apparent_power_b": 102.1,
+    "apparent_power_c": 99.9
+  }
+}, {
+  "model": "transductor.EnergyMeasurements",
+  "pk": 2,
+  "fields": {
+    "collection_date": "2016-07-22 17:44:31",
+    "transductor": 1,
+    "voltage_a": 201.0,
+    "voltage_b": 212.0,
+    "voltage_c": 204.0,
+    "current_a": 11.0,
+    "current_b": 11.2,
+    "current_c": 5.8,
+    "active_power_a": 101.0,
+    "active_power_b": 123.0,
+    "active_power_c": 129.0,
+    "reactive_power_a": 2.2,
+    "reactive_power_b": 1.2,
+    "reactive_power_c": 0.8,
+    "apparent_power_a": 192.1,
+    "apparent_power_b": 121.1,
+    "apparent_power_c": 139.9
+  }
+}, {
+  "model": "transductor.EnergyMeasurements",
+  "pk": 3,
+  "fields": {
+    "collection_date": "2016-07-23 17:44:31",
+    "transductor": 1,
+    "voltage_a": 221.0,
+    "voltage_b": 210.0,
+    "voltage_c": 240.0,
+    "current_a": 9.0,
+    "current_b": 12.2,
+    "current_c": 7,
+    "active_power_a": 102.0,
+    "active_power_b": 110.0,
+    "active_power_c": 131.0,
+    "reactive_power_a": 1.5,
+    "reactive_power_b": 2.0,
+    "reactive_power_c": 0.6,
+    "apparent_power_a": 120.1,
+    "apparent_power_b": 112.1,
+    "apparent_power_c": 100.9
+  }
+}, {
+  "model": "transductor.EnergyMeasurements",
+  "pk": 4,
+  "fields": {
+    "collection_date": "2016-07-24 17:44:31",
+    "transductor": 1,
+    "voltage_a": 210.0,
+    "voltage_b": 212.0,
+    "voltage_c": 234.0,
+    "current_a": 232.0,
+    "current_b": 227.2,
+    "current_c": 4.8,
+    "active_power_a": 101.0,
+    "active_power_b": 120.0,
+    "active_power_c": 121.0,
+    "reactive_power_a": 1.2,
+    "reactive_power_b": 2.2,
+    "reactive_power_c": 0.9,
+    "apparent_power_a": 100.1,
+    "apparent_power_b": 102.1,
+    "apparent_power_c": 99.9
+  }
+}, {
+  "model": "transductor.EnergyMeasurements",
+  "pk": 5,
+  "fields": {
+    "collection_date": "2016-07-25 17:44:31",
+    "transductor": 2,
+    "voltage_a": 208.0,
+    "voltage_b": 231.0,
+    "voltage_c": 221.0,
+    "current_a": 11.0,
+    "current_b": 10.2,
+    "current_c": 4.8,
+    "active_power_a": 110.0,
+    "active_power_b": 124.0,
+    "active_power_c": 111.0,
+    "reactive_power_a": 1.2,
+    "reactive_power_b": 2.2,
+    "reactive_power_c": 0.9,
+    "apparent_power_a": 100.1,
+    "apparent_power_b": 102.1,
+    "apparent_power_c": 99.9
+  }
+}, {
+  "model": "transductor.EnergyMeasurements",
+  "pk": 6,
+  "fields": {
+    "collection_date": "2016-07-26 17:44:31",
+    "transductor": 2,
+    "voltage_a": 209.0,
+    "voltage_b": 232.0,
+    "voltage_c": 242.0,
+    "current_a": 12.9,
+    "current_b": 10.2,
+    "current_c": 3.8,
+    "active_power_a": 100.0,
+    "active_power_b": 120.0,
+    "active_power_c": 121.0,
+    "reactive_power_a": 1.2,
+    "reactive_power_b": 2.2,
+    "reactive_power_c": 0.9,
+    "apparent_power_a": 100.1,
+    "apparent_power_b": 102.1,
+    "apparent_power_c": 99.9
+  }
+}, {
+  "model": "transductor.EnergyMeasurements",
+  "pk": 7,
+  "fields": {
+    "collection_date": "2016-07-27 17:44:31",
+    "transductor": 2,
+    "voltage_a": 221.0,
+    "voltage_b": 233.0,
+    "voltage_c": 214.0,
+    "current_a": 9.0,
+    "current_b": 8.2,
+    "current_c": 4.8,
+    "active_power_a": 100.0,
+    "active_power_b": 120.0,
+    "active_power_c": 121.0,
+    "reactive_power_a": 1.2,
+    "reactive_power_b": 2.2,
+    "reactive_power_c": 0.9,
+    "apparent_power_a": 100.1,
+    "apparent_power_b": 102.1,
+    "apparent_power_c": 99.9
+  }
+}, {
+  "model": "transductor.EnergyMeasurements",
+  "pk": 8,
+  "fields": {
+    "collection_date": "2016-07-28 17:44:31",
+    "transductor": 2,
+    "voltage_a": 223.0,
+    "voltage_b": 220.0,
+    "voltage_c": 212.0,
+    "current_a": 11.0,
+    "current_b": 23.2,
+    "current_c": 2.8,
+    "active_power_a": 100.0,
+    "active_power_b": 120.0,
+    "active_power_c": 121.0,
+    "reactive_power_a": 1.2,
+    "reactive_power_b": 2.2,
+    "reactive_power_c": 0.9,
+    "apparent_power_a": 100.1,
+    "apparent_power_b": 102.1,
+    "apparent_power_c": 99.9
+  }
+}]

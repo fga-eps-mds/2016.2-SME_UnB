@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>SME - UnB</title>
+{% endblock %}
+
+{% if user.is_authenticated %}
+{% block body %}
+<div class="pure-g-r content-ribbon">
+  <div class="pure-u-1">
+    <ul class="breadcrumb">
+      {% block breadcrumb %}
+      <li><a href="{% url 'index' %}">HOME</a></li>
+      {%if perms.report.can_generate%}
+      <li><a href="{% url 'report:report' %}">Reports</a></li>
+      {%endif%}
+
+      {% if request.user.is_staff %}
+      {% endif %}
+      {% if request.user.is_staff %}
+      {% endif %}
+      <li><a href="{% url 'users:logout' %}">Logout</a></li>
+      <li><a href="{% url 'users:register' %}">Register</a></li>
+      {%if perms.users.can_edit_user%}
+      <li><a href="{% url 'users:list_user_edit' %}">Edit Users</a></li>
+      {%endif%}
+	<!-- fixing bug of users insted user -->
+	{%if perms.users.can_delete_user%}
+      <li><a href="{% url 'users:list_user_delete' %}">Delete Users</a></li>
+      {%endif%}
+
+      {% endblock %}
+    </ul>
+  </div>
+  <div class="pure-u-2-3">
+    <div class="inner">
+      {% block dashboard_content %}
+      <p><strong>Usuário</strong>: {{ user }}</p>
+      <p><strong>E-mail</strong>: {{ user.email }}</p>
+      {% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% else %}
+<p><a href="{% url 'users:login' %}">Login</a>.</p>
+{% endif %}
