@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.test import Client
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 import unittest
 
 class TestLoginView(unittest.TestCase):
@@ -247,3 +247,12 @@ class TestLoginView(unittest.TestCase):
         response = self.client.post( '/accounts/delete_user/2/')
 
         self.assertEqual(200, response.status_code)
+
+    def test_given_perm_delete_user(self):
+        has_deleteUser_permission = Permission.objects.get(codename='can_delete_user')
+        self.user.user_permissions.add(has_deleteUser_permission)
+
+        has_delete_user_permission = True if self.user.has_perm('users.can_delete_user') else False
+        self.assertTrue(has_delete_user_permission)
+
+
