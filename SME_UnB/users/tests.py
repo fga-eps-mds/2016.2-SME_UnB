@@ -262,9 +262,7 @@ class TestLoginView(unittest.TestCase):
         has_edit_user_permission = True if self.user.has_perm('users.can_edit_user') else False
         self.assertTrue(has_edit_user_permission)
 
-    # has_transductor_permission = 'checked' if user.has_perm('transductor.can_view_transductors') else ''
-
-    def test_given_perm_edit_user(self):
+    def test_given_perm_generate_report(self):
         has_generate = Permission.objects.get(codename='can_generate')
         self.user.user_permissions.add(has_generate)
 

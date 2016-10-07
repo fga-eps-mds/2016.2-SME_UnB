@@ -26,6 +26,5 @@ class TestReportView(unittest.TestCase):
     def test_getting_pdf(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.get('/reports/open_pdf/')
-        print(response.status_code)
 
         self.assertEqual(200, response.status_code)
