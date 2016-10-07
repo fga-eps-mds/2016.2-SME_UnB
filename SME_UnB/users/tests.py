@@ -255,4 +255,18 @@ class TestLoginView(unittest.TestCase):
         has_delete_user_permission = True if self.user.has_perm('users.can_delete_user') else False
         self.assertTrue(has_delete_user_permission)
 
+    def test_given_perm_edit_user(self):
+        has_edit_permission = Permission.objects.get(codename='can_edit_user')
+        self.user.user_permissions.add(has_edit_permission)
 
+        has_edit_user_permission = True if self.user.has_perm('users.can_edit_user') else False
+        self.assertTrue(has_edit_user_permission)
+
+    # has_transductor_permission = 'checked' if user.has_perm('transductor.can_view_transductors') else ''
+
+    def test_given_perm_edit_user(self):
+        has_generate = Permission.objects.get(codename='can_generate')
+        self.user.user_permissions.add(has_generate)
+
+        has_generate_report = True if self.user.has_perm('report.can_generate') else False
+        self.assertTrue(has_generate_report)
