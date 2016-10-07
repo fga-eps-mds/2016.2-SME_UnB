@@ -15,6 +15,14 @@ class TestLoginView(unittest.TestCase):
         self.user.email = "admin@admin.com"
         self.user.save()
 
+        self.user_delete, self.created = User.objects.get_or_create(
+            username='testuser_delete'
+        )
+        self.user_delete.set_password('12345')
+        self.user_delete.is_staff = True
+        self.user_delete.is_superuser = True
+        self.user_delete.email = "admin_delete@admin.com"
+        self.user_delete.save()
 
     def test_getting_page_login(self):
         response = self.client.post(
@@ -234,9 +242,8 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(302, response.status_code)
 
-    def test_getting_pdf(self):
+    def test_post_user_delete(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get('/reports/open_pdf/')
-        print(response.status_code)
+        response = self.client.post( '/accounts/delete_user/2/')
 
         self.assertEqual(200, response.status_code)
