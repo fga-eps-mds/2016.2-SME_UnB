@@ -14,7 +14,7 @@
   <link type="text/css" rel="stylesheet" href="{% static "css/style.css" %}"  media="screen,projection"/>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-static-top" >
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 0px;">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -32,14 +32,17 @@
             <div id="navbar" class="navbar-collapse collapse">
                 {% if user.is_authenticated %}
                   <ul class="nav navbar-nav">
-
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
                   </ul>
-                  <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'users:dashboard'%}"><b>{{ user }}</b></a></li>
-                    <li><a href="{% url 'users:logout'%}">Logout</a></li>
-                  </ul>
+                  <div class="navbar-right">
+                    <ul class="nav navbar-nav">
+                      <li><a href="{% url 'users:dashboard'%}"><b>{{ request.user.username }}</b></a></li>
+                    </ul>
+                    <a href="{% url 'users:logout'%}"><button type = "button" class = "btn btn-danger navbar-btn">
+                      <span class= "glyphicon glyphicon-log-out" aria-hidden="true"> </span> Logout
+                      </button></a>
+                  </div>
                 {% else %}
                   <ul class="nav navbar-nav">
                     <li><a href="#about">About</a></li>
@@ -47,7 +50,9 @@
                   </ul>
 
                   <div class="navbar-right">
-                    <a href="{% url 'users:login'%}"><button type = "button" class = "btn btn-default navbar-btn">  Login </button> </a>
+                    <a href="{% url 'users:login'%}"><button type = "button" class = "btn btn-default navbar-btn">
+                      <span class= "glyphicon glyphicon-log-in" aria-hidden="true"> </span>  Login
+                      </button> </a>
                   </div>
                 {% endif %}
 
@@ -58,6 +63,8 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-{% block body %}
-{% endblock %}
+    <div class="container-fluid" style="padding-top: 50px;">
+      {% block body %}
+      {% endblock %}
+    </div>
 </body>

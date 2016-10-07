@@ -26,8 +26,8 @@
   <div id="page-content-wrapper">
     <div class="container-fluid">
       {% block dashboard_content %}
-      <p><strong>Usuário</strong>: {{ user }}</p>
-      <p><strong>E-mail</strong>: {{ user.email }}</p>
+      <p><strong>Usuário</strong>: {{ request.user.username}}</p>
+      <p><strong>E-mail</strong>: {{ request.user.email }}</p>
       {% endblock %}
     </div>
   </div>
