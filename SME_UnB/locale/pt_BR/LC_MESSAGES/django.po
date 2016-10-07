@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-06 15:23+0000\n"
+"POT-Creation-Date: 2016-10-07 01:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,15 +21,55 @@ msgstr ""
 #: report/templates/graphics/report.html:5
 #: users/templates/users/dashboard.html:16
 msgid "Reports"
-msgstr "Relatorios"
+msgstr "Relatórios"
 
 #: report/templates/graphics/report.html:13
 msgid "Report"
-msgstr "Relatorio"
+msgstr "Relatório"
 
 #: report/templates/graphics/report.html:16
 msgid "Generate PDF"
 msgstr "Gerar PDF"
+
+#: report/views.py:26
+msgid "Monitoring"
+msgstr "Monitoramento"
+
+#: report/views.py:52 transductor/templates/transductor/detail.html:25
+msgid "Phase A"
+msgstr "Fase A"
+
+#: report/views.py:53 transductor/templates/transductor/detail.html:26
+msgid "Phase B"
+msgstr "Fase B"
+
+#: report/views.py:54 transductor/templates/transductor/detail.html:27
+msgid "Phase C"
+msgstr "Fase C"
+
+#: report/views.py:61
+msgid "Date"
+msgstr "Data"
+
+#: report/views.py:188 transductor/templates/transductor/detail.html:39
+msgid "Current"
+msgstr "Corrente"
+
+#: report/views.py:196 transductor/templates/transductor/detail.html:33
+msgid "Voltage"
+msgstr "Voltagem"
+
+#: report/views.py:204 transductor/templates/transductor/detail.html:45
+msgid "Active Power"
+msgstr "Potência Ativa"
+
+#: report/views.py:212 transductor/templates/transductor/detail.html:52
+msgid "Reactive Power"
+msgstr "Potência Reativa"
+
+#: report/views.py:220 transductor/templates/transductor/detail.html:59
+msgid "Apparent Power"
+msgstr "Poder Aparente"
 
 #: templates/base.html:28 templates/base.html:34
 #: transductor/templates/transductor/index.html:4
@@ -61,7 +101,7 @@ msgstr "Entrar"
 
 #: templates/index.html:11 users/templates/users/home.html:10
 msgid "Welcome!"
-msgstr "Bem vindo !"
+msgstr "Bem vindo!"
 
 #: templates/index.html:12
 msgid ""
@@ -82,53 +122,25 @@ msgstr "Mudar idioma"
 msgid "Measurements Record"
 msgstr "Recorde de Medida"
 
-#: transductor/templates/transductor/detail.html:25
-msgid "Phase A"
-msgstr "Fase A"
-
-#: transductor/templates/transductor/detail.html:26
-msgid "Phase B"
-msgstr "Fase B"
-
-#: transductor/templates/transductor/detail.html:27
-msgid "Phase C"
-msgstr "Fase C"
-
 #: transductor/templates/transductor/detail.html:28
 msgid "Total"
 msgstr "Total"
 
-#: transductor/templates/transductor/detail.html:33
-msgid "Voltage"
-msgstr "Voltagem"
-
-#: transductor/templates/transductor/detail.html:39
-msgid "Current"
-msgstr "Corrente"
-
-#: transductor/templates/transductor/detail.html:45
-msgid "Active Power"
-msgstr "Potencia Ativa"
-
-#: transductor/templates/transductor/detail.html:52
-msgid "Reactive Power"
-msgstr "Potencia Reativa"
-
-#: transductor/templates/transductor/detail.html:59
-msgid "Apparent Power"
-msgstr "Poder Aparente"
-
 #: transductor/templates/transductor/detail.html:72
-msgid "previous"
+#, fuzzy
+#| msgid "previous"
+msgid "Previous"
 msgstr "Anterior"
 
 #: transductor/templates/transductor/detail.html:80
-msgid "next"
-msgstr "Proximo"
+msgid "Next"
+msgstr "Próximo"
 
 #: transductor/templates/transductor/detail.html:88
-msgid "No measurement avaiable"
-msgstr "Sem medida disponivel "
+#, fuzzy
+#| msgid "No measurement avaiable"
+msgid "No Measurement Avaiable"
+msgstr "Sem Medida Disponivel "
 
 #: transductor/templates/transductor/index.html:12
 msgid "Create Transductor"
@@ -144,7 +156,7 @@ msgstr "Endereço IP"
 
 #: transductor/templates/transductor/index.html:18
 msgid "Serie Number"
-msgstr "Numero Serial"
+msgstr "Número Serial"
 
 #: transductor/templates/transductor/index.html:19
 msgid "Options"
@@ -153,15 +165,15 @@ msgstr "Opção"
 #: transductor/templates/transductor/index.html:31
 #: transductor/templates/transductor/index.html:32
 msgid "Click here to edit"
-msgstr "Click aqui para editar"
+msgstr "Clique Aqui Para Editar"
 
 #: transductor/templates/transductor/index.html:40
 msgid "No Registered Transducer"
-msgstr "Sem transdutor registrado"
+msgstr "Sem Transdutor Registrado"
 
 #: transductor/templates/transductor/index.html:41
 msgid "To create a new transductor click"
-msgstr "Para criar um novo transdutor"
+msgstr "Para Criar um Novo Transdutor"
 
 #: transductor/templates/transductor/index.html:41
 msgid "here"
@@ -171,11 +183,11 @@ msgstr "aqui"
 #, fuzzy
 #| msgid "No Permission to see transductors"
 msgid "No permission to see the transductors"
-msgstr "Sem permissao para ver os transdutores"
+msgstr "Sem Permissão Para Ver os Transdutores"
 
 #: transductor/templates/transductor/model_index.html:4
 msgid "Transductors Models"
-msgstr "Modelo do trasdutor"
+msgstr "Modelo do Trasdutor"
 
 #: transductor/templates/transductor/model_index.html:12
 msgid "Name"
@@ -183,7 +195,7 @@ msgstr "Nome"
 
 #: transductor/templates/transductor/model_index.html:13
 msgid "Internet Protocol"
-msgstr "Protocolo de internet"
+msgstr "Protocolo de Internet"
 
 #: transductor/templates/transductor/model_index.html:14
 msgid "Serial Protocol"
@@ -191,7 +203,7 @@ msgstr "Protocolo Serial"
 
 #: transductor/templates/transductor/model_index.html:28
 msgid "Nothing Registered"
-msgstr "Não há nada registrado"
+msgstr "Não Há Nada Registrado"
 
 #: transductor/templates/transductor/new.html:4
 #: transductor/templates/transductor/new.html:8
@@ -220,7 +232,7 @@ msgstr "Registrar Novo Usuário"
 #: users/templates/userRegister/register.html:44
 #: users/templates/users/edit_user.html:42
 msgid "User type:"
-msgstr "Tipo de usuário:"
+msgstr "Tipo de Usuário:"
 
 #: users/templates/userRegister/register.html:47
 #: users/templates/users/edit_user.html:45
@@ -234,11 +246,11 @@ msgstr "Administrador"
 #: users/templates/userRegister/register.html:55
 #: users/templates/users/edit_user.html:53
 msgid "Access level:"
-msgstr "Nivel de acesso"
+msgstr "Nível de Acesso"
 
 #: users/templates/userRegister/register.html:59
 msgid "Generate Report"
-msgstr "Gerar Relatorio"
+msgstr "Gerar Relatório"
 
 #: users/templates/userRegister/register.html:64
 msgid "Manage Transdutors"
@@ -248,7 +260,7 @@ msgstr "Administrar Transdutores"
 #: users/templates/users/dashboard.html:26
 #: users/templates/users/edit_user.html:62
 msgid "Edit Users"
-msgstr "Editar usuários"
+msgstr "Editar Usuários"
 
 #: users/templates/userRegister/register.html:74
 #: users/templates/users/dashboard.html:30
@@ -270,7 +282,7 @@ msgstr "Entrar"
 
 #: users/templates/users/dashboard.html:14
 msgid "HOME"
-msgstr "Página principal"
+msgstr "Página Principal"
 
 #: users/templates/users/dashboard.html:39
 msgid "User"
@@ -315,7 +327,9 @@ msgstr "Adminstrar Transdutores"
 #| "transductors."
 msgid ""
 "SME - UnB is a web platform to monitor measurements from energy transductors"
-msgstr "SME - UnB é uma plataforma de monitoramento de medidas de transdutores de energia"
+msgstr ""
+"SME - UnB é uma plataforma de monitoramento de medidas de transdutores de "
+"energia"
 
 #: users/templates/users/home.html:17
 msgid "Dashboard"
@@ -327,7 +341,7 @@ msgstr "Redirecionando..."
 
 #: users/templates/users/list_user_delete.html:6
 msgid "List of Registered Users:"
-msgstr "Lista de Usuários registrados"
+msgstr "Lista de Usuários Registrados"
 
 #: users/templates/users/list_user_delete.html:13
 #: users/templates/users/list_user_edit.html:18
@@ -351,11 +365,11 @@ msgstr "Editar"
 
 #: users/templates/users/list_user_edit.html:8
 msgid "List of registered Users:"
-msgstr "Lista de usuários registrados:"
+msgstr "Lista de Usuários Registrados:"
 
 #: users/templates/users/login.html:19
 msgid "Toggle navigation"
-msgstr "Navegação de altenância"
+msgstr "Navegação de Altenância"
 
 #: users/templates/users/login.html:39 users/templates/users/login.html:45
 msgid "Log in"
@@ -368,3 +382,11 @@ msgstr "Endereço de Email"
 #: users/templates/users/login.html:42
 msgid "Password"
 msgstr "Senha"
+
+#~ msgid "next"
+#~ msgstr "Próximo"
+
+#, fuzzy
+#~| msgid "Toggle navigation"
+#~ msgid "Navigation"
+#~ msgstr "Navegação de altenância"

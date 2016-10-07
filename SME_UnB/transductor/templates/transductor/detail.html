@@ -69,7 +69,7 @@
     <div class="pagination">
       <span class="step-links">
         {% if measurement_list.has_previous %}
-          <a href="?page={{ measurement_list.previous_page_number }}">{% trans "previous" %}</a>
+          <a href="?page={{ measurement_list.previous_page_number }}">{% trans "Previous" %}</a>
         {% endif %}
 
         <span class="current">
@@ -77,7 +77,7 @@
         </span>
 
         {% if measurement_list.has_next %}
-          <a href="?page={{ measurement_list.next_page_number }}">{% trans "next" %}</a>
+          <a href="?page={{ measurement_list.next_page_number }}">{% trans "Next" %}</a>
         {% endif %}
       </span>
     </div>
@@ -85,7 +85,7 @@
 {% else %}
   <div class="container">
     <div class="starter-template">
-      <h1>{% trans "No measurement avaiable" %}</h1>
+      <h1>{% trans "No Measurement Avaiable" %}</h1>
     </div>
   </div>
 {% endif %}
