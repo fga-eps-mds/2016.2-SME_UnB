@@ -73,31 +73,11 @@ def register(request):
         confirPassword = form.get('confirmPassword')
         email = form.get('email')
 
-        if not first_name.isalpha() or not last_name.isalpha():
-            return render(
-                request,
-                'userRegister/register.html',
-                {'falha': 'Nome deve conter apenas letras'})
-        if '@' not in email or '.' not in email or ' ' in email:
-            return render(
-                request,
-                'userRegister/register.html',
-                {'falha': 'Email invalido! Esse e-mail nao esta em um formato valido'})
-        if User.objects.filter(email=email).exists():
-            return render(
-                request,
-                'userRegister/register.html',
-                {'falha': 'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
-        if len(password) < 6 and password != confirPassword:
-            return render(
-                request,
-                'userRegister/register.html',
-                {'falha': 'Senha Invalida, digite uma senha com no minimo 6 letras'})
-        if password != confirPassword:
-            return render(
-                request,
-                'userRegister/register.html',
-                {'falha': 'Senha invalida! Senhas de cadastros diferentes'})
+        check_name(request, first_name, last_name)
+        check_email(request, email)
+        check_email_exist(request, email)
+        check_password_lenght(request, password, confirPassword)
+        check_password(request, password, confirPassword)
         # Fim do bloco que saira da view
 
         try:
@@ -113,6 +93,41 @@ def register(request):
         user.save()
 
         return render(request, 'users/dashboard.html')
+
+def check_name(request, first_name, last_name):
+    if not first_name.isalpha() or not last_name.isalpha():
+        return render(
+            request,
+            'userRegister/register.html',
+            {'falha': 'Nome deve conter apenas letras'})
+
+def check_email(request, email):
+    if '@' not in email or '.' not in email or ' ' in email:
+        return render(
+            request,
+            'userRegister/register.html',
+            {'falha': 'Email invalido! Esse e-mail nao esta em um formato valido'})
+
+def check_email_exist(request, email):
+    if User.objects.filter(email=email).exists():
+        return render(
+            request,
+            'userRegister/register.html',
+            {'falha': 'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
+
+def check_password_lenght(request, password, confirPassword):
+    if len(password) < 6 and password != confirPassword:
+        return render(
+            request,
+            'userRegister/register.html',
+            {'falha': 'Senha Invalida, digite uma senha com no minimo 6 letras'})
+
+def check_password(request, password, confirPassword):
+    if password != confirPassword:
+        return render(
+            request,
+            'userRegister/register.html',
+            {'falha': 'Senha invalida! Senhas de cadastros diferentes'})
 
 @login_required
 def list_user_edit(request):
@@ -160,7 +175,7 @@ def edit_user(request, user_id):
         email = form.get('email')
 
         if first_name != "":
-            
+
             if not first_name.isalpha():
 
                 return __prepare_error_render__(request, 'Nome deve conter apenas letras', user)
