@@ -82,16 +82,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=permissions_checkbox1</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=permissions_checkbox2</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>css=button.btn.btn-success</td>
 	<td></td>

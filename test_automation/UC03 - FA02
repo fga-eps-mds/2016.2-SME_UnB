@@ -4,21 +4,21 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:3000/" />
-<title>UC01 - FA03</title>
+<title>UC03 - FA02</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">UC01 - FA03</td></tr>
+<tr><td rowspan="1" colspan="3">UC03 - FA02</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/</td>
+	<td>/accounts/login/</td>
 	<td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>/</td>
+	<td>clickAndWait</td>
+	<td>link=SME - UnB</td>
 	<td></td>
 </tr>
 <tr>
@@ -29,7 +29,7 @@
 <tr>
 	<td>type</td>
 	<td>id=inputUsername</td>
-	<td>userTeste</td>
+	<td>novoteste@teste.com</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -42,24 +42,19 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>css=strong</td>
-	<td>Usuário</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
-	<td>link=Delete Users</td>
+	<td>link=Transductors</td>
 	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//div[@id='page-content-wrapper']/div/div[2]/div/div/table/tbody/tr/th[4]</td>
-	<td>Edit</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>xpath=(//button[@type='button'])[2]</td>
 	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=h1</td>
+	<td>Sem permissao para ver os transdutores</td>
 </tr>
 
 </tbody></table>
