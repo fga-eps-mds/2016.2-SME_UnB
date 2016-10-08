@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:3000/" />
+<title>UC01 - FA01</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">UC01 - FA01</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//button[@type='button'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=inputUsername</td>
+	<td>userTeste</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=inputPassword</td>
+	<td>senha1234</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=strong</td>
+	<td>Usuário</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit Users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='page-content-wrapper']/div/div[2]/div/div/table/tbody/tr/th[4]</td>
+	<td>Edit</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a.glyphicon.glyphicon-pencil</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=first_name</td>
+	<td>novoEditado</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=last_name</td>
+	<td>testeEditado</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=password</td>
+	<td>senha1234</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=confirmPassword</td>
+	<td>senha1234</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=inlineRadio1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=permissions_checkbox1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=permissions_checkbox2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-success</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=p2</td>
+	<td>usuario modificado com sucesso</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//button[@type='button'])[2]</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
