@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """ Represents the User's views, and it contains all the elements
 as the interface. For example buttons, text, boxes, etc."""
 from django.contrib.auth import authenticate
@@ -67,17 +69,15 @@ def register(request):
         return render(request, 'userRegister/register.html')
     else:
         form = request.POST
-        first_name = form.get('first_name')
-        last_name = form.get('last_name')
-        password = form.get('password')
-        confirPassword = form.get('confirmPassword')
-        email = form.get('email')
 
-        check_name(request, first_name, last_name)
-        check_email(request, email)
-        check_email_exist(request, email)
-        check_password_lenght(request, password, confirPassword)
-        check_password(request, password, confirPassword)
+        resultCheck = fullValidation(form)
+
+        if len(resultCheck) != 0:
+            return render(
+                request,
+                'userRegister/register.html',
+                {'falha': resultCheck})
+
         # Fim do bloco que saira da view
 
         try:
@@ -94,40 +94,51 @@ def register(request):
 
         return render(request, 'users/dashboard.html')
 
-def check_name(request, first_name, last_name):
+def check_name(first_name, last_name):
     if not first_name.isalpha() or not last_name.isalpha():
-        return render(
-            request,
-            'userRegister/register.html',
-            {'falha': 'Nome deve conter apenas letras'})
+        return 'Nome deve conter apenas letras'
+    else:
+        return ''
 
-def check_email(request, email):
+def check_email(email):
     if '@' not in email or '.' not in email or ' ' in email:
-        return render(
-            request,
-            'userRegister/register.html',
-            {'falha': 'Email invalido! Esse e-mail nao esta em um formato valido'})
+        return ' -- Email inválido! Esse e-mail não esta em um formato válido'
+    else:
+        return ''
 
-def check_email_exist(request, email):
+def check_email_exist(email):
     if User.objects.filter(email=email).exists():
-        return render(
-            request,
-            'userRegister/register.html',
-            {'falha': 'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados'})
+        return ' -- E-mail já esta cadastrado no nosso banco de dados'
+    else:
+        return ''
 
-def check_password_lenght(request, password, confirPassword):
-    if len(password) < 6 and password != confirPassword:
-        return render(
-            request,
-            'userRegister/register.html',
-            {'falha': 'Senha Invalida, digite uma senha com no minimo 6 letras'})
+def check_password_lenght(password, confirmPassword):
+    if len(password) < 6 and password != confirmPassword:
+        return ' -- Senha Inválida, digite uma senha com no mínimo 6 letras'
+    else:
+        return ''
 
-def check_password(request, password, confirPassword):
-    if password != confirPassword:
-        return render(
-            request,
-            'userRegister/register.html',
-            {'falha': 'Senha invalida! Senhas de cadastros diferentes'})
+def check_password(password, confirmPassword):
+    if password != confirmPassword:
+        return ' -- Senha inválida! Senhas de cadastros diferentes'
+    else:
+        return ''
+
+def fullValidation(form):
+    first_name = form.get('first_name')
+    last_name = form.get('last_name')
+    password = form.get('password')
+    confirmPassword = form.get('confirmPassword')
+    email = form.get('email')
+
+    resultCheck = ''
+    resultCheck += check_name(first_name, last_name)
+    resultCheck += check_email(email)
+    resultCheck += check_email_exist(email)
+    resultCheck += check_password_lenght(password, confirmPassword)
+    resultCheck += check_password(password, confirmPassword)
+
+    return resultCheck
 
 @login_required
 def list_user_edit(request):
@@ -174,42 +185,16 @@ def edit_user(request, user_id):
         confirPassword = form.get('confirmPassword')
         email = form.get('email')
 
-        if first_name != "":
+        resultCheck = fullValidation(form)
 
-            if not first_name.isalpha():
+        if len(resultCheck) != 0:
+            return __prepare_error_render__(request, resultCheck, user)
 
-                return __prepare_error_render__(request, 'Nome deve conter apenas letras', user)
-
-            user.first_name = first_name
-
-        if last_name != "":
-            if not last_name.isalpha():
-
-                return __prepare_error_render__(request, 'Nome deve conter apenas letras', user)
-
-            user.last_name = last_name
-
-        if email != '':
-            if '@' not in email or '.' not in email or ' ' in email:
-
-                return __prepare_error_render__(request, 'Email invalido! Esse e-mail nao esta em um formato valido', user)
-
-            if User.objects.filter(email=email).exists():
-
-                return __prepare_error_render__(request, 'Email invalido! Esse e-mail ja esta cadastrado no nosso banco de dados', user)
-
-            user.username = email
-            user.email = email
-
-        if password != '':
-            if len(password) < 6:
-
-                return __prepare_error_render__(request, 'Senha Invalida, digite uma senha com no minimo 6 letras', user)
-            if password != confirPassword:
-
-                return __prepare_error_render__(request, 'Senha invalida! Senhas de cadastros diferentes', user)
-
-            user.set_password(password)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = email
+        user.email = email
+        user.set_password(password)
 
         give_permission(request, user)
 
