@@ -123,8 +123,6 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_URL = 'users:logout'
 
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 

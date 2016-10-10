@@ -1,46 +1,36 @@
-{% extends 'base.html' %}
+{% extends 'users/dashboard.html' %}
 {% load i18n %}
 
 {% block title %}
-{% endblock %}
 <title>{% trans "New User" %}</title>
+{% endblock %}
 
-{% block body %}
+{% block  dashboard_content %}
 
 <div class="jumbotron">
   <div class="container">
-
     <div class="wrapper">
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
-
           <h1>{% trans "Register new user" %}</h1>
-
           <form class="configdiv" action="register" method="post">
             <p2>{{falha}}</p2>
-
             {% csrf_token %}
             <div class="form-group">
               <input type="text" name= "first_name" placeholder="Fist Name" class="form-control">
             </div>
-
             <div class="form-group">
               <input type="text" name= "last_name" placeholder="Last name" class="form-control">
             </div>
-
             <div class="form-group">
               <input type="text" name= "email" placeholder="Email" class="form-control">
             </div>
-
-
             <div class="form-group">
               <input type="password" name ="password" placeholder="Password" class="form-control">
             </div>
-
             <div class="form-group">
               <input type="password" name ="confirmPassword" placeholder="confirm password" class="form-control">
             </div>
-
             <p1>{% trans "User type:" %}</p1>
             <div class="form-group">
               <label class="radio-inline">
@@ -49,9 +39,7 @@
               <label class="radio-inline">
                 <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">{% trans " Admin" %}
               </label>
-
             </div>
-
             <p1>{% trans "Access level:" %}</p1>
             <div class="form-group">
               <div class="checkbox">

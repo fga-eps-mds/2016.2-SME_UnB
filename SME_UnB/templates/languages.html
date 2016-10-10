@@ -4,12 +4,11 @@
 
 <div class="idiomas">
   <form action="/i18n/setlang/" method="post">{% csrf_token %}
-    <select name="language">
-      {% for lang in LANGUAGES %}
+    <select name="language" onchange="submit()">
+      <option> {% trans "Change Language" %}</option>
+        {% for lang in LANGUAGES %}
       <option value="{{ lang.0 }}">{{ lang.1 }}</option>
       {% endfor %}
     </select>
-
-    <input type="submit" value="{% trans "Change Language" %}" />
   </form>
 </div>

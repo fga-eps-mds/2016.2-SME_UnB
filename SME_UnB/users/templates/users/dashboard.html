@@ -1,48 +1,35 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}
-<title>SME - UnB</title>
-{% endblock %}
-
-{% if user.is_authenticated %}
 {% block body %}
-<div class="pure-g-r content-ribbon">
-  <div class="pure-u-1">
-    <ul class="breadcrumb">
+<div id="wrapper">
+  <div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
       {% block breadcrumb %}
-      <li><a href="{% url 'index' %}">{% trans "HOME" %}</a></li>
       {%if perms.report.can_generate%}
       <li><a href="{% url 'report:report' %}">{% trans "Reports" %}</a></li>
       {%endif%}
-
+      <li><a href="{% url 'transductor:index'%}">{% trans "Transductors" %}</a></li>
       {% if request.user.is_staff %}
       {% endif %}
-      {% if request.user.is_staff %}
-      {% endif %}
-      <li><a href="{% url 'users:logout' %}">{% trans "Logout" %}</a></li>
       <li><a href="{% url 'users:register' %}">{% trans "Register" %}</a></li>
       {%if perms.users.can_edit_user%}
       <li><a href="{% url 'users:list_user_edit' %}">{% trans "Edit Users" %}</a></li>
       {%endif%}
-	<!-- fixing bug of users insted user -->
-	{%if perms.users.can_delete_user%}
+	    <!-- fixing bug of users insted user -->
+	    {%if perms.users.can_delete_user%}
       <li><a href="{% url 'users:list_user_delete' %}">{% trans "Delete Users" %}</a></li>
       {%endif%}
-
       {% endblock %}
     </ul>
   </div>
-  <div class="pure-u-2-3">
-    <div class="inner">
+  <div id="page-content-wrapper">
+    <div class="container-fluid">
       {% block dashboard_content %}
-      <p><strong>{% trans "User" %}</strong>: {{ user }}</p>
-      <p><strong>{% trans "E-mail" %}</strong>: {{ user.email }}</p>
+      <p><strong>{% trans "Usuário" %}</strong>: {{ request.user.username}}</p>
+      <p><strong>{% trans "E-mail" %}</strong>: {{ request.user.email }}</p>
       {% endblock %}
     </div>
   </div>
 </div>
 {% endblock %}
-{% else %}
-<p><a href="{% url 'users:login' %}">{% trans "Login" %}</a>.</p>
-{% endif %}

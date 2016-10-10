@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-07 01:11+0000\n"
+"POT-Creation-Date: 2016-10-10 14:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: report/templates/graphics/report.html:5
-#: users/templates/users/dashboard.html:16
+#: users/templates/users/dashboard.html:10
 msgid "Reports"
 msgstr "Relatórios"
 
@@ -71,31 +71,19 @@ msgstr "Potência Reativa"
 msgid "Apparent Power"
 msgstr "Poder Aparente"
 
-#: templates/base.html:28 templates/base.html:34
-#: transductor/templates/transductor/index.html:4
-msgid "Transductors"
-msgstr "Transdutores"
-
-#: templates/base.html:29 templates/base.html:35
-#: users/templates/users/login.html:28
+#: templates/base.html:36 templates/base.html:49
 msgid "About"
 msgstr "Sobre"
 
-#: templates/base.html:30 templates/base.html:36
-#: users/templates/users/login.html:29
+#: templates/base.html:37 templates/base.html:50
 msgid "Contact"
 msgstr "Contato"
 
-#: templates/base.html:31
-msgid "My Account"
-msgstr "Minha Conta"
-
-#: templates/base.html:32 users/templates/users/dashboard.html:23
-#: users/templates/users/home.html:16
+#: templates/base.html:44 users/templates/users/home.html:16
 msgid "Logout"
 msgstr "Sair"
 
-#: templates/base.html:37 users/templates/users/dashboard.html:47
+#: templates/base.html:54
 msgid "Login"
 msgstr "Entrar"
 
@@ -140,7 +128,12 @@ msgstr "Próximo"
 #, fuzzy
 #| msgid "No measurement avaiable"
 msgid "No Measurement Avaiable"
-msgstr "Sem Medida Disponivel "
+msgstr "Sem Medida Disponível "
+
+#: transductor/templates/transductor/index.html:4
+#: users/templates/users/dashboard.html:12
+msgid "Transductors"
+msgstr "Transdutores"
 
 #: transductor/templates/transductor/index.html:12
 msgid "Create Transductor"
@@ -215,80 +208,75 @@ msgid "Save"
 msgstr "Salvar"
 
 #: transductor/templates/transductor/new.html:18
-#: users/templates/users/delete_user.html:25
-#: users/templates/users/edit_user.html:72
+#: users/templates/users/delete_user.html:24
+#: users/templates/users/edit_user.html:71
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: users/templates/userRegister/register.html:6
-#: users/templates/users/edit_user.html:6
+#: users/templates/userRegister/register.html:5
 msgid "New User"
 msgstr "Novo Usuário"
 
-#: users/templates/userRegister/register.html:17
+#: users/templates/userRegister/register.html:15
 msgid "Register new user"
 msgstr "Registrar Novo Usuário"
 
-#: users/templates/userRegister/register.html:44
-#: users/templates/users/edit_user.html:42
+#: users/templates/userRegister/register.html:34
+#: users/templates/users/edit_user.html:38
 msgid "User type:"
 msgstr "Tipo de Usuário:"
 
-#: users/templates/userRegister/register.html:47
-#: users/templates/users/edit_user.html:45
+#: users/templates/userRegister/register.html:37
+#: users/templates/users/edit_user.html:41
 msgid "Commun User"
 msgstr "Usuário"
 
-#: users/templates/userRegister/register.html:50
+#: users/templates/userRegister/register.html:40
 msgid " Admin"
 msgstr "Administrador"
 
-#: users/templates/userRegister/register.html:55
-#: users/templates/users/edit_user.html:53
+#: users/templates/userRegister/register.html:43
+#: users/templates/users/edit_user.html:47
 msgid "Access level:"
 msgstr "Nível de Acesso"
 
-#: users/templates/userRegister/register.html:59
+#: users/templates/userRegister/register.html:47
 msgid "Generate Report"
 msgstr "Gerar Relatório"
 
-#: users/templates/userRegister/register.html:64
+#: users/templates/userRegister/register.html:52
 msgid "Manage Transdutors"
 msgstr "Administrar Transdutores"
 
-#: users/templates/userRegister/register.html:69
-#: users/templates/users/dashboard.html:26
-#: users/templates/users/edit_user.html:62
+#: users/templates/userRegister/register.html:57
+#: users/templates/users/dashboard.html:17
+#: users/templates/users/edit_user.html:61
 msgid "Edit Users"
 msgstr "Editar Usuários"
 
-#: users/templates/userRegister/register.html:74
-#: users/templates/users/dashboard.html:30
-#: users/templates/users/edit_user.html:65
+#: users/templates/userRegister/register.html:62
+#: users/templates/users/dashboard.html:21
+#: users/templates/users/edit_user.html:66
 msgid "Delete Users"
 msgstr "Deletar Usuários"
 
-#: users/templates/userRegister/register.html:77
-#: users/templates/users/dashboard.html:24
+#: users/templates/userRegister/register.html:65
+#: users/templates/users/dashboard.html:15
 #: users/templates/users/edit_user.html:70
 msgid "Register"
 msgstr "Registrar"
 
-#: users/templates/userRegister/register.html:98
-#: users/templates/users/delete_user.html:39
-#: users/templates/users/edit_user.html:90
+#: users/templates/userRegister/register.html:86
+#: users/templates/users/delete_user.html:38
+#: users/templates/users/edit_user.html:89
 msgid "Sign in"
 msgstr "Entrar"
 
-#: users/templates/users/dashboard.html:14
-msgid "HOME"
-msgstr "Página Principal"
+#: users/templates/users/dashboard.html:29
+msgid "Usuário"
+msgstr ""
 
-#: users/templates/users/dashboard.html:39
-msgid "User"
-msgstr "Usuário"
-
-#: users/templates/users/dashboard.html:40
+#: users/templates/users/dashboard.html:30
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -296,27 +284,30 @@ msgstr "E-mail"
 msgid "Delete  Users"
 msgstr "Deletar Usuário"
 
-#: users/templates/users/delete_user.html:13
+#: users/templates/users/delete_user.html:12
 msgid "Delete users"
 msgstr "Deletar Usuário"
 
-#: users/templates/users/delete_user.html:23
+#: users/templates/users/delete_user.html:22
+#: users/templates/users/list_user_delete.html:16
 msgid "Delete"
 msgstr "Deletar"
 
-#: users/templates/users/edit_user.html:13
-msgid "Edit user"
-msgstr "Editar Usuário"
+#: users/templates/users/edit_user.html:6
+#, fuzzy
+#| msgid "Edit Users"
+msgid "Edit User"
+msgstr "Editar Usuários"
 
-#: users/templates/users/edit_user.html:48
-msgid "Admin"
-msgstr "Administrador"
+#: users/templates/users/edit_user.html:44
+msgid "Administrator"
+msgstr ""
 
-#: users/templates/users/edit_user.html:56
+#: users/templates/users/edit_user.html:51
 msgid "Generate Reports"
 msgstr "Gerar Relatórios"
 
-#: users/templates/users/edit_user.html:59
+#: users/templates/users/edit_user.html:56
 msgid "Manage Transductors"
 msgstr "Adminstrar Transdutores"
 
@@ -358,30 +349,49 @@ msgstr "Último Nome"
 msgid "Email"
 msgstr "Email"
 
-#: users/templates/users/list_user_delete.html:16
-#: users/templates/users/list_user_edit.html:21
-msgid "Edit"
-msgstr "Editar"
-
 #: users/templates/users/list_user_edit.html:8
 msgid "List of registered Users:"
 msgstr "Lista de Usuários Registrados:"
 
-#: users/templates/users/login.html:19
-msgid "Toggle navigation"
-msgstr "Navegação de Altenância"
+#: users/templates/users/list_user_edit.html:21
+msgid "Edit"
+msgstr "Editar"
 
-#: users/templates/users/login.html:39 users/templates/users/login.html:45
+#: users/templates/users/login.html:8
+#, fuzzy
+#| msgid "Login"
+msgid "SME - Login"
+msgstr "Entrar"
+
+#: users/templates/users/login.html:16 users/templates/users/login.html:25
 msgid "Log in"
 msgstr "Entrar"
 
-#: users/templates/users/login.html:40
+#: users/templates/users/login.html:18
 msgid "Email address"
 msgstr "Endereço de Email"
 
-#: users/templates/users/login.html:42
+#: users/templates/users/login.html:22
 msgid "Password"
 msgstr "Senha"
+
+#~ msgid "My Account"
+#~ msgstr "Minha Conta"
+
+#~ msgid "HOME"
+#~ msgstr "Página Principal"
+
+#~ msgid "User"
+#~ msgstr "Usuário"
+
+#~ msgid "Edit user"
+#~ msgstr "Editar Usuário"
+
+#~ msgid "Admin"
+#~ msgstr "Administrador"
+
+#~ msgid "Toggle navigation"
+#~ msgstr "Navegação de Altenância"
 
 #~ msgid "next"
 #~ msgstr "Próximo"
