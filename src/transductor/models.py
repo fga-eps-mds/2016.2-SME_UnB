@@ -55,6 +55,7 @@ class Transductor(models.Model):
             - ip_address(str): The ip address.
             - description(str): A succint description.
             - creation_date(datetime): The exactly creation time.
+            - working_correctly(bool): Tells if the transductor is working correctly.
     """
     model = models.ForeignKey(TransductorModel)
     serie_number = models.IntegerField(default=None)
@@ -67,9 +68,14 @@ class Transductor(models.Model):
     ])
     description = models.TextField(max_length=150)
     creation_date = models.DateTimeField('date published', auto_now=True)
+    broken = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
+
+    def set_transductor_broken(self, new_status):
+        self.broken = new_status
+        self.save()
 
 
 class EnergyTransductor(Transductor):

@@ -1,8 +1,49 @@
 from __future__ import unicode_literals
 from abc import ABCMeta, abstractmethod
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from transductor.models import EnergyTransductor
 import socket
 import struct
 import sys
+import thread
+
+
+class Observer():
+    _observers = []
+
+    def __init__(self):
+        self._observers.append(self)
+        self._observables = {}
+
+    def observe(self, event_name, callback):
+        self._observables[event_name] = callback
+
+
+class VoltageObserver(Observer):
+    def __init__(self):
+        Observer.__init__(self)
+
+    def verify_voltage(self, voltage):
+        high_voltage = False
+
+        if voltage > 230.0:
+            high_voltage = True
+
+        return high_voltage
+
+
+class Event():
+    def __init__(self, name, data, autofire=True):
+        self.name = name
+        self.data = data
+        if autofire:
+            self.fire()
+
+    def fire(self):
+        for observer in Observer._observers:
+            if self.name in observer._observables:
+                observer._observables[self.name](self.data)
 
 
 class SerialProtocol(object):
@@ -11,11 +52,13 @@ class SerialProtocol(object):
 
         Attributes:
             - Transductor: The transductor which will hold communication.
+            - Port: The serial port used by the transductor.
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, transductor):
+    def __init__(self, transductor, port):
         self.transductor = transductor
+        self.port = port
 
     @abstractmethod
     def create_messages(self):
@@ -61,10 +104,10 @@ class ModbusRTU(SerialProtocol):
 
         This protocol will be encapsulated in the data field of an transport protocol header.
 
-        `Modbus reference guide <http://modbus.org/docs/PI_MBUS_300.pdf>`_
+        Click `here <http://modbus.org/docs/PI_MBUS_300.pdf>`_ to read the reference guide.
     """
-    def __init__(self, transductor):
-        super(ModbusRTU, self).__init__(transductor)
+    def __init__(self, transductor, port=1001):
+        super(ModbusRTU, self).__init__(transductor, port)
 
     def create_messages(self):
         """
@@ -159,7 +202,7 @@ class ModbusRTU(SerialProtocol):
             A cyclic redundancy check (CRC) is an error-detecting code commonly
             used in digital networks and storage devices to detect accidental changes to raw data.
 
-            `Modbus CRC documentation: <http://www.modbustools.com/modbus.html#crc>`_
+            Click `here: <http://www.modbustools.com/modbus.html#crc>`_ to read Modbus CRC documentation.
 
             `Code Source <http://pythonhosted.org/pyModbusTCP/_modules/pyModbusTCP/client.html>`_
 
@@ -190,119 +233,115 @@ class ModbusRTU(SerialProtocol):
         """
         return (self._computate_crc(packaged_message) == 0)
 
-class TransportProtocol(object):
-    """
-        Base class for transport protocols.
+class CommunicationProtocol(models.Model):
+    transductor = models.ForeignKey(EnergyTransductor)
+    protocol_type = models.CharField(max_length=50)
+    port = models.IntegerField(default=1001)
+    timeout = models.FloatField(default=30.0)
 
-        Attributes:
-            - serial_protocol: The serial protocol used in communication.
-            - transductor: The transductor which will hold communication.
-            - timeout: The serial port used by the transductor.
-            - port: The port used to communication.
-            - socket: The socket used in communication.
-    """
-    __metaclass__ = ABCMeta
+    def __str__(self):
+        return self.protocol_type
 
-    def __init__(self, serial_protocol, timeout, port):
-        self.serial_protocol = serial_protocol
-        self.transductor = serial_protocol.transductor
-        self.timeout = timeout
-        self.port = port
-        self.socket = None
+    def start_data_collection(self):
+        new_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    @abstractmethod
-    def create_socket(self):
-        """
-            Abstract method responsible to create the respective transport socket.
-        """
-        pass
+        messages_to_send = []
 
+        total_registers = 2
+        initial_register = 68
+        last_register = 93
 
-class UdpProtocol(TransportProtocol):
-    """
-        Class responsible to represent a UDP protocol and handle all the communication.
+        while(initial_register < last_register):
+            if(initial_register == 86):
+                initial_register = initial_register + 2
+            else:
+                packaged_message = struct.pack("2B", 0x01, 0x03) + struct.pack(
+                    ">2H", initial_register, total_registers)
 
-        Attributes:
-            - receive_attemps: total attempts to receive a message via socket UDP.
-    """
-    def __init__(self, serial_protocol, timeout=10.0, port=1001):
-        super(UdpProtocol, self).__init__(serial_protocol, timeout, port)
-        self.receive_attempts = 0
+                crc = self._computate_crc(packaged_message)
 
-    def create_socket(self):
-        """
-            Method responsible to create and set timeout of a UDP socket.
-        """
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.socket.settimeout(self.timeout)
+                packaged_message = packaged_message + crc
 
-    def start_communication(self):
-        """
-            Method reponsible to start UDP socket and receive messages from it.
-        """
-        if not self.socket:
-            self.create_socket()
+                messages_to_send.append(packaged_message)
 
-        messages_to_send = self.serial_protocol.create_messages()
+                initial_register = initial_register + 2
 
-        messages_received = self.try_receive_messages(messages_to_send)
+        alarm = VoltageObserver()
 
-        return messages_received
+        try:
+            thread.start_new_thread(self._thread_data_collection, (new_socket, messages_to_send, alarm))
+        except:
+            print "Can't create thread"
 
-    def try_receive_messages(self, messages_to_send):
-        """
-            Method responsible to try receive message from socket 3 times.
+        return True
 
-            If there is no response from transductor the same will be set as broken.
-
-            :param messages_to_send: The packaged messages ready to be sent via socket.
-            :param type: list.
-            :returns: list - The messages received or None otherwise.
-        """
-        self.reset_receive_attempts()
-        max_receive_attempts = 3
-        received_messages = []
-
-        while not received_messages and self.receive_attempts < max_receive_attempts:
-            received_messages = self.handle_messages_via_socket(messages_to_send)
-
-        if self.receive_attempts == max_receive_attempts and not self.transductor.broken:
-            self.transductor.set_transductor_broken(True)
-
-        if received_messages and self.transductor.broken:
-            self.transductor.set_transductor_broken(False)
-
-        return received_messages
-
-    def reset_receive_attempts(self):
-        """
-            Method responsible to reset the number of receive attempts.
-        """
-        self.receive_attempts = 0
-
-    def handle_messages_via_socket(self, messages_to_send):
-        """
-            Method responsible to handle send/receive messages via socket UDP.
-
-            Everytime a timeout is reached the total of received_attemps is increased.
-
-            :param messages_to_send: The requests to be sent to the transductor via socket.
-            :param type: list.
-            :returns: list
-        """
+    def _thread_data_collection(self, socket, messages_to_send, alarm):
         messages = []
 
         for i in range(len(messages_to_send)):
-            try:
-                self.socket.sendto(messages_to_send[i], (self.transductor.ip_address, self.port))
-                message_received = self.socket.recvfrom(256)
-            except socket.timeout:
-                self.receive_attempts += 1
-                return None
-            except socket.error:
-                # TODO: add exception
-                pass
+            socket.sendto(messages_to_send[i], (self.transductor.ip_address, self.port))
+            message_received = socket.recvfrom(256)
 
             messages.append(message_received[0])
+            # alarm.observe('new data received', alarm.verify_voltage)
+            # Event('new data received', value)
 
-        return messages
+        collection_time = timezone.now()
+        self._create_measurements_from_data_collected(messages, collection_time)
+
+    def _create_measurements_from_data_collected(self, messages, collection_time):
+        data = Measurements()
+
+        data.transductor = self.transductor
+
+        data.voltage_a = self._get_float_value_from_response(messages[0])
+        data.voltage_b = self._get_float_value_from_response(messages[1])
+        data.voltage_c = self._get_float_value_from_response(messages[2])
+
+        data.current_a = self._get_float_value_from_response(messages[3])
+        data.current_b = self._get_float_value_from_response(messages[4])
+        data.current_c = self._get_float_value_from_response(messages[5])
+
+        data.active_power_a = self._get_float_value_from_response(messages[6])
+        data.active_power_b = self._get_float_value_from_response(messages[7])
+        data.active_power_c = self._get_float_value_from_response(messages[8])
+
+        data.reactive_power_a = self._get_float_value_from_response(messages[9])
+        data.reactive_power_b = self._get_float_value_from_response(messages[10])
+        data.reactive_power_c = self._get_float_value_from_response(messages[11])
+
+        data.apparent_power_a = sqrt(data.active_power_a**2 + data.reactive_power_a**2)
+        data.apparent_power_b = sqrt(data.active_power_b**2 + data.reactive_power_b**2)
+        data.apparent_power_c = sqrt(data.active_power_c**2 + data.reactive_power_c**2)
+
+        data.collection_date = collection_time
+
+        data.save()
+
+    def _get_float_value_from_response(self, message_received_data):
+        n_bytes = struct.unpack("1B", message_received_data[2])[0]
+
+        msg = bytearray(message_received_data[3:-2])
+
+        for i in range(0, n_bytes, 4):
+            if sys.byteorder == "little":
+                msb = msg[i]
+                msg[i] = msg[i+1]
+                msg[i+1] = msb
+
+                msb = msg[i+2]
+                msg[i+2] = msg[i+3]
+                msg[i+3] = msb
+            else:
+                msb = msg[i]
+                lsb = msg[i+1]
+                msg[i] = msg[i+2]
+                msg[i+1] = msg[i+3]
+                msg[i+2] = msb
+                msg[i+3] = lsb
+
+        value = struct.unpack("1f", msg)[0]
+        return value
+# @receiver(post_save, sender=EnergyTransductor)
+# def transductor_saved(sender, instance, **kwargs):
+#     instance.communicationprotocol_set.first().start_data_collection()
