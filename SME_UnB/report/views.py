@@ -12,6 +12,7 @@ from reportlab.lib.pagesizes import letter
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 
+
 import datetime
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
@@ -19,7 +20,7 @@ from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
 import matplotlib.patches as mpatches
 
-from transductor.models import EnergyMeasurements
+from transductor.models import EnergyMeasurements, EnergyTransductor
 
 
 def create_graphic(path, array_date, array_dateb, array_datec, array_data, label):
@@ -223,6 +224,9 @@ def report(request):
 
     return render(request, 'graphics/report.html')
 
+def transductors_filter(request):
+
+    return render(request,'graphics/transductors_filter.html',{'transductors': EnergyTransductor.objects.all()});
 
 def open_pdf(request):
     with open('report/static/Relatorio.pdf', 'r') as pdf:

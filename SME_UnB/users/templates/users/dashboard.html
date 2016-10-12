@@ -7,7 +7,7 @@
     <ul class="sidebar-nav">
       {% block breadcrumb %}
       {%if perms.report.can_generate%}
-      <li><a href="{% url 'report:report' %}">{% trans "Reports" %}</a></li>
+      <li><a href="{% url 'report:transductors_filter' %}">{% trans "Reports" %}</a></li>
       {%endif%}
       <li><a href="{% url 'transductor:index'%}">{% trans "Transductors" %}</a></li>
       {% if request.user.is_staff %}
