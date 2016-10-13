@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from unipath import Path
 import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -157,7 +158,15 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': PROJECT_DIR+'logging.logging',
+            'filename': PROJECT_DIR+'/logging.logging',
         },
-    }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+
 }

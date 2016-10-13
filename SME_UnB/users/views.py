@@ -10,6 +10,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 
+import logging
+
 
 def home(request):
     return render(request, 'users/home.html')
@@ -21,12 +23,14 @@ def dashboard(request):
 
 
 def show_login(request):
+    logger = logging.getLogger(__name__)
     if request.method == "GET":
         return render(request, "users/login.html")
     else:
         context = make_login(request)
 
         if context.get('is_logged'):
+            logger.info('User is logged')
             return HttpResponseRedirect(reverse("users:dashboard"))
         else:
             return render(request, "users/login.html", context)
