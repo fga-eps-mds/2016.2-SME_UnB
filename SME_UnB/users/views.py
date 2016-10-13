@@ -23,14 +23,12 @@ def dashboard(request):
 
 
 def show_login(request):
-    logger = logging.getLogger(__name__)
     if request.method == "GET":
         return render(request, "users/login.html")
     else:
         context = make_login(request)
 
         if context.get('is_logged'):
-            logger.info('User is logged')
             return HttpResponseRedirect(reverse("users:dashboard"))
         else:
             return render(request, "users/login.html", context)
@@ -45,6 +43,8 @@ def make_login(request):
     is_logged = False
 
     if user is not None:
+        logger = logging.getLogger(__name__)
+        logger.info('User is logged')
         login(request, user)
         message = "Logged"
         is_logged = True

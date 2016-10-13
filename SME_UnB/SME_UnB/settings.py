@@ -151,22 +151,48 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 PROJECT_DIR = Path(__file__).parent
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': True,
+#     'handlers': {
+#         'file': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': PROJECT_DIR+'/logging.logging',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['file'],
+#             'level': 'INFO',
+#             'propagate': True,
+#         },
+#     },
+#
+# }
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
+    },
     'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
+        'default': {
+            'level':'INFO',
+            'class':'logging.handlers.RotatingFileHandler',
             'filename': PROJECT_DIR+'/logging.logging',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 5,
+            'formatter':'standard',
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True,
+        '': {
+            'handlers': ['default'],
+            'level': 'DEBUG',
+            'propagate': True
         },
-    },
-
+    }
 }
