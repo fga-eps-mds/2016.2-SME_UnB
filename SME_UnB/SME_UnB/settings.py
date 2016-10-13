@@ -123,6 +123,7 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_URL = 'users:logout'
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -148,3 +149,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+PROJECT_DIR = Path(__file__).parent
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': PROJECT_DIR+'logging.logging',
+        },
+    }
+}
