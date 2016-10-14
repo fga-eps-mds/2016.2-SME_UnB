@@ -27,3 +27,9 @@ th {
 body {
     margin-left: 0px;
 }
+.custom-alert{
+    position: absolute;
+    z-index: 1050;
+    right: 20;
+    top: 70;
+}

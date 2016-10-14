@@ -18,14 +18,16 @@ class UserPermissions(models.Model):
 
 
 class UserNotification(object):
-    APP_ID = '259103'
-    APP_KEY = '01346f7690ac693e7adb'
-    APP_SECRET = '20bf35aeec654118b90c'
-    NOTIFICATION_PREFIX = 'notification_'
-    CREATE_EVENT = 'create'
 
-    @classmethod
-    def send_notification(self, id, message):
+
+    @staticmethod
+    def send_notification(id, message):
+        APP_ID = '259103'
+        APP_KEY = '01346f7690ac693e7adb'
+        APP_SECRET = '20bf35aeec654118b90c'
+        NOTIFICATION_PREFIX = 'notification_'
+        CREATE_EVENT = 'create'
+        print(NOTIFICATION_PREFIX + str(id))
         pusher_client = pusher.Pusher(
           app_id=APP_ID,
           key=APP_KEY,
