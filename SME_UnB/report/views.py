@@ -230,3 +230,6 @@ def open_pdf(request):
         response['Content-Disposition'] = 'filename=Relatorio.pdf'
         return response
     pdf.closed
+
+def invoice(request):
+    return render(request, 'invoice/invoice.html') 
