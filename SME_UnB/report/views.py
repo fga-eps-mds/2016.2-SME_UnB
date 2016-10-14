@@ -20,7 +20,7 @@ from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
 import matplotlib.patches as mpatches
 
-from transductor.models import EnergyMeasurements, EnergyTransductor
+from transductor.models import EnergyMeasurements, EnergyTransductor,TransductorModel
 
 
 def create_graphic(path, array_date, array_dateb, array_datec, array_data, label):
@@ -132,7 +132,7 @@ def generatePdf():
     doc.build(Story)
 
 
-def report(request):
+def report(request,transductor_id):
 
 
     now = datetime.datetime.now()
@@ -157,7 +157,7 @@ def report(request):
     apparent_power_b = []
     apparent_power_c = []
 
-    for i in EnergyMeasurements.objects.all():
+    for i in EnergyMeasurements.objects.all().filter(transductor=EnergyTransductor.objects.get(id=transductor_id)):
 
         date.append(i.collection_date)
         voltage_a.append(i.voltage_a)

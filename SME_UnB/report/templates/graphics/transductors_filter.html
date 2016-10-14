@@ -10,21 +10,19 @@
       <div class="margin">
         <table class ="table table-bordered">
           <tr>
-            <th>{% trans "model" %}</th>
             <th>{% trans "Serial Number" %}</th>
             <th>{% trans "IP Address" %}</th>
             <th>{% trans "Description" %}</th>
             <th>{% trans "Creation Date" %}</th>
-
+            <th> </th>
           </tr>
           {% for transductor in transductors %}
           <tr>
-            <td>{{transductor.model}}</td>
             <td>{{transductor.serie_number}}</td>
             <td>{{transductor.ip_address}}</td>
             <td>{{transductor.description}}</td>
             <td>{{transductor.creation_date}}</td>
-
+            <td><a href="{% url 'report:report' transductor.id %}"><button class ="btn btn-success" type="button" name="button"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span></button></a></td>
           </tr>
           {% endfor %}
         </table>
