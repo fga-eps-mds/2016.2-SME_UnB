@@ -151,25 +151,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 PROJECT_DIR = Path(__file__).parent
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': True,
-#     'handlers': {
-#         'file': {
-#             'level': 'INFO',
-#             'class': 'logging.FileHandler',
-#             'filename': PROJECT_DIR+'/logging.logging',
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'INFO',
-#             'propagate': True,
-#         },
-#     },
-#
-# }
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
