@@ -105,8 +105,7 @@ def register(request):
         # Fim do bloco que saira da view
 
         try:
-            logger = logging.getLogger(__name__)
-            logger.info(user.__str__() + ' Registered ' + first_name)
+
             user = User.objects.create_user(
                 first_name=first_name, last_name=last_name, password=password, username=email)
         except:
@@ -117,6 +116,8 @@ def register(request):
         user.email = email
         give_permission(request, user)
         user.save()
+        logger = logging.getLogger(__name__)
+        logger.info(request.user.__str__() + ' Registered an User ' )
 
         return render(request, 'users/dashboard.html')
 
@@ -196,11 +197,14 @@ def edit_user(request, user_id):
 
             user.set_password(password)
 
+            logger = logging.getLogger(__name__)
+            logger.info(user.__str__() + ' Edited an User ' )
+
         give_permission(request, user)
 
         context = check_permissions(user)
         logger = logging.getLogger(__name__)
-        logger.info(user.__str__() + ' modified an User')
+        logger.info(request.user.__str__() + ' modified an User')
         context['info'] = 'usuario modificado com sucesso'
 
         return render(request, 'users/edit_user.html', context)
@@ -242,6 +246,6 @@ def delete_user(request, user_id):
     else:
 
         logger = logging.getLogger(__name__)
-        logger.info(user.__str__() + ' was deleted ' )
+        logger.info(request.user.__str__() + ' deleted  an user' )
         user.delete()
     return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
