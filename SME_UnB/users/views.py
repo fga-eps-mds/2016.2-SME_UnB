@@ -61,6 +61,8 @@ def make_login(request):
 
 def logout_view(request, *args, **kwargs):
     kwargs['next_page'] = reverse('index')
+    logger = logging.getLogger(__name__)
+    logger.info(request.user.__str__() + ' Logout ' )
     return logout(request, *args, **kwargs)
 
 
