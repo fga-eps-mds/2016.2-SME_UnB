@@ -44,7 +44,7 @@ def make_login(request):
 
     if user is not None:
         logger = logging.getLogger(__name__)
-        logger.info('User is logged')
+        logger.info(user.__str__() + ' User is logged')
         login(request, user)
         message = "Logged"
         is_logged = True
@@ -105,6 +105,8 @@ def register(request):
         # Fim do bloco que saira da view
 
         try:
+            logger = logging.getLogger(__name__)
+            logger.info(user.__str__() + ' Registered ' + first_name)
             user = User.objects.create_user(
                 first_name=first_name, last_name=last_name, password=password, username=email)
         except:
@@ -197,6 +199,8 @@ def edit_user(request, user_id):
         give_permission(request, user)
 
         context = check_permissions(user)
+        logger = logging.getLogger(__name__)
+        logger.info(user.__str__() + ' modified an User')
         context['info'] = 'usuario modificado com sucesso'
 
         return render(request, 'users/edit_user.html', context)
@@ -236,6 +240,8 @@ def delete_user(request, user_id):
     if request.method == "GET":
         return render(request, 'users/delete_user.html', {'user': user})
     else:
-        user.delete()
 
+        logger = logging.getLogger(__name__)
+        logger.info(user.__str__() + ' was deleted ' )
+        user.delete()
     return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
