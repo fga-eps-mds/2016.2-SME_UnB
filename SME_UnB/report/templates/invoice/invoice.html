@@ -5,6 +5,8 @@
 {% block title %}
 <title>{% trans "Simulated invoice" %}</title>
 {% endblock %}
+
+{% block body %}
 <head>
   <meta charset="UTF-8">
   <script>
@@ -53,6 +55,8 @@
 
   <h1>Valor KiloWatts:</h1>
   <br>
+  <label>Potência em kiloWatts através da relação amperagem e corrente: </label>
+  <br>
   <label>Digite o valor aproximado da corrente: </label>
   <input type="text" id="current_input" tabindex="5" size="5"/>
   <br>
@@ -64,7 +68,9 @@
 
 
   <h1>Consumo de KW/h:</h1>
-
+  <br>
+  <label>Quantidade potência medida em KiloWatts durante uma hora: </label>
+  <br>
   <label>Digite a potencia de KW: </label>
   <input type="text" id="kw_input" tabindex="5" size="5"/>
   <br>
@@ -78,10 +84,15 @@
 
   <br>
   <form>
+    <label>Bandeira: </label>
+  <br>
     <input type="radio" name="band" value="red" checked> Vermelha<br>
     <input type="radio" name="band" value="yellow"> Amarela<br>
     <input type="radio" name="band" value="green"> Verde
   </form>
+  <br>
+  <label>Consumo total: </label>
+  <br>
   <label>Digite a quantidade do KW/h utilizada: </label>
   <input type="text" id="kwh_input" tabindex="5" size="5"/>
   <br>
@@ -93,3 +104,4 @@
 
   </body>
 </html>
+{% endblock %}
