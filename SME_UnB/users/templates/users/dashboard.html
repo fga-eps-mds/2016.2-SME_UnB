@@ -33,3 +33,17 @@
   </div>
 </div>
 {% endblock %}
+
+<script>
+  // Enable pusher logging - don't include this in production
+  Pusher.logToConsole = true;
+
+  var pusher = new Pusher('01346f7690ac693e7adb', {
+    encrypted: true
+  });
+
+  var channel = pusher.subscribe('notification_'+'{{request.user.id}}');
+  channel.bind('create', function(data) {
+    alert(data.message);
+  });
+</script>
