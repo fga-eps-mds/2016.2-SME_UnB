@@ -1,15 +1,39 @@
-  <!DOCTYPE html>
-  {% extends 'base.html' %}
-  {% load i18n %}
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load i18n %}
 
-  {% block title %}
-  <title>{% trans "Simulated invoice" %}</title>
-  {% endblock %}
+{% block title %}
+<title>{% trans "Simulated invoice" %}</title>
+{% endblock %}
+<head>
+  <meta charset="UTF-8">
+  <script>
+  //Calculo do consumo de Watts
+  function CalcWatts() {
+      var current = document.getElementById("current_input").value;
+      var amperage = document.getElementById("amperage_input").value;
+      var value = document.getElementById("kw").innerHTML = '<br>' + 'Valor: '+ ((current * amperage)/1000) + ' KiloWatts';
+      var kw = document.getElementById("kw_input").value = ((current * amperage)/1000);
 
+  }
+  //Calculo do consumo de KWh
+  function CalcKw() {
+      var kw = document.getElementById("kw_input").value;
+      var hours = document.getElementById("hours_input").value;
+      var price = document.getElementById("kwh").innerHTML = '<br>' + 'Valor utilizado: ' + (kw * hours) + ' KW/h';
+      var kwh = document.getElementById("kwh_input").value = (kw * hours);
 
-  {% block body %}
+  }
+  //Calculo do valor do consumo mensal
+  function CalcValuePrice() {
+      var kwh = document.getElementById("kwh_input").value;
+      var kwh_price = document.getElementById("khw_price").value;
+      var price = document.getElementById("price").innerHTML = '<br>' + 'Valor: R$'+ kwh * kwh_price;
 
-
+  }
+  </script>
+</head>
+<body>
   <div class="form-group">
     <h1 class='text-center'>{% trans "Simular fatura" %}</h1>
     <div class="row">
@@ -18,147 +42,54 @@
       </div>
     </div>
   </div>
+  <br>
+  Operações a serem utilizadas para simular fatura:
 
-
-  <br/><br/>
-    Operações a serem utilizadas para simular fatura<b>:</b>
-  </p>
   <ul id="list">
     <li>Calculo de Watts</li>
     <li>Calculo de Kw/h </li>
     <li>Consumo mensal</li>
   </ul>
-  </div><!--content-->
 
-  <!--Calculo do consumo de Watts-->
-
-    <body>
-      <div id="pageHead" >
-        <div id="logohead">
-        <h1>Valor Watts</h1>
-        </div>
-      </div>
-
-      <div id="container">
-
-        <div id="content">
-          <hr>
-          <p id="para1">
-            Description TO DO;
-
-     <br/><br/>
-
-          <html>
-          <head>
-          <script>
-          function CalcWatts() {
-              var current = document.getElementById("current_input").value;
-              var amperage = document.getElementById("amperage_input").value;
-              var value = document.getElementById("value").innerHTML = '<br>' + 'Valor: '+ current * amperage;
-              console.log(current * amperage);
-              window.alert(current * amperage);
-
-          }
-          </script>
-
-          </head>
-
-          <body>
-            <label for="current">Digite o valor aproximado da corrente: </label>
-            <input type="text" id="current_input" tabindex="5" size="5"/>
-            <label for="amperage">Digite o valor aproximado da amperagem: </label>
-            <input type="text" id="amperage_input" tabindex="5" size="5"/>
-            <label id="value"></label>
-            <button type="button" onclick="CalcWatts()">Calcular</button>
-          </body>
-
-    <!--Calculo do consumo de KWh-->
-
-  <body>
-  	<div id="pageHead" >
-  		<div id="logohead">
-  		<h1>Consumo de Kw/h</h1>
-  		</div>
-  	</div>
-
-  	<div id="container">
-
-  		<div id="content">
-  			<hr>
-  			<p id="para1">
-  				Description TO DO;
-
-    <br/><br/>
-
-      <html>
-      <head>
-      <script>
-      function CalcKwh() {
-          var kwh = document.getElementById("kwh_input").value;
-          var constant = document.getElementById("constant_input").value;
-          var price = document.getElementById("price").innerHTML = '<br>' + 'Valor: '+ kwh * constant;
-          console.log(kwh * constant);
-          window.alert(kwh * constant);
-
-      }
-      </script>
-
-      </head>
-
-      <body>
-      	<label for="kwh">Digite a potencia de Kw: </label>
-      	<input type="text" id="kwh_input" tabindex="5" size="5"/>
-      	<label for="constant">Digite a quantidade de horas: </label>
-      	<input type="text" id="constant_input" tabindex="5" size="5"/>
-      	<label id="price"></label>
-      	<button type="button" onclick="CalcKwh()">Calcular</button>
-      </body>
+  <h1>Valor KiloWatts:</h1>
+  <br>
+  <label>Digite o valor aproximado da corrente: </label>
+  <input type="text" id="current_input" tabindex="5" size="5"/>
+  <br>
+  <label for="amperage">Digite o valor aproximado da amperagem: </label>
+  <input type="text" id="amperage_input" tabindex="5" size="5"/>
+  <label id="kw"></label>
+  <br>
+  <button type="button" onclick="CalcWatts()">Calcular</button>
 
 
+  <h1>Consumo de KW/h:</h1>
 
-            <!--Calculo do valor do consumo mensal -->
+  <label>Digite a potencia de KW: </label>
+  <input type="text" id="kw_input" tabindex="5" size="5"/>
+  <br>
+  <label>Digite a quantidade de horas: </label>
+  <input type="text" id="hours_input" tabindex="5" size="5"/>
+  <label id="kwh"></label>
+  <br>
+  <button type="button" onclick="CalcKw()">Calcular</button>
 
-            <body>
-              <div id="pageHead" >
-                <div id="logohead">
-                <h1>Valor do consumo mensal </h1>
-                </div>
-              </div>
+  <h1>Valor do consumo: </h1>
 
-              <div id="container">
-
-                <div id="content">
-                  <hr>
-                  <p id="para1">
-                    Description TO DO;
-
-             <br/><br/>
-
-                  <html>
-                  <head>
-                  <script>
-                  function CalcValue() {
-                      var Kwh = document.getElementById("Khw_input").value;
-                      var Price = document.getElementById("Price").innerHTML = '<br>' + 'Valor: '+ Kwh * ( 0.5041085 * 720);
-                      console.log(Kwh * ( 0.5041085 * 720));
-                      window.alert(Kwh * ( 0.5041085 * 720));
-
-                  }
-                  </script>
-
-                  </head>
-
-                  <body>
-                    <label for="Khw">Digite o valor aproximado do KW/h: </label>
-                    <input type="text" id="Khw_input" tabindex="5" size="5"/>
-                    <label id="Price"></label>
-                    <button type="button" onclick="CalcValue()">Calcular</button>
-                  </body>
-
-
-
+  <br>
+  <form>
+    <input type="radio" name="band" value="red" checked> Vermelha<br>
+    <input type="radio" name="band" value="yellow"> Amarela<br>
+    <input type="radio" name="band" value="green"> Verde
+  </form>
+  <label>Digite a quantidade do KW/h utilizada: </label>
+  <input type="text" id="kwh_input" tabindex="5" size="5"/>
+  <br>
+  <label>Digite o preço do KW/h: </label>
+  <input type="text" id="khw_price" tabindex="5" size="8"/ value="0.5041085">
+  <label id="price"></label>
+  <br>
+  <button type="button" onclick="CalcValuePrice()">Calcular</button>
 
   </body>
-  </html>
-
-  {% endblock %}
+</html>
