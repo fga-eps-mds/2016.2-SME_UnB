@@ -119,7 +119,7 @@ def register(request):
         give_permission(request, user)
         user.save()
         logger = logging.getLogger(__name__)
-        logger.info(request.user.__str__() + ' Registered an User ' )
+        logger.info(request.user.__str__() + ' Registered ' + user.__str__() )
 
         return render(request, 'users/dashboard.html')
 
@@ -199,14 +199,12 @@ def edit_user(request, user_id):
 
             user.set_password(password)
 
-            logger = logging.getLogger(__name__)
-            logger.info(user.__str__() + ' Edited an User ' )
 
         give_permission(request, user)
 
         context = check_permissions(user)
         logger = logging.getLogger(__name__)
-        logger.info(request.user.__str__() + ' modified an User')
+        logger.info(request.user.__str__() + ' edited '  + user.__str__() )
         context['info'] = 'usuario modificado com sucesso'
 
         return render(request, 'users/edit_user.html', context)
@@ -248,6 +246,6 @@ def delete_user(request, user_id):
     else:
 
         logger = logging.getLogger(__name__)
-        logger.info(request.user.__str__() + ' deleted  an user' )
+        logger.info(request.user.__str__() + ' deleted  ' + user.__str__() )
         user.delete()
     return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
