@@ -50,9 +50,9 @@ def create_graphic(path, array_date, array_dateb, array_datec, array_data, label
     bx.plot_date(xb, yb, '-')
     cx.plot_date(xc, yc, '-')
 
-    patch1 = mpatches.Patch(color='blue', label=_('Phase A'))
-    patch2 = mpatches.Patch(color='green', label=_('Phase B'))
-    patch3 = mpatches.Patch(color='red', label=_('Phase C'))
+    patch1 = mpatches.Patch(color='blue', label=_('Phase 1'))
+    patch2 = mpatches.Patch(color='green', label=_('Phase 2'))
+    patch3 = mpatches.Patch(color='red', label=_('Phase 3'))
 
     z = [patch1, patch2, patch3]
 
@@ -131,6 +131,26 @@ def generatePdf():
 
     doc.build(Story)
 
+def __minValue(arrayData):
+
+    arrayData.sort()
+    return arrayData[0]
+
+def __maxValue(arrayData):
+
+    arrayData.sort(reverse=True)
+
+    return arrayData[0]
+
+def __average(arrayData):
+    total = 0
+    for i in arrayData:
+        total += i
+
+    if(len(arrayData)!=0):
+        return total/len(arrayData)
+    else:
+        return 0
 
 def report(request,transductor_id):
 
@@ -222,7 +242,39 @@ def report(request,transductor_id):
 
     generatePdf()
 
-    return render(request, 'graphics/report.html')
+    maxVoltage = [__maxValue(voltage_a),__maxValue(voltage_b),__maxValue(voltage_c)]
+    minVoltage = [__minValue(voltage_a),__minValue(voltage_b),__minValue(voltage_c)]
+    averageVoltage = [__average(voltage_a),__average(voltage_b),__average(voltage_c)]
+
+    maxCurrent = [__maxValue(current_a),__maxValue(current_b),__maxValue(current_c)]
+    minCurrent = [__minValue(current_a),__minValue(current_b),__minValue(current_c)]
+    averageCurrent = [__average(current_a),__average(current_b),__average(current_c)]
+
+    maxActivePower = [__maxValue(active_power_a),__maxValue(active_power_b),__maxValue(active_power_c)]
+    minActivePower = [__minValue(active_power_a),__minValue(active_power_b),__minValue(active_power_c)]
+    averageActivePower = [__average(active_power_a),__average(active_power_b),__average(active_power_c)]
+
+    maxReactivePower = [__maxValue(reactive_power_a),__maxValue(reactive_power_b),__maxValue(reactive_power_c)]
+    minReactivePower = [__minValue(reactive_power_a),__minValue(reactive_power_b),__minValue(reactive_power_c)]
+    averageReactivePower = [__average(reactive_power_a),__average(reactive_power_b),__average(reactive_power_c)]
+
+    maxApparentPower = [__maxValue(apparent_power_a),__maxValue(apparent_power_b),__maxValue(apparent_power_c)]
+    minApparentPower = [__minValue(apparent_power_a),__minValue(apparent_power_b),__minValue(apparent_power_c)]
+    averageApparentPower = [__average(apparent_power_a),__average(apparent_power_b),__average(apparent_power_c)]
+
+    VoltageInformation = {'max':maxVoltage,'min':minVoltage,'average':averageVoltage}
+    currentInformation = {'max':maxCurrent,'min':minCurrent,'average':averageCurrent}
+    activePowerInformation = {'max':maxActivePower,'min':minActivePower,'average':averageActivePower}
+    reactivePowerInformation = {'max':maxReactivePower,'min':minReactivePower,'average':averageReactivePower}
+    apparentPowerInformation = {'max':maxApparentPower,'min':minApparentPower,'average':averageApparentPower}
+
+    information = {'voltage':VoltageInformation,
+                    'Current':currentInformation,
+                    'activePower':activePowerInformation,
+                    'reactivePower':reactivePowerInformation,
+                    'apparentPower':apparentPowerInformation}
+
+    return render(request, 'graphics/report.html',information)
 
 def transductors_filter(request):
 
