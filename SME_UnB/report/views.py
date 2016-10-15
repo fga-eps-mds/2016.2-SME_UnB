@@ -130,7 +130,7 @@ def generatePdf():
 
     doc.build(Story)
 
-
+@login_required
 def report(request):
 
 
@@ -223,13 +223,13 @@ def report(request):
 
     return render(request, 'graphics/report.html')
 
-
+@login_required
 def open_pdf(request):
     with open('report/static/Relatorio.pdf', 'r') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'filename=Relatorio.pdf'
         return response
     pdf.closed
-
+@login_required
 def invoice(request):
-    return render(request, 'invoice/invoice.html') 
+    return render(request, 'invoice/invoice.html')
