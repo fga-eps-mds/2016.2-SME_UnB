@@ -22,3 +22,9 @@ class TestReportView(unittest.TestCase):
         )
 
         self.assertEqual(404, response.status_code)
+
+    def test_getting_pdf(self):
+        logged_in = self.client.login(username='testuser', password='12345')
+        response = self.client.get('/reports/open_pdf/')
+
+        self.assertEqual(200, response.status_code)
