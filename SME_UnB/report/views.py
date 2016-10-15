@@ -10,6 +10,7 @@ from reportlab.platypus.flowables import Image
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from django.http import HttpResponse
+from django.utils.translation import ugettext as _
 
 import datetime
 
@@ -22,7 +23,7 @@ from transductor.models import EnergyMeasurements
 
 
 def create_graphic(path, array_date, array_dateb, array_datec, array_data, label):
-    title = 'Monitoramento de ' + label
+    title = _('Monitoring')+' '+ label
 
     fig = Figure()
 
@@ -48,16 +49,16 @@ def create_graphic(path, array_date, array_dateb, array_datec, array_data, label
     bx.plot_date(xb, yb, '-')
     cx.plot_date(xc, yc, '-')
 
-    patch1 = mpatches.Patch(color='blue', label='Fase A')
-    patch2 = mpatches.Patch(color='green', label='Fase B')
-    patch3 = mpatches.Patch(color='red', label='Fase C')
+    patch1 = mpatches.Patch(color='blue', label=_('Phase A'))
+    patch2 = mpatches.Patch(color='green', label=_('Phase B'))
+    patch3 = mpatches.Patch(color='red', label=_('Phase C'))
 
     z = [patch1, patch2, patch3]
 
     cx.legend(handles=z, loc=1)
 
     ax.set_title(title)
-    ax.set_xlabel('Data')
+    ax.set_xlabel(_('Date'))
     ax.set_ylabel(label)
     ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
     fig.autofmt_xdate()
@@ -124,7 +125,7 @@ def generatePdf():
 
     Story.append(Spacer(1, 12))
     Story.append(Spacer(1, 12))
-    ptext = '<font size=12>Relatorio do monitoramento de energia</font>'
+    ptext = '<font size=12>{ % trans Report Energy Monitoring % }</font>'
     Story.append(Paragraph(ptext, styles["Normal"]))
 
     doc.build(Story)
@@ -184,7 +185,7 @@ def report(request):
         current_b,
         current_c,
         date,
-        'Corrente')
+        _('Current'))
 
     create_graphic(
         'report/static/voltageGraphic.png',
@@ -192,7 +193,7 @@ def report(request):
         voltage_b,
         voltage_c,
         date,
-        'Voltagem')
+        _('Voltage'))
 
     create_graphic(
         'report/static/activePowerGraphic.png',
@@ -200,21 +201,23 @@ def report(request):
         active_power_b,
         active_power_c,
         date,
-        'Potencia Ativa')
+        _('Active Power'))
+
     create_graphic(
         'report/static/reactivePowerGraphic.png',
         reactive_power_a,
         reactive_power_b,
         reactive_power_c,
         date,
-        'Potencia Reativa')
+        _('Reactive Power'))
+
     create_graphic(
         'report/static/apparentPowerGraphic.png',
         apparent_power_a,
         apparent_power_b,
         apparent_power_c,
         date,
-        'Potencia Aparente')
+        _('Apparent Power'))
 
     generatePdf()
 

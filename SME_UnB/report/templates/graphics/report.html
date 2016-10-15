@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}
-<title>Relatórios</title>
+<title>{% trans "Reports" %}</title>
 {% endblock %}
 
 
@@ -9,10 +10,10 @@
 
 
 <div class="form-group">
-  <h1 class='text-center'>Relatorio</h1>
+  <h1 class='text-center'>{% trans "Report" %}</h1>
   <div class="row">
     <div class="col-md-2 col-md-offset-5">
-      <a class="btn btn-primary btn-lg btn-block" href="{% url 'report:open_pdf' %}" target="_blank" role="button">Gerar pdf &raquo;</a>
+      <a class="btn btn-primary btn-lg btn-block" href="{% url 'report:open_pdf' %}" target="_blank" role="button">{% trans "Generate PDF" %}&raquo;</a>
     </div>
   </div>
 </div>
@@ -72,10 +73,5 @@
     </div>
   </div>
 </div>
-
-
-
-
-
 
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block title %}
-    <title>Transductors</title>
+    <title>{% trans "Transductors" %}</title>
 {% endblock %}
 
 {% block body %}
@@ -9,14 +9,14 @@
             {%if perms.transductor.can_view_transductors%}
   <table class="table table-striped">
     {% if transductors_list %}
-      <p><a href="{% url 'transductor:new' %}" class="btn btn-primary">Create Transductor</a></p>
+      <p><a href="{% url 'transductor:new' %}" class="btn btn-primary">{% trans "Create Transductor" %}</a></p>
       <thead>
         <tr>
           <th>#</th>
-          <th>Description</th>
-          <th>IP Address</th>
-          <th>Serie Number</th>
-          <th>Options</th>
+          <th>{% trans "Description" %}</th>
+          <th>{% trans "IP Address" %}</th>
+          <th>{% trans "Serie Number" %}</th>
+          <th>{% trans "Options" %}</th>
         </tr>
       </thead>
 
@@ -28,8 +28,8 @@
           <td>{{transductor.ip_address}}</td>
           <td>{{transductor.serie_number}}</td>
           <td>
-            <a title="Click here to edit" href="{% url 'transductor:edit' transductor_id=transductor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a title="Click here to delete" href="{% url 'transductor:delete' transductor_id=transductor.id %}" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash" ></span></a>
+            <a title="{% trans "Click here to edit" %} " href="{% url 'transductor:edit' transductor_id=transductor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a title="{% trans "Click here to edit" %}Click here to delete" href="{% url 'transductor:delete' transductor_id=transductor.id %}" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-trash" ></span></a>
           </td>
         </tr>
       </tbody>
@@ -37,14 +37,13 @@
     {% else %}
       <div class="container">
         <div class="starter-template">
-          <h1>No Registered Transducer</h1>
-          <p class="lead">To create a new transductor click <a href="{% url 'transductor:new' %}" >here</a></p>
-        </div>
+          <h1>{% trans "No Registered Transducer" %}</h1>
+          <p class="lead">{% trans "To create a new transductor click" %} <a href="{% url 'transductor:new' %}" >{% trans "here" %}</a></p>
       </div>
     {% endif %}
 </table>
 {%else%}
-    <h1>Sem permissao para ver os transdutores</h1>
+    <h1>{% trans "No permission to see the transductors" %}</h1>
 {% endif %}
 </div>
 {% endblock %}

@@ -1,47 +1,53 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}
-<title>SME - UnB</title>
-{% endblock %}
-
-{% if user.is_authenticated %}
 {% block body %}
-<div class="pure-g-r content-ribbon">
-  <div class="pure-u-1">
-    <ul class="breadcrumb">
+<div id="wrapper">
+  <div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
       {% block breadcrumb %}
-      <li><a href="{% url 'index' %}">HOME</a></li>
       {%if perms.report.can_generate%}
-      <li><a href="{% url 'report:report' %}">Reports</a></li>
+      <li><a href="{% url 'report:report' %}">{% trans "Reports" %}</a></li>
       {%endif%}
-
+      <li><a href="{% url 'transductor:index'%}">{% trans "Transductors" %}</a></li>
       {% if request.user.is_staff %}
       {% endif %}
-      {% if request.user.is_staff %}
-      {% endif %}
-      <li><a href="{% url 'users:logout' %}">Logout</a></li>
-      <li><a href="{% url 'users:register' %}">Register</a></li>
+      <li><a href="{% url 'users:register' %}">{% trans "Register" %}</a></li>
       {%if perms.users.can_edit_user%}
-      <li><a href="{% url 'users:list_user_edit' %}">Edit Users</a></li>
+      <li><a href="{% url 'users:list_user_edit' %}">{% trans "Edit Users" %}</a></li>
       {%endif%}
-	<!-- fixing bug of users insted user -->
-	{%if perms.users.can_delete_user%}
-      <li><a href="{% url 'users:list_user_delete' %}">Delete Users</a></li>
+	    <!-- fixing bug of users insted user -->
+	    {%if perms.users.can_delete_user%}
+      <li><a href="{% url 'users:list_user_delete' %}">{% trans "Delete Users" %}</a></li>
       {%endif%}
-
       {% endblock %}
     </ul>
   </div>
-  <div class="pure-u-2-3">
-    <div class="inner">
+  <div id="page-content-wrapper">
+    <div class="container-fluid">
       {% block dashboard_content %}
-      <p><strong>Usuário</strong>: {{ user }}</p>
-      <p><strong>E-mail</strong>: {{ user.email }}</p>
+      <p><strong>{% trans "Usuário" %}</strong>: {{ request.user.username}}</p>
+      <p><strong>{% trans "E-mail" %}</strong>: {{ request.user.email }}</p>
       {% endblock %}
     </div>
   </div>
 </div>
 {% endblock %}
-{% else %}
-<p><a href="{% url 'users:login' %}">Login</a>.</p>
-{% endif %}
+
+<script>
+  // Enable pusher logging - don't include this in production
+  Pusher.logToConsole = true;
+
+  var pusher = new Pusher('01346f7690ac693e7adb', {
+    encrypted: true
+  });
+  console.log('notification_'+'{{request.user.id}}');
+  var channel = pusher.subscribe('notification_'+'{{request.user.id}}');
+  channel.bind('create', function(data) {
+    alert("oi")
+    $("#allert-container").append('<div class="alert alert-danger "> '+
+                                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> '+
+                                    '<strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.'+
+                                    '</div>')
+  });
+</script>

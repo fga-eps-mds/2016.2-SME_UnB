@@ -1,0 +1,14 @@
+{% load i18n %}
+
+{% get_available_languages as LANGUAGES %}
+
+<div class="idiomas">
+  <form action="/i18n/setlang/" method="post">{% csrf_token %}
+    <select name="language" onchange="submit()">
+      <option> {% trans "Change Language" %}</option>
+        {% for lang in LANGUAGES %}
+      <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+      {% endfor %}
+    </select>
+  </form>
+</div>

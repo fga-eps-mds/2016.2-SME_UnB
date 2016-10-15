@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block title %}
-  <title>Measurements Record</title>
+  <title>{% trans "Measurements Record" %}</title>
 {% endblock %}
 
 {% block body %}
@@ -22,41 +22,41 @@
       <thead>
         <tr>
           <th></th>
-          <th>Phase A</th>
-          <th>Phase B</th>
-          <th>Phase C</th>
-          <th>Total</th>
+          <th>{% trans "Phase A" %}</th>
+          <th>{% trans "Phase B" %}</th>
+          <th>{% trans "Phase C" %}</th>
+          <th>{% trans "Total" %}</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Voltage</td>
+          <td>{% trans "Voltage" %}</td>
           <td>{{ measurement.voltage_a }}</td>
           <td>{{ measurement.voltage_b }}</td>
           <td>{{ measurement.voltage_c }}</td>
         </tr>
         <tr>
-          <td>Current</td>
+          <td>{% trans "Current" %}</td>
           <td>{{ measurement.current_a }}</td>
           <td>{{ measurement.current_b }}</td>
           <td>{{ measurement.current_c }}</td>
         </tr>
         <tr>
-          <td>Active Power</td>
+          <td>{% trans "Active Power" %}</td>
           <td>{{ measurement.active_power_a }}</td>
           <td>{{ measurement.active_power_b }}</td>
           <td>{{ measurement.active_power_c }}</td>
           <td>{{ measurement.calculate_total_active_power }}</td>
         </tr>
         <tr>
-          <td>Reactive Power</td>
+          <td>{% trans "Reactive Power" %}</td>
           <td>{{ measurement.reactive_power_a }}</td>
           <td>{{ measurement.reactive_power_b }}</td>
           <td>{{ measurement.reactive_power_c }}</td>
           <td>{{ measurement.calculate_total_reactive_power }}</td>
         </tr>
         <tr>
-          <td>Apparent Power</td>
+          <td>{% trans "Apparent Power" %}</td>
           <td>{{ measurement.apparent_power_a }}</td>
           <td>{{ measurement.apparent_power_b }}</td>
           <td>{{ measurement.apparent_power_c }}</td>
@@ -69,7 +69,7 @@
     <div class="pagination">
       <span class="step-links">
         {% if measurement_list.has_previous %}
-          <a href="?page={{ measurement_list.previous_page_number }}">previous</a>
+          <a href="?page={{ measurement_list.previous_page_number }}">{% trans "Previous" %}</a>
         {% endif %}
 
         <span class="current">
@@ -77,7 +77,7 @@
         </span>
 
         {% if measurement_list.has_next %}
-          <a href="?page={{ measurement_list.next_page_number }}">next</a>
+          <a href="?page={{ measurement_list.next_page_number }}">{% trans "Next" %}</a>
         {% endif %}
       </span>
     </div>
@@ -85,7 +85,7 @@
 {% else %}
   <div class="container">
     <div class="starter-template">
-      <h1>No measurement avaiable</h1>
+      <h1>{% trans "No Measurement Avaiable" %}</h1>
     </div>
   </div>
 {% endif %}

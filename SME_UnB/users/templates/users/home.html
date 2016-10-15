@@ -1,19 +1,21 @@
 <!-- Arquivo: templates/users/home.html -->
+{% load i18n %}
+
 <p>OBRIGADO POR UTILIZAR O SME{% if user.is_authenticated %}{{ user.first_name }}{% else %}...{% endif %}</p>
 
 {% if user.is_authenticated %}
 {% block body %}
 <div class="jumbotron">
   <div class="container">
-    <h1>Welcome!</h1>
-    <p>SME - UnB is a web platform to monitor measurements from energy transductors.</p>
-    <p><a class="btn btn-primary btn-lg" href="https://gitlab.com/brenddongontijo/SME-UnB" role="button">Learn more &raquo;</a></p>
+    <h1>{% trans "Welcome!" %}</h1>
+    <p>{% trans "SME - UnB is a web platform to monitor measurements from energy transductors" %}.</p>
+    <p><a class="btn btn-primary btn-lg" href="https://gitlab.com/brenddongontijo/SME-UnB" role="button">{% trans "Learn more" %} &raquo;</a></p>
   </div>
 </div>
 {% endblock %}
-<p><a href="{% url 'users:logout' %}">Logout</a>.</p>
-<p><a href="{% url 'users:dashboard' %}">Dashboard</a>.</p>
+<p><a href="{% url 'users:logout' %}">{% trans "Logout" %}</a>.</p>
+<p><a href="{% url 'users:dashboard' %}">{% trans "Dashboard" %}</a>.</p>
 {% else %}
 <meta http-equiv="refresh" content=1;url="/">
-<p>Redirecionando...</p>
+<p>{% trans "Redirecting..." %}</p>
 {% endif %}
