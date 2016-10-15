@@ -30,7 +30,9 @@ class Transductor(models.Model):
 
     class Meta:
         abstract = True
-
+        permissions = (
+            ("can_view_transductors", "Can view Transductors Page"),
+        )
 
 class EnergyTransductor(Transductor):
 
