@@ -20,7 +20,6 @@ class EnergyTransductorTestCase(TestCase):
         transductor = EnergyTransductor()
         transductor.serie_number = "1"
         transductor.description = "Test"
-        transductor.creation_date = timezone.now()
         transductor.model = t_model
         transductor.ip_address = "111.111.111.111"
         transductor.save()
@@ -86,6 +85,13 @@ class EnergyTransductorTestCase(TestCase):
         average_result = numpy.array([124.375, 124.284, 123.111])
 
         self.assertTrue((data == average_result).all())
+
+    def test_set_transductor_broken(self):
+        self.transductor.set_transductor_broken(True)
+        self.assertTrue(self.transductor.broken)
+
+        self.transductor.set_transductor_broken(False)
+        self.assertFalse(self.transductor.broken)
 
     def create_energy_measurements(self):
         for index in range(0, 4):

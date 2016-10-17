@@ -213,34 +213,36 @@ class TransportProtocol(object):
     @abstractmethod
     def create_socket(self):
         """
-            Abstract method responsible to create the respective transport socket.
+        Abstract method responsible to create the respective transport socket.
         """
         pass
 
 
 class UdpProtocol(TransportProtocol):
     """
-        Class responsible to represent a UDP protocol and handle all the communication.
+    Class responsible to represent a UDP protocol and handle all the communication.
 
-        Attributes:
-            - receive_attemps: total attempts to receive a message via socket UDP.
+    Attributes:
+        receive_attemps (int): total attempts to receive a message via socket UDP.
+        max_receive_attempts (int): maximum number of attemps to receive message via socket UDP.
     """
     def __init__(self, serial_protocol, timeout=10.0, port=1001):
         super(UdpProtocol, self).__init__(serial_protocol, timeout, port)
         self.receive_attempts = 0
+        self.max_receive_attempts = 3
 
     def create_socket(self):
         """
-            Method responsible to create and set timeout of a UDP socket.
+        Method responsible to create and set timeout of a UDP socket.
         """
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.settimeout(self.timeout)
 
     def start_communication(self):
         """
-            Method reponsible to start UDP socket and receive messages from it.
+        Method reponsible to start UDP socket and receive messages from it.
         """
-        if not self.socket:
+        if self.socket is None:
             self.create_socket()
 
         messages_to_send = self.serial_protocol.create_messages()
@@ -260,16 +262,16 @@ class UdpProtocol(TransportProtocol):
             :returns: list - The messages received or None otherwise.
         """
         self.reset_receive_attempts()
-        max_receive_attempts = 3
         received_messages = []
 
-        while not received_messages and self.receive_attempts < max_receive_attempts:
+        while not received_messages and self.receive_attempts < self.max_receive_attempts:
             received_messages = self.handle_messages_via_socket(messages_to_send)
 
-        if self.receive_attempts == max_receive_attempts and not self.transductor.broken:
+        if self.receive_attempts == self.max_receive_attempts and not self.transductor.broken:
             self.transductor.set_transductor_broken(True)
 
         if received_messages and self.transductor.broken:
+            print received_messages
             self.transductor.set_transductor_broken(False)
 
         return received_messages
@@ -292,9 +294,9 @@ class UdpProtocol(TransportProtocol):
         """
         messages = []
 
-        for i in range(len(messages_to_send)):
+        for i, message in enumerate(messages_to_send):
             try:
-                self.socket.sendto(messages_to_send[i], (self.transductor.ip_address, self.port))
+                self.socket.sendto(message, (self.transductor.ip_address, self.port))
                 message_received = self.socket.recvfrom(256)
             except socket.timeout:
                 self.receive_attempts += 1

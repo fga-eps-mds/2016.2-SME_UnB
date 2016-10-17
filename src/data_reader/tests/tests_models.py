@@ -18,7 +18,6 @@ class ModBusRTUTestCase(TestCase):
         transductor = EnergyTransductor()
         transductor.serie_number = "1"
         transductor.description = "Test"
-        transductor.creation_date = timezone.now()
         transductor.model = t_model
         transductor.ip_address = "111.111.111.111"
         transductor.save()
