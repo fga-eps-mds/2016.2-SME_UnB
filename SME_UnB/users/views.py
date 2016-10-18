@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
+import os
 
 import logging
 
@@ -244,6 +245,13 @@ def delete_user(request, user_id):
         logger.info(request.user.__str__() + ' deleted  ' + user.__str__() )
         user.delete()
     return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
+
+def logging_list (request):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    file = open (BASE_DIR+'/SME_UnB/logging.logging', 'r')
+    file_contentes = file.read()
+
+    return render(request, 'users/logging_list.html',{'logging' : file_contentes})
 
 def __list__(request, template):
 
