@@ -190,6 +190,12 @@ class ModbusRTU(SerialProtocol):
         """
         return (self._computate_crc(packaged_message) == 0)
 
+class BrokenTransductorException(Exception):
+    def __init__(self, message, status):
+        super(BrokenTransductorException, self).__init__(message)
+        self.message = message
+        self.status = status
+
 class TransportProtocol(object):
     """
         Base class for transport protocols.
@@ -225,7 +231,9 @@ class UdpProtocol(TransportProtocol):
     Attributes:
         receive_attemps (int): total attempts to receive a message via socket UDP.
         max_receive_attempts (int): maximum number of attemps to receive message via socket UDP.
+
     """
+
     def __init__(self, serial_protocol, timeout=10.0, port=1001):
         super(UdpProtocol, self).__init__(serial_protocol, timeout, port)
         self.receive_attempts = 0
@@ -253,13 +261,14 @@ class UdpProtocol(TransportProtocol):
 
     def try_receive_messages(self, messages_to_send):
         """
-            Method responsible to try receive message from socket 3 times.
+        Method responsible to try receive message from socket 3 times.
 
-            If there is no response from transductor the same will be set as broken.
+        If there is no response from transductor the same will be set as broken.
 
-            :param messages_to_send: The packaged messages ready to be sent via socket.
-            :param type: list.
-            :returns: list - The messages received or None otherwise.
+        Args:
+            messages_to_send (list): The packaged messages ready to be sent via socket.
+
+        Returns: The messages received if successful, None otherwise.
         """
         self.reset_receive_attempts()
         received_messages = []
@@ -267,18 +276,20 @@ class UdpProtocol(TransportProtocol):
         while not received_messages and self.receive_attempts < self.max_receive_attempts:
             received_messages = self.handle_messages_via_socket(messages_to_send)
 
+            if not received_messages:
+                self.receive_attempts += 1
+
         if self.receive_attempts == self.max_receive_attempts and not self.transductor.broken:
-            self.transductor.set_transductor_broken(True)
+            raise BrokenTransductorException("Transductor is Broken!", True)
 
         if received_messages and self.transductor.broken:
-            print received_messages
-            self.transductor.set_transductor_broken(False)
+            raise BrokenTransductorException("Transductor is working properly again!", False)
 
         return received_messages
 
     def reset_receive_attempts(self):
         """
-            Method responsible to reset the number of receive attempts.
+        Method responsible to reset the number of receive attempts.
         """
         self.receive_attempts = 0
 
@@ -299,7 +310,6 @@ class UdpProtocol(TransportProtocol):
                 self.socket.sendto(message, (self.transductor.ip_address, self.port))
                 message_received = self.socket.recvfrom(256)
             except socket.timeout:
-                self.receive_attempts += 1
                 return None
             except socket.error:
                 # TODO: add exception

@@ -62,7 +62,8 @@ setup(
     extras_require={
         'dev': [
             'python-boilerplate[dev]',
-            'coverage==3.6'
+            'coverage==3.6',
+            'mock',
         ],
     },
 

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from data_reader.models import ModbusRTU, UdpProtocol
+from data_reader.models import ModbusRTU, UdpProtocol, BrokenTransductorException
 from transductor.models import EnergyTransductor, TransductorModel
 import threading
 import mock
@@ -7,7 +7,7 @@ import socket
 import SocketServer
 
 
-class MyUDPHandler(SocketServer.BaseRequestHandler):
+class UDPHandler(SocketServer.BaseRequestHandler):
     """
     This class works similar to the TCP handler class, except that
     self.request consists of a pair of data and client socket, and since
@@ -33,7 +33,7 @@ class UDPProtocolTest(TestCase):
     def setUp(self):
         # Starting UDP Handler
         HOST, PORT = "localhost", 9999
-        self.server = SocketServer.UDPServer((HOST, PORT), MyUDPHandler)
+        self.server = SocketServer.UDPServer((HOST, PORT), UDPHandler)
 
         self.server_thread = threading.Thread(target=self.server.serve_forever)
         self.server_thread.start()
@@ -83,14 +83,6 @@ class UDPProtocolTest(TestCase):
 
         self.assertEqual(0, udp_protocol.receive_attempts)
 
-    # @mock.patch.object(UdpProtocol, 'start_communication', autospec=True)
-    # def test_handle_messages_via_socket(self, mock_method):
-    #     mock_method.return_value = 3
-
-    #     modbus_rtu = ModbusRTU(self.transductor)
-    #     udp_protocol = UdpProtocol(serial_protocol=modbus_rtu, timeout=0.5)
-
-    #     print udp_protocol.start_communication()
 
     def test_receive_message_via_socket_udp(self):
         modbus_rtu = ModbusRTU(self.transductor)
@@ -118,7 +110,6 @@ class UDPProtocolTest(TestCase):
         modbus_rtu = ModbusRTU(self.transductor)
         udp_protocol = UdpProtocol(serial_protocol=modbus_rtu, timeout=0.5)
         udp_protocol.create_socket()
-        total_receive_attempts = udp_protocol.receive_attempts
 
         messages_to_send = [
             'Request 1',
@@ -128,4 +119,38 @@ class UDPProtocolTest(TestCase):
         messages = udp_protocol.handle_messages_via_socket(messages_to_send)
 
         self.assertIsNone(messages)
-        self.assertEqual(total_receive_attempts + 1, udp_protocol.receive_attempts)
+
+    @mock.patch.object(UdpProtocol, 'handle_messages_via_socket', return_value=None, autospec=True)
+    def test_try_receive_messages_with_transductor_not_broken_and_socket_timeout(self, mock_method):
+        modbus_rtu = ModbusRTU(self.transductor)
+        udp_protocol = UdpProtocol(serial_protocol=modbus_rtu, timeout=0.5)
+
+        messages = 'any messages'
+
+        with self.assertRaises(BrokenTransductorException):
+            udp_protocol.try_receive_messages(messages)
+
+        self.assertEqual(udp_protocol.receive_attempts, udp_protocol.max_receive_attempts)
+
+    @mock.patch.object(UdpProtocol, 'handle_messages_via_socket', return_value='any return', autospec=True)
+    def test_try_receive_messages_with_transductor_broken(self, mock_method):
+        self.transductor.broken = True
+        modbus_rtu = ModbusRTU(self.transductor)
+        udp_protocol = UdpProtocol(serial_protocol=modbus_rtu, timeout=0.5)
+
+        messages = 'any messages'
+
+        with self.assertRaises(BrokenTransductorException):
+            udp_protocol.try_receive_messages(messages)
+
+        self.assertEqual(0, udp_protocol.receive_attempts)
+
+    @mock.patch.object(UdpProtocol, 'handle_messages_via_socket', return_value='any return', autospec=True)
+    def test_try_receive_messages_working_properly(self, mock_method):
+        modbus_rtu = ModbusRTU(self.transductor)
+        udp_protocol = UdpProtocol(serial_protocol=modbus_rtu, timeout=0.5)
+
+        messages = 'any messages'
+
+        self.assertEqual('any return', udp_protocol.try_receive_messages(messages))
+        self.assertEqual(0, udp_protocol.receive_attempts)
