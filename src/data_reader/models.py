@@ -243,9 +243,10 @@ class TransportProtocol(object):
         self.socket = None
 
     @abstractmethod
-    def create_socket(self):
+    def start_communication(self):
         """
-        Abstract method responsible to create the respective transport socket.
+        Abstract method responsible to start the communication with the transductor based
+        on his transport protocol.
         """
         pass
 
@@ -260,46 +261,16 @@ class UdpProtocol(TransportProtocol):
     """
     def __init__(self, serial_protocol, timeout=10.0, port=1001):
         super(UdpProtocol, self).__init__(serial_protocol, timeout, port)
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.settimeout(timeout)
         self.receive_attempts = 0
         self.max_receive_attempts = 3
 
-    def create_socket(self):
-        """
-        Method responsible to create and set timeout of a UDP socket.
-        """
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.socket.settimeout(self.timeout)
-
     def start_communication(self):
         """
-        Method reponsible to start UDP socket and receive messages from it.
-
-        Returns:
-            list: The messages received from transductor response.
-
-        Raises:
-            BrokenTransductorException
-        """
-        if self.socket is None:
-            self.create_socket()
-
-        messages_to_send = self.serial_protocol.create_messages()
-
-        try:
-            messages_received = self.manage_received_messages(messages_to_send)
-        except BrokenTransductorException:
-            raise
-
-        return messages_received
-
-    def manage_received_messages(self, messages_to_send):
-        """
-        Method responsible to try receive message from socket based on maximum receive attempts.
+        Method responsible to try receive message from transductor (via socket) based on maximum receive attempts.
 
         Everytime a message is not received from the socket the total of received attemps is increased.
-
-        Args:
-            messages_to_send (list): The packaged messages ready to be sent via socket.
 
         Returns: The messages received if successful, None otherwise.
 
@@ -308,6 +279,8 @@ class UdpProtocol(TransportProtocol):
             UDP socket.
         """
         self.reset_receive_attempts()
+
+        messages_to_send = self.serial_protocol.create_messages()
         received_messages = []
 
         while not received_messages and self.receive_attempts < self.max_receive_attempts:
