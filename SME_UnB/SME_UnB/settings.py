@@ -124,6 +124,13 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_URL = 'users:logout'
 
+#email configuration
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'smeunb@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST_PASSWORD = 'mdsfga2016'
+EMAIL_PORT = 587
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

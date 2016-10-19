@@ -11,6 +11,9 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
+from django.core.mail import send_mail
+
+from SME_UnB.settings import EMAIL_HOST_USER
 
 import logging
 
@@ -75,6 +78,10 @@ def register(request):
         return render(request, 'userRegister/register.html')
     else:
         form = request.POST
+        first_name=form.get('first_name')
+        last_name=form.get('last_name')
+        password=form.get('password')
+        email=form.get('email')
 
         resultCheck = fullValidation(form)
 
@@ -86,22 +93,30 @@ def register(request):
 
         # Fim do bloco que saira da view
 
-        try:
+        #try:
 
-            user = User.objects.create_user(
-                first_name=first_name, last_name=last_name, password=password, username=email)
-        except:
-            return render(request, 'userRegister/register.html', {'falha': 'Email invalido!'})
+        user = User.objects.create(
+            first_name=first_name, last_name=last_name, password=password, username=email)
+        #except:
+        #    return render(request, 'userRegister/register.html', {'falha': 'Email invalido!'})
 
         user.last_name = last_name
         user.first_name = first_name
-        user.email = email
+        user.username = email
         give_permission(request, user)
         user.save()
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' Registered ' + user.__str__() )
 
-        return render(request, 'users/dashboard.html')
+    send_mail(
+        'Account registered with success',
+        'Your account on SME-UNB was successfully created',
+        EMAIL_HOST_USER,
+        [email],
+        fail_silently=True,
+    )
+
+    return render(request, 'users/dashboard.html')
 
 def check_name(first_name, last_name):
     if not first_name.isalpha() or not last_name.isalpha():
