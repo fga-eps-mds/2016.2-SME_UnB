@@ -25,6 +25,15 @@
   </div>
   <div id="page-content-wrapper">
     <div class="container-fluid">
+      {% if messages %}
+        <div class="row">
+          <div class="col-md-4 col-md-offset-8">
+            {% for message in messages %}
+            <p{% if message.tags == "success" %} class= "alert alert-success"{% endif %}>{{ message }}</p>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
       {% block dashboard_content %}
       <p><strong>{% trans "Usuário" %}</strong>: {{ request.user.username}}</p>
       <p><strong>{% trans "E-mail" %}</strong>: {{ request.user.email }}</p>

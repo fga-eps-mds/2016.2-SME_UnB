@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
+from django.contrib import messages
 
 
 def home(request):
@@ -111,6 +112,7 @@ def register(request):
         user.email = email
         give_permission(request, user)
         user.save()
+        messages.success(request, 'Usuario registrado com sucesso')
 
         return render(request, 'users/dashboard.html')
 
