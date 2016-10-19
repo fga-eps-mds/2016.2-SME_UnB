@@ -7,10 +7,10 @@ import sys
 
 class SerialProtocol(object):
     """
-        Base class for serial protocols.
+    Base class for serial protocols.
 
-        Attributes:
-            - Transductor: The transductor which will hold communication.
+    Attributes:
+        transductor (Transductor): The transductor which will hold communication.
     """
     __metaclass__ = ABCMeta
 
@@ -20,33 +20,40 @@ class SerialProtocol(object):
     @abstractmethod
     def create_messages(self):
         """
-            Abstract method responsible to create messages following the header patterns
-            of the serial protocol used.
+        Abstract method responsible to create messages following the header patterns
+        of the serial protocol used.
         """
         pass
 
     @abstractmethod
     def get_int_value_from_response(self, message_received_data):
         """
-            Abstract method responsible for read an integer value of a message sent by a transductor.
+        Abstract method responsible for read an integer value of a message sent by a transductor.
 
-            :param message_received_data: The data from received message.
-            :param type: str.
+        Args:
+            message_received_data (str): The data from received message.
         """
         pass
 
     @abstractmethod
     def get_float_value_from_response(self, message_received_data):
         """
-            Abstract method responsible for read an float value of a message sent by a transductor.
+        Abstract method responsible for read an float value of a message sent by a transductor.
 
-            :param message_received_data: The data from received message.
-            :param type: str.
+        Args:
+            message_received_data (str): The data from received message.
         """
         pass
 
 
 class RegisterAddressException(Exception):
+    """
+    Exception to signal that a register address from transductor model
+    is in a wrong format.
+
+    Attributes:
+        message (str): The exception message.
+    """
     def __init__(self, message):
         super(RegisterAddressException, self).__init__(message)
         self.message = message
@@ -54,24 +61,29 @@ class RegisterAddressException(Exception):
 
 class ModbusRTU(SerialProtocol):
     """
-        Class responsible to represent the communication protocol Modbus in RTU mode.
+    Class responsible to represent the communication protocol Modbus in RTU mode.
 
-        The RTU format follows the commands/data with a cyclic redundancy check checksum as an error
-        check mechanism to ensure the reliability of data
+    The RTU format follows the commands/data with a cyclic redundancy check checksum as an error
+    check mechanism to ensure the reliability of data
 
-        This protocol will be encapsulated in the data field of an transport protocol header.
+    This protocol will be encapsulated in the data field of an transport protocol header.
 
-        `Modbus reference guide <http://modbus.org/docs/PI_MBUS_300.pdf>`_
+    `Modbus reference guide <http://modbus.org/docs/PI_MBUS_300.pdf>`_
     """
     def __init__(self, transductor):
         super(ModbusRTU, self).__init__(transductor)
 
     def create_messages(self):
         """
-            This method creates all messages based on transductor model register address
-            that will be sent to a transductor seeking out their respective values.
+        This method creates all messages based on transductor model register address
+        that will be sent to a transductor seeking out their respective values.
 
-            :returns: list -- The list with all messages.
+        Returns:
+            list: The list with all messages.
+
+        Raises:
+            RegisterAddressException: raised if the register address from transductor model
+            is in a wrong format.
         """
         registers = self.transductor.model.register_addresses
 
@@ -101,11 +113,13 @@ class ModbusRTU(SerialProtocol):
 
     def get_int_value_from_response(self, message_received_data):
         """
-            `Source Code <http://www.ccontrolsys.com/w/How_to_read_WattNode_Float_Registers_in_the_Python_Language>`_
+        `Source Code <http://www.ccontrolsys.com/w/How_to_read_WattNode_Float_Registers_in_the_Python_Language>`_
 
-            :param message_received_data: The data from received message.
-            :param type: str.
-            :returns: int -- The value from response.
+        Args:
+            message_received_data (str): The data from received message.
+
+        Returns:
+            int: The value from response.
         """
         n_bytes = struct.unpack("1B", message_received_data[2])[0]
 
@@ -122,11 +136,13 @@ class ModbusRTU(SerialProtocol):
 
     def get_float_value_from_response(self, message_received_data):
         """
-            `Source Code <http://www.ccontrolsys.com/w/How_to_read_WattNode_Float_Registers_in_the_Python_Language>`_
+        `Source Code <http://www.ccontrolsys.com/w/How_to_read_WattNode_Float_Registers_in_the_Python_Language>`_
 
-            :param message_received_data: The data from received message.
-            :param type: str.
-            :returns: float -- the value from response.
+        Args:
+            message_received_data (str): The data from received message.
+
+        Returns:
+            float: The value from response.
         """
         n_bytes = struct.unpack("1B", message_received_data[2])[0]
 
@@ -154,18 +170,20 @@ class ModbusRTU(SerialProtocol):
 
     def _computate_crc(self, packaged_message):
         """
-            Method responsible to computate the crc from a packaged message.
+        Method responsible to computate the crc from a packaged message.
 
-            A cyclic redundancy check (CRC) is an error-detecting code commonly
-            used in digital networks and storage devices to detect accidental changes to raw data.
+        A cyclic redundancy check (CRC) is an error-detecting code commonly
+        used in digital networks and storage devices to detect accidental changes to raw data.
 
-            `Modbus CRC documentation: <http://www.modbustools.com/modbus.html#crc>`_
+        `Modbus CRC documentation: <http://www.modbustools.com/modbus.html#crc>`_
 
-            `Code Source <http://pythonhosted.org/pyModbusTCP/_modules/pyModbusTCP/client.html>`_
+        `Code Source <http://pythonhosted.org/pyModbusTCP/_modules/pyModbusTCP/client.html>`_
 
-            :param packaged_message: The packaged message ready to be sent/received.
-            :param type: str.
-            :returns: int -- The CRC itself.
+        Args:
+            packaged_message (str): The packaged message ready to be sent/received.
+
+        Returns:
+            int: The CRC generated.
         """
         crc = 0xFFFF
 
@@ -182,30 +200,38 @@ class ModbusRTU(SerialProtocol):
 
     def _check_crc(self, packaged_message):
         """
-            Method responsible to verify if a CRC is valid.
+        Method responsible to verify if a CRC is valid.
 
-            :param packaged_message: The packaged message ready to be sent/received.
-            :param type: str.
-            :returns: bool
+        Args:
+            packaged_message (str): The packaged message ready to be sent/received.
+
+        Returns:
+            bool: True if CRC is valid, False otherwise.
         """
         return (self._computate_crc(packaged_message) == 0)
 
 class BrokenTransductorException(Exception):
-    def __init__(self, message, status):
+    """
+    Exception to signal that a transductor is broken when trying to send messages
+    via Transport Protocol.
+
+    Attributes:
+        message (str): The exception message.
+    """
+    def __init__(self, message):
         super(BrokenTransductorException, self).__init__(message)
         self.message = message
-        self.status = status
 
 class TransportProtocol(object):
     """
-        Base class for transport protocols.
+    Base class for transport protocols.
 
-        Attributes:
-            - serial_protocol: The serial protocol used in communication.
-            - transductor: The transductor which will hold communication.
-            - timeout: The serial port used by the transductor.
-            - port: The port used to communication.
-            - socket: The socket used in communication.
+    Attributes:
+        serial_protocol (SerialProtocol): The serial protocol used in communication.
+        transductor (Transductor): The transductor which will hold communication.
+        timeout (float): The serial port used by the transductor.
+        port (int): The port used to communication.
+        socket (socket._socketobject): The socket used in communication.
     """
     __metaclass__ = ABCMeta
 
@@ -229,11 +255,9 @@ class UdpProtocol(TransportProtocol):
     Class responsible to represent a UDP protocol and handle all the communication.
 
     Attributes:
-        receive_attemps (int): total attempts to receive a message via socket UDP.
-        max_receive_attempts (int): maximum number of attemps to receive message via socket UDP.
-
+        receive_attemps (int): Total attempts to receive a message via socket UDP.
+        max_receive_attempts (int): Maximum number of attemps to receive message via socket UDP.
     """
-
     def __init__(self, serial_protocol, timeout=10.0, port=1001):
         super(UdpProtocol, self).__init__(serial_protocol, timeout, port)
         self.receive_attempts = 0
@@ -249,26 +273,39 @@ class UdpProtocol(TransportProtocol):
     def start_communication(self):
         """
         Method reponsible to start UDP socket and receive messages from it.
+
+        Returns:
+            list: The messages received from transductor response.
+
+        Raises:
+            BrokenTransductorException
         """
         if self.socket is None:
             self.create_socket()
 
         messages_to_send = self.serial_protocol.create_messages()
 
-        messages_received = self.try_receive_messages(messages_to_send)
+        try:
+            messages_received = self.manage_received_messages(messages_to_send)
+        except BrokenTransductorException:
+            raise
 
         return messages_received
 
-    def try_receive_messages(self, messages_to_send):
+    def manage_received_messages(self, messages_to_send):
         """
-        Method responsible to try receive message from socket 3 times.
+        Method responsible to try receive message from socket based on maximum receive attempts.
 
-        If there is no response from transductor the same will be set as broken.
+        Everytime a message is not received from the socket the total of received attemps is increased.
 
         Args:
             messages_to_send (list): The packaged messages ready to be sent via socket.
 
         Returns: The messages received if successful, None otherwise.
+
+        Raises:
+            BrokenTransductorException: raised if the transductor can't send messages via
+            UDP socket.
         """
         self.reset_receive_attempts()
         received_messages = []
@@ -280,10 +317,7 @@ class UdpProtocol(TransportProtocol):
                 self.receive_attempts += 1
 
         if self.receive_attempts == self.max_receive_attempts and not self.transductor.broken:
-            raise BrokenTransductorException("Transductor is Broken!", True)
-
-        if received_messages and self.transductor.broken:
-            raise BrokenTransductorException("Transductor is working properly again!", False)
+            raise BrokenTransductorException("Transductor is broken!")
 
         return received_messages
 
@@ -295,13 +329,13 @@ class UdpProtocol(TransportProtocol):
 
     def handle_messages_via_socket(self, messages_to_send):
         """
-            Method responsible to handle send/receive messages via socket UDP.
+        Method responsible to handle send/receive messages via socket UDP.
 
-            Everytime a timeout is reached the total of received_attemps is increased.
+        Args:
+            messages_to_send (list): The requests to be sent to the transductor via socket.
 
-            :param messages_to_send: The requests to be sent to the transductor via socket.
-            :param type: list.
-            :returns: list
+        Returns:
+            The messages received if successful, None otherwise.
         """
         messages = []
 

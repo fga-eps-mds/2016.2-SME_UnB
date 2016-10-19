@@ -14,3 +14,6 @@ Models
 
 .. autoclass:: data_reader.models.UdpProtocol
     :members:
+
+.. autoclass:: data_reader.models.BrokenTransductorException
+    :members:

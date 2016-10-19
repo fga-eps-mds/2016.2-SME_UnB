@@ -83,7 +83,6 @@ class UDPProtocolTest(TestCase):
 
         self.assertEqual(0, udp_protocol.receive_attempts)
 
-
     def test_receive_message_via_socket_udp(self):
         modbus_rtu = ModbusRTU(self.transductor)
         udp_protocol = UdpProtocol(serial_protocol=modbus_rtu, timeout=0.5, port=9999)
@@ -121,36 +120,23 @@ class UDPProtocolTest(TestCase):
         self.assertIsNone(messages)
 
     @mock.patch.object(UdpProtocol, 'handle_messages_via_socket', return_value=None, autospec=True)
-    def test_try_receive_messages_with_transductor_not_broken_and_socket_timeout(self, mock_method):
+    def test_manage_received_messages_with_transductor_not_broken_and_socket_timeout(self, mock_method):
         modbus_rtu = ModbusRTU(self.transductor)
         udp_protocol = UdpProtocol(serial_protocol=modbus_rtu, timeout=0.5)
 
         messages = 'any messages'
 
         with self.assertRaises(BrokenTransductorException):
-            udp_protocol.try_receive_messages(messages)
+            udp_protocol.manage_received_messages(messages)
 
         self.assertEqual(udp_protocol.receive_attempts, udp_protocol.max_receive_attempts)
 
     @mock.patch.object(UdpProtocol, 'handle_messages_via_socket', return_value='any return', autospec=True)
-    def test_try_receive_messages_with_transductor_broken(self, mock_method):
-        self.transductor.broken = True
+    def test_manage_received_messages_working_properly(self, mock_method):
         modbus_rtu = ModbusRTU(self.transductor)
         udp_protocol = UdpProtocol(serial_protocol=modbus_rtu, timeout=0.5)
 
         messages = 'any messages'
 
-        with self.assertRaises(BrokenTransductorException):
-            udp_protocol.try_receive_messages(messages)
-
-        self.assertEqual(0, udp_protocol.receive_attempts)
-
-    @mock.patch.object(UdpProtocol, 'handle_messages_via_socket', return_value='any return', autospec=True)
-    def test_try_receive_messages_working_properly(self, mock_method):
-        modbus_rtu = ModbusRTU(self.transductor)
-        udp_protocol = UdpProtocol(serial_protocol=modbus_rtu, timeout=0.5)
-
-        messages = 'any messages'
-
-        self.assertEqual('any return', udp_protocol.try_receive_messages(messages))
+        self.assertEqual('any return', udp_protocol.manage_received_messages(messages))
         self.assertEqual(0, udp_protocol.receive_attempts)
