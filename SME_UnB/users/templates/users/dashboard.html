@@ -33,3 +33,21 @@
   </div>
 </div>
 {% endblock %}
+
+<script>
+  // Enable pusher logging - don't include this in production
+  Pusher.logToConsole = true;
+
+  var pusher = new Pusher('01346f7690ac693e7adb', {
+    encrypted: true
+  });
+  console.log('notification_'+'{{request.user.id}}');
+  var channel = pusher.subscribe('notification_'+'{{request.user.id}}');
+  channel.bind('create', function(data) {
+    alert("oi")
+    $("#allert-container").append('<div class="alert alert-danger "> '+
+                                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> '+
+                                    '<strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.'+
+                                    '</div>')
+  });
+</script>
