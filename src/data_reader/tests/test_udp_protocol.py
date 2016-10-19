@@ -107,20 +107,17 @@ class UDPProtocolTest(TestCase):
 
         self.assertIsNone(messages)
 
+    @mock.patch.object(ModbusRTU, 'create_messages', return_value='any created messages', autospec=True)
     @mock.patch.object(UdpProtocol, 'handle_messages_via_socket', return_value=None, autospec=True)
-    def test_start_communication_with_transductor_not_broken_and_socket_timeout(self, mock_method):
-        self.udp_protocol.serial_protocol.create_messages = mock.MagicMock(return_value="any created messages")
-
+    def test_start_communication_with_transductor_not_broken_and_socket_timeout(self, mock_udp_method, mock_modbus_method):
         with self.assertRaises(BrokenTransductorException):
             self.udp_protocol.start_communication()
 
         self.assertEqual(self.udp_protocol.receive_attempts, self.udp_protocol.max_receive_attempts)
 
+    @mock.patch.object(ModbusRTU, 'create_messages', return_value='any created messages', autospec=True)
     @mock.patch.object(UdpProtocol, 'handle_messages_via_socket', return_value='any return', autospec=True)
-    def test_start_communication_working_properly(self, mock_method):
-        messages = 'any messages'
-        # mock create_messages
-
+    def test_start_communication_working_properly(self, mock_udp_method, mock_modbus_method):
         self.assertEqual('any return', self.udp_protocol.start_communication())
         self.assertEqual(0, self.udp_protocol.receive_attempts)
 

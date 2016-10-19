@@ -10,31 +10,31 @@ import numpy
 
 class TransductorModel(models.Model):
     """
-        Class responsible to define a transductor model which contains crucial informations about the
-        transductor itself.
+    Class responsible to define a transductor model which contains crucial informations about the
+    transductor itself.
 
-        Attributes:
-            - name(str): The factory name.
-            - internet_protocol(str): The internet protocol.
-            - serial_protocol(str): The serial protocol.
-            - register_addresses(list): Registers with data to be collected.
-                .. note::
-                    This attribute must meet the following pattern:
+    Attributes:
+        name (str): The factory name.
+        internet_protocol (str): The internet protocol.
+        serial_protocol (str): The serial protocol.
+        register_addresses (list): Registers with data to be collected.
+            .. note::
+                This attribute must meet the following pattern:
 
-                    [[Register Address(int), Register Type(int)]]
+                [[Register Address (int), Register Type (int)]]
 
-                Where:
-                    - Register Address: register address itself.
-                    - Register Type: register data type.
-                        - 0 - Integer
-                        - 1 - Float
+            Where:
+                - Register Address: register address itself.
+                - Register Type: register data type.
+                    - 0 - Integer
+                    - 1 - Float
 
-                Example: [[68, 0], [70, 1]]
+            Example: [[68, 0], [70, 1]]
 
-        Example of use:
+    Example of use:
 
-        >>> TransductorModel(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
-        <TransductorModel: Test Name>
+    >>> TransductorModel(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+    <TransductorModel: Test Name>
     """
     name = models.CharField(max_length=50, unique=True)
     internet_protocol = models.CharField(max_length=50)
@@ -47,15 +47,15 @@ class TransductorModel(models.Model):
 
 class Transductor(models.Model):
     """
-        Base class responsible to create an abstraction of a transductor.
+    Base class responsible to create an abstraction of a transductor.
 
-        Attributes:
-            - model(TransductorModel): The transductor model.
-            - serie_number(int): The serie number.
-            - ip_address(str): The ip address.
-            - description(str): A succint description.
-            - creation_date(datetime): The exactly creation time.
-            - working_correctly(bool): Tells if the transductor is working correctly.
+    Attributes:
+        model (TransductorModel): The transductor model.
+        serie_number (int): The serie number.
+        ip_address (str): The ip address.
+        description (str): A succint description.
+        creation_date (datetime): The exactly creation time.
+        broken (bool): Tells if the transductor is working correctly.
     """
     model = models.ForeignKey(TransductorModel)
     serie_number = models.IntegerField(default=None)
@@ -74,20 +74,29 @@ class Transductor(models.Model):
         abstract = True
 
     def set_transductor_broken(self, new_status):
+        """
+        Method responsible to change transductor broken status.
+
+        Args:
+            new_status (bool): The new transductor status.
+
+        Returns:
+            None
+        """
         self.broken = new_status
         self.save()
 
 
 class EnergyTransductor(Transductor):
     """
-        Class responsible to represent a Energy Transductor which will collect energy measurements.
+    Class responsible to represent a Energy Transductor which will collect energy measurements.
 
-        Example of use:
+    Example of use:
 
-        >>> from django.utils import timezone
-        >>> t_model = TransductorModel(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
-        >>> EnergyTransductor(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
-        <EnergyTransductor: Energy Transductor Test>
+    >>> from django.utils import timezone
+    >>> t_model = TransductorModel(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+    >>> EnergyTransductor(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
+    <EnergyTransductor: Energy Transductor Test>
     """
     def __str__(self):
         return self.description
@@ -95,31 +104,31 @@ class EnergyTransductor(Transductor):
 
 class Measurements(PolymorphicModel):
     """
-        Class responsible to create a base for measurements and optimize performance from queries
-        using the django-polymorphic.
+    Class responsible to create a base for measurements and optimize performance from queries
+    using the django-polymorphic.
 
-        .. note::
+    .. note::
 
-            It's not necessary create instances of this class.
+        It's not necessary create instances of this class.
 
-        Attributes:
-            - collection_date(datetime): The exactly collection time.
-            - collection_minute(int): The minute from collection.
+    Attributes:
+        collection_date (datetime): The exactly collection time.
+        collection_minute (int): The minute from collection.
 
-        Example of Polymorphic search using child class EnergyMeasurements:
+    Example of Polymorphic search using child class EnergyMeasurements:
 
-        >>> from django.utils import timezone
-        >>> t_model = TransductorModel.objects.create(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
-        >>> e_transductor = EnergyTransductor.objects.create(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
-        >>> time = timezone.now()
-        >>> EnergyMeasurements.objects.create(transductor=e_transductor, voltage_a=122.875, voltage_b=122.784, voltage_c=121.611, current_a=22.831, current_b=17.187, current_c= 3.950, active_power_a=2.794, active_power_b=1.972, active_power_c=3.950, reactive_power_a=-0.251, reactive_power_b=-0.752, reactive_power_c=-1.251, apparent_power_a=2.805, apparent_power_b=2.110, apparent_power_c=4.144, collection_date=time, collection_minute=time.minute)
-        <EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>
-        >>> Measurements.objects.all()
-        [<EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>]
-        >>> Measurements.objects.instance_of(EnergyMeasurements)
-        [<EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>]
+    >>> from django.utils import timezone
+    >>> t_model = TransductorModel.objects.create(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+    >>> e_transductor = EnergyTransductor.objects.create(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
+    >>> time = timezone.now()
+    >>> EnergyMeasurements.objects.create(transductor=e_transductor, voltage_a=122.875, voltage_b=122.784, voltage_c=121.611, current_a=22.831, current_b=17.187, current_c= 3.950, active_power_a=2.794, active_power_b=1.972, active_power_c=3.950, reactive_power_a=-0.251, reactive_power_b=-0.752, reactive_power_c=-1.251, apparent_power_a=2.805, apparent_power_b=2.110, apparent_power_c=4.144, collection_date=time, collection_minute=time.minute)
+    <EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>
+    >>> Measurements.objects.all()
+    [<EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>]
+    >>> Measurements.objects.instance_of(EnergyMeasurements)
+    [<EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>]
 
-        `django-polymorphic documentation <https://django-polymorphic.readthedocs.io/en/stable/quickstart.html>`_
+    `django-polymorphic documentation <https://django-polymorphic.readthedocs.io/en/stable/quickstart.html>`_
     """
     collection_date = models.DateField('date published', auto_now=True)
     collection_minute = models.IntegerField(default=None)
@@ -159,32 +168,34 @@ class EnergyMeasurementsManager(PolymorphicManager):
 
 class EnergyMeasurements(Measurements):
     """
-        Class responsible to store energy measurements, considering a three-phase energy system.
+    Class responsible to store energy measurements, considering a three-phase energy system.
 
-        Attributes:
-            - voltage_a(float): The voltage on phase A.
-            - voltage_b(float): The voltage on phase B.
-            - voltage_c(float): The voltage on phase C.
-            - current_a(float): The current on phase A.
-            - current_b(float): The current on phase B.
-            - current_c(float): The current on phase C.
-            - active_power_a(float): The active power on phase A.
-            - active_power_b(float): The active power on phase B.
-            - active_power_c(float): The active power on phase C.
-            - reactive_power_a(float): The reactive power on phase A.
-            - reactive_power_b(float): The reactive power on phase B.
-            - reactive_power_c(float): The reactive power on phase C.
-            - apparent_power_a(float): The apparent power on phase A.
-            - apparent_power_b(float): The apparent power on phase B.
-            - apparent_power_c(float): The apparent power on phase C.
+    Attributes:
+        mng_objects (EnergyMeasurementsManager): A custom object manager.
+        transductor (Transductor): The transductor which conducted measurements.
+        voltage_a (float): The voltage on phase A.
+        voltage_b (float): The voltage on phase B.
+        voltage_c (float): The voltage on phase C.
+        current_a (float): The current on phase A.
+        current_b (float): The current on phase B.
+        current_c (float): The current on phase C.
+        active_power_a (float): The active power on phase A.
+        active_power_b (float): The active power on phase B.
+        active_power_c (float): The active power on phase C.
+        reactive_power_a (float): The reactive power on phase A.
+        reactive_power_b (float): The reactive power on phase B.
+        reactive_power_c (float): The reactive power on phase C.
+        apparent_power_a (float): The apparent power on phase A.
+        apparent_power_b (float): The apparent power on phase B.
+        apparent_power_c (float): The apparent power on phase C.
 
-        Example of use:
+    Example of use:
 
-        >>> from django.utils import timezone
-        >>> t_model = TransductorModel.objects.create(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
-        >>> e_transductor = EnergyTransductor.objects.create(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
-        >>> EnergyMeasurements.objects.create(transductor=e_transductor, voltage_a=122.875, voltage_b=122.784, voltage_c=121.611, current_a=22.831, current_b=17.187, current_c= 3.950, active_power_a=2.794, active_power_b=1.972, active_power_c=3.950, reactive_power_a=-0.251, reactive_power_b=-0.752, reactive_power_c=-1.251, apparent_power_a=2.805, apparent_power_b=2.110, apparent_power_c=4.144, collection_minute=timezone.now().minute
-        <EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>
+    >>> from django.utils import timezone
+    >>> t_model = TransductorModel.objects.create(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+    >>> e_transductor = EnergyTransductor.objects.create(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
+    >>> EnergyMeasurements.objects.create(transductor=e_transductor, voltage_a=122.875, voltage_b=122.784, voltage_c=121.611, current_a=22.831, current_b=17.187, current_c= 3.950, active_power_a=2.794, active_power_b=1.972, active_power_c=3.950, reactive_power_a=-0.251, reactive_power_b=-0.752, reactive_power_c=-1.251, apparent_power_a=2.805, apparent_power_b=2.110, apparent_power_c=4.144, collection_minute=timezone.now().minute
+    <EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>
     """
     mng_objects = EnergyMeasurementsManager()
 
@@ -216,19 +227,20 @@ class EnergyMeasurements(Measurements):
 
 class EnergyOperations(object):
     """
-        Class responsible to perform energy mathematical operations.
+    Class responsible to perform energy mathematical operations.
 
-        Atributtes:
-            - energy_measurement(EnergyMeasurements): Energy measurements related to a specific instant of time.
+    Atributtes:
+        energy_measurement (EnergyMeasurements): Energy measurements related to a specific instant of time.
     """
     def __init__(self, e_measurement):
         self.energy_measurement = e_measurement
 
     def calculate_total_active_power(self):
         """
-            Instance method responsible to calculate the total active power of a time instant.
+        Instance method responsible to calculate the total active power of a time instant.
 
-            :returns: float -- the total active power.
+        Returns:
+            float: The total active power.
         """
         active_power_a = self.energy_measurement.active_power_a
         active_power_b = self.energy_measurement.active_power_b
@@ -238,9 +250,10 @@ class EnergyOperations(object):
 
     def calculate_total_reactive_power(self):
         """
-            Instance method responsible to calculate the total reactive power of a time instant.
+        Instance method responsible to calculate the total reactive power of a time instant.
 
-            :returns: float -- the total reactive power.
+        Returns:
+            float: The total reactive power.
         """
         reactive_power_a = self.energy_measurement.reactive_power_a
         reactive_power_b = self.energy_measurement.reactive_power_b
@@ -250,9 +263,10 @@ class EnergyOperations(object):
 
     def calculate_total_apparent_power(self):
         """
-            Instance method responsible to calculate the total apparent power of a time instant.
+        Instance method responsible to calculate the total apparent power of a time instant.
 
-            :returns: float -- the total apparent power.
+        Returns:
+            float: The total apparent power.
         """
         ap_phase_a = self.energy_measurement.apparent_power_a
         ap_phase_b = self.energy_measurement.apparent_power_b
