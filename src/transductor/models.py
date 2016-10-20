@@ -15,7 +15,7 @@ class TransductorModel(models.Model):
 
     Attributes:
         name (str): The factory name.
-        internet_protocol (str): The internet protocol.
+        transport_protocol (str): The transport protocol.
         serial_protocol (str): The serial protocol.
         register_addresses (list): Registers with data to be collected.
             .. note::
@@ -33,11 +33,11 @@ class TransductorModel(models.Model):
 
     Example of use:
 
-    >>> TransductorModel(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+    >>> TransductorModel(name="Test Name", transport_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
     <TransductorModel: Test Name>
     """
     name = models.CharField(max_length=50, unique=True)
-    internet_protocol = models.CharField(max_length=50)
+    transport_protocol = models.CharField(max_length=50)
     serial_protocol = models.CharField(max_length=50)
     register_addresses = ArrayField(ArrayField(models.IntegerField()))
 
@@ -45,7 +45,7 @@ class TransductorModel(models.Model):
         return self.name
 
 
-class Transductor(models.Model):
+class Transductor(PolymorphicModel):
     """
     Base class responsible to create an abstraction of a transductor.
 
@@ -70,9 +70,6 @@ class Transductor(models.Model):
     creation_date = models.DateTimeField('date published', auto_now=True)
     broken = models.BooleanField(default=False)
 
-    class Meta:
-        abstract = True
-
     def set_transductor_broken(self, new_status):
         """
         Method responsible to change transductor broken status.
@@ -94,7 +91,7 @@ class EnergyTransductor(Transductor):
     Example of use:
 
     >>> from django.utils import timezone
-    >>> t_model = TransductorModel(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+    >>> t_model = TransductorModel(name="Test Name", transport_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
     >>> EnergyTransductor(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
     <EnergyTransductor: Energy Transductor Test>
     """
@@ -118,7 +115,7 @@ class Measurements(PolymorphicModel):
     Example of Polymorphic search using child class EnergyMeasurements:
 
     >>> from django.utils import timezone
-    >>> t_model = TransductorModel.objects.create(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+    >>> t_model = TransductorModel.objects.create(name="Test Name", transport_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
     >>> e_transductor = EnergyTransductor.objects.create(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
     >>> time = timezone.now()
     >>> EnergyMeasurements.objects.create(transductor=e_transductor, voltage_a=122.875, voltage_b=122.784, voltage_c=121.611, current_a=22.831, current_b=17.187, current_c= 3.950, active_power_a=2.794, active_power_b=1.972, active_power_c=3.950, reactive_power_a=-0.251, reactive_power_b=-0.752, reactive_power_c=-1.251, apparent_power_a=2.805, apparent_power_b=2.110, apparent_power_c=4.144, collection_date=time, collection_minute=time.minute)
@@ -192,7 +189,7 @@ class EnergyMeasurements(Measurements):
     Example of use:
 
     >>> from django.utils import timezone
-    >>> t_model = TransductorModel.objects.create(name="Test Name", internet_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
+    >>> t_model = TransductorModel.objects.create(name="Test Name", transport_protocol="UDP", serial_protocol="Modbus RTU", register_addresses=[[68, 0], [70, 1]])
     >>> e_transductor = EnergyTransductor.objects.create(model=t_model, serie_number=1, ip_address="1.1.1.1", description="Energy Transductor Test", creation_date=timezone.now())
     >>> EnergyMeasurements.objects.create(transductor=e_transductor, voltage_a=122.875, voltage_b=122.784, voltage_c=121.611, current_a=22.831, current_b=17.187, current_c= 3.950, active_power_a=2.794, active_power_b=1.972, active_power_c=3.950, reactive_power_a=-0.251, reactive_power_b=-0.752, reactive_power_c=-1.251, apparent_power_a=2.805, apparent_power_b=2.110, apparent_power_c=4.144, collection_minute=timezone.now().minute
     <EnergyMeasurements: 2016-09-15 21:30:53.522540+00:00>

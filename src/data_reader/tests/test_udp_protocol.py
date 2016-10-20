@@ -31,22 +31,15 @@ class UDPHandler(SocketServer.BaseRequestHandler):
 
 class UDPProtocolTest(TestCase):
     def setUp(self):
-        # Starting UDP Handler
         HOST, PORT = "localhost", 9999
-        self.server = SocketServer.UDPServer((HOST, PORT), UDPHandler)
-
-        self.server_thread = threading.Thread(target=self.server.serve_forever)
-        self.server_thread.start()
 
         # Creating Transductor Model and Energy Transductor
         t_model = TransductorModel()
         t_model.name = "TR 4020"
-        t_model.internet_protocol = "UDP"
+        t_model.transport_protocol = "UDP"
         t_model.serial_protocol = "Modbus RTU"
         t_model.register_addresses = [[4, 0], [68, 1]]
         t_model.save()
-
-        self.t_model = t_model
 
         transductor = EnergyTransductor()
         transductor.serie_number = "1"
@@ -55,10 +48,16 @@ class UDPProtocolTest(TestCase):
         transductor.ip_address = HOST
         transductor.save()
 
+        # Setting instance attributes
+        self.t_model = t_model
         self.transductor = transductor
-
         self.modbus_rtu = ModbusRTU(self.transductor)
         self.udp_protocol = UdpProtocol(serial_protocol=self.modbus_rtu, timeout=0.5, port=9999)
+
+        # Starting UDP server via thread
+        self.server = SocketServer.UDPServer((HOST, PORT), UDPHandler)
+        self.server_thread = threading.Thread(target=self.server.serve_forever)
+        self.server_thread.start()
 
     def tearDown(self):
         self.server.shutdown()

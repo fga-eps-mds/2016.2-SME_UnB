@@ -8,7 +8,7 @@ class EnergyTransductorViewsTestCase(TestCase):
     def setUp(self):
         t_model = TransductorModel()
         t_model.name = "TR 4020"
-        t_model.internet_protocol = "UDP"
+        t_model.transport_protocol = "UDP"
         t_model.serial_protocol = "Mosbus RTU"
         t_model.register_addresses = [[68, 0], [70, 1]]
         t_model.save()
@@ -98,7 +98,7 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         response = self.client.post(url, params)
 
-        self.assertFormError(response, 'form', 'ip_address', 'Energy transductor with this Ip address already exists.')
+        self.assertFormError(response, 'form', 'ip_address', 'Transductor with this Ip address already exists.')
 
     def test_not_create_transductor_with_wrong_ip_address(self):
         t_model = self.t_model
@@ -143,7 +143,7 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         t_model_2 = TransductorModel()
         t_model_2.name = "Transductor Model 2"
-        t_model_2.internet_protocol = "TCP/IP"
+        t_model_2.transport_protocol = "TCP/IP"
         t_model_2.serial_protocol = "Mosbus"
         t_model_2.register_addresses = [[100, 0], [105, 1]]
         t_model_2.save()

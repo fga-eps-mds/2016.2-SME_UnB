@@ -8,7 +8,7 @@ class ModBusRTUTestCase(TestCase):
     def setUp(self):
         t_model = TransductorModel()
         t_model.name = "TR 4020"
-        t_model.internet_protocol = "UDP"
+        t_model.transport_protocol = "UDP"
         t_model.serial_protocol = "Modbus RTU"
         t_model.register_addresses = [[4, 0], [68, 1]]
         t_model.save()
@@ -97,7 +97,7 @@ class ModBusRTUTestCase(TestCase):
 
         t_model = TransductorModel()
         t_model.name = "Test Model"
-        t_model.internet_protocol = "UDP"
+        t_model.transport_protocol = "UDP"
         t_model.serial_protocol = "Modbus RTU"
         t_model.register_addresses = wrong_address
         t_model.save()
