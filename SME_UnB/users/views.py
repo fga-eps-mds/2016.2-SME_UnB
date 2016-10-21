@@ -248,7 +248,7 @@ def delete_user(request, user_id):
         logger.info(request.user.__str__() + ' deleted  ' + user.__str__() )
         user.delete()
     return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
-
+@login_required
 def logging_list (request):
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     file = open (BASE_DIR+'/SME_UnB/logging.logging', 'r')
