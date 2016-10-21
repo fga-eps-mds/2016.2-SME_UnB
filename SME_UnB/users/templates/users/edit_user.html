@@ -69,7 +69,7 @@
                 </label>
               </div>
             </div>
-            <button type="submit" class="btn btn-success" >{% trans "Register" %}</button>
+            <button type="submit" class="btn btn-success" onclick="return confirm('Voce tem certeza ?')" >{% trans "Register" %}</button>
             <a class="btn btn-primary" href="{% url 'users:list_user_edit' %}" role="button">{% trans "Cancel" %}</a>
           </form>
         </div>
