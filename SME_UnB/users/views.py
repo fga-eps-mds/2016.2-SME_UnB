@@ -92,7 +92,7 @@ def register(request):
             user = User.objects.create_user(
                 first_name=first_name, last_name=last_name, password=password, username=email)
         except:
-            return render(request, 'userRegister/register.html', {'falha': 'Email invalido!'})
+            return render(request, 'userRegister/register.html', {'falha': 'Falha de Registro!'})
 
         user.last_name = last_name
         user.first_name = first_name
@@ -166,6 +166,7 @@ def check_permissions(user):
     has_transductor_permission = 'checked' if user.has_perm('transductor.can_view_transductors') else ''
     has_edit_user_permission = 'checked' if user.has_perm('users.can_edit_user') else ''
     has_delete_user_permission = 'checked' if user.has_perm('users.can_delete_user') else ''
+    has_see_logging_permission = 'checked' if user.has_perm('users.can_see_logging') else ''
 
     context = {
         'user': user,
@@ -173,6 +174,7 @@ def check_permissions(user):
         "view_transductors": has_transductor_permission,
         "edit_users": has_edit_user_permission,
         "delete_users": has_delete_user_permission,
+        "see_logging": has_see_logging_permission,
     }
 
     return context
@@ -230,6 +232,7 @@ def give_permission(request, user):
     __permision__(transductor_checkbox, 'can_view_transductors', user)
     __permision__(useredit_checkbox, 'can_edit_user', user)
     __permision__(userdelete_checkbox, 'can_delete_user', user)
+    __permision__(seelogging_checkbox, 'can_see_logging', user)
 
     user.save()
 
