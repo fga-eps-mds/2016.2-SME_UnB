@@ -114,7 +114,7 @@ def register(request):
         user.save()
         messages.success(request, 'Usuario registrado com sucesso')
 
-        return render(request, 'users/dashboard.html')
+        return HttpResponseRedirect(reverse("users:dashboard"))
 
 @login_required
 def list_user_edit(request):
