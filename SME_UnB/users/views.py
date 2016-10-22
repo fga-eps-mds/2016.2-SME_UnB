@@ -76,6 +76,11 @@ def register(request):
         return render(request, 'userRegister/register.html')
     else:
         form = request.POST
+        first_name = form.get('first_name')
+        last_name = form.get('last_name')
+        password = form.get('password')
+        confirmPassword = form.get('confirmPassword')
+        email = form.get('email')
 
         resultCheck = fullValidation(form)
 
@@ -166,7 +171,7 @@ def check_permissions(user):
     has_transductor_permission = 'checked' if user.has_perm('transductor.can_view_transductors') else ''
     has_edit_user_permission = 'checked' if user.has_perm('users.can_edit_user') else ''
     has_delete_user_permission = 'checked' if user.has_perm('users.can_delete_user') else ''
-    has_see_logging_permission = 'checked' if user.has_perm('users.can_see_logging') else ''
+    #has_see_logging_permission = 'checked' if user.has_perm('users.can_see_logging') else ''
 
     context = {
         'user': user,
@@ -174,7 +179,7 @@ def check_permissions(user):
         "view_transductors": has_transductor_permission,
         "edit_users": has_edit_user_permission,
         "delete_users": has_delete_user_permission,
-        "see_logging": has_see_logging_permission,
+        #"see_logging": has_see_logging_permission,
     }
 
     return context
@@ -225,6 +230,7 @@ def give_permission(request, user):
     transductor_checkbox = request.POST.get('view_transductors')
     useredit_checkbox = request.POST.get('edit_users')
     userdelete_checkbox = request.POST.get('delete_users')
+    seelogging_checkbox = request.POST.get('seelogging_checkbox')
 
     user.user_permissions.clear()
 
