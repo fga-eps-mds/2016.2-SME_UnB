@@ -108,13 +108,31 @@ def register(request):
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' Registered ' + user.__str__() )
 
-    send_mail(
-        'Account registered with success',
-        'Your account on SME-UNB was successfully created',
-        EMAIL_HOST_USER,
-        [email],
-        fail_silently=True,
-    )
+	print(email)
+	from django.core import mail
+	connection = mail.get_connection()
+
+	# Manually open the connection
+	connection.open()
+
+	# Construct an email message that uses the connection
+	email1 = mail.EmailMessage(
+	    'Hello',
+	    'Body goes here',
+	    'mds@sof2u.com',
+	    [email],
+	    connection=connection,
+	)
+	email1.send() # Send the email
+	"""
+	send_mail(
+            'Account registered with success',
+	    'Your account on SME-UNB was successfully created',
+	    'mds@sof2u.com',
+	    [email],
+	    fail_silently=False,
+	)
+	"""
 
     return render(request, 'users/dashboard.html')
 
