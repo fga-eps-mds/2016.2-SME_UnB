@@ -221,6 +221,24 @@ class EnergyMeasurements(Measurements):
     def __str__(self):
         return '%s' % self.collection_date
 
+    def save_energy_measurements_by_response(self, values_list):
+        self.voltage_a = values_list[0]
+        self.voltage_b = values_list[1]
+        self.voltage_c = values_list[2]
+        self.current_a = values_list[3]
+        self.current_b = values_list[4]
+        self.current_c = values_list[5]
+        self.active_power_a = values_list[6]
+        self.active_power_b = values_list[7]
+        self.active_power_c = values_list[8]
+        self.reactive_power_a = values_list[9]
+        self.reactive_power_b = values_list[10]
+        self.reactive_power_c = values_list[11]
+        self.apparent_power_a = EnergyOperations.calculate_apparent_power(self.active_power_a, self.reactive_power_a)
+        self.apparent_power_b = EnergyOperations.calculate_apparent_power(self.active_power_b, self.reactive_power_b)
+        self.apparent_power_c = EnergyOperations.calculate_apparent_power(self.active_power_c, self.reactive_power_c)
+        print self.__dict__
+
 
 class EnergyOperations(object):
     """
@@ -229,46 +247,11 @@ class EnergyOperations(object):
     Atributtes:
         energy_measurement (EnergyMeasurements): Energy measurements related to a specific instant of time.
     """
-    def __init__(self, e_measurement):
-        self.energy_measurement = e_measurement
 
-    def calculate_total_active_power(self):
-        """
-        Instance method responsible to calculate the total active power of a time instant.
+    @classmethod
+    def calculate_total_power(cls, a, b, c):
+        return (a + b + c)
 
-        Returns:
-            float: The total active power.
-        """
-        active_power_a = self.energy_measurement.active_power_a
-        active_power_b = self.energy_measurement.active_power_b
-        active_power_c = self.energy_measurement.active_power_c
-
-        return (active_power_a + active_power_b + active_power_c)
-
-    def calculate_total_reactive_power(self):
-        """
-        Instance method responsible to calculate the total reactive power of a time instant.
-
-        Returns:
-            float: The total reactive power.
-        """
-        reactive_power_a = self.energy_measurement.reactive_power_a
-        reactive_power_b = self.energy_measurement.reactive_power_b
-        reactive_power_c = self.energy_measurement.reactive_power_c
-
-        return (reactive_power_a + reactive_power_b + reactive_power_c)
-
-    def calculate_total_apparent_power(self):
-        """
-        Instance method responsible to calculate the total apparent power of a time instant.
-
-        Returns:
-            float: The total apparent power.
-        """
-        ap_phase_a = self.energy_measurement.apparent_power_a
-        ap_phase_b = self.energy_measurement.apparent_power_b
-        ap_phase_c = self.energy_measurement.apparent_power_c
-
-        ap_total = (ap_phase_a + ap_phase_b + ap_phase_c)
-
-        return ap_total
+    @classmethod
+    def calculate_apparent_power(cls, active_power, reactive_power):
+        return (active_power * active_power + reactive_power * reactive_power)**.5

@@ -69,15 +69,9 @@ class EnergyTransductorTestCase(TestCase):
 
         self.assertEqual(colection_date, e_measurement.__str__())
 
-        energy_operations = EnergyOperations(e_measurement)
-
-        total_active_power = energy_operations.calculate_total_active_power()
-        total_reactive_power = energy_operations.calculate_total_reactive_power()
-        total_apparent_power = energy_operations.calculate_total_apparent_power()
+        total_active_power = EnergyOperations.calculate_total_power(e_measurement.active_power_a, e_measurement.active_power_b, e_measurement.active_power_c)
 
         self.assertAlmostEqual(8.716, total_active_power, places=3, msg=None, delta=None)
-        self.assertAlmostEqual(-2.254, total_reactive_power, places=3, msg=None, delta=None)
-        self.assertAlmostEqual(9.059, total_apparent_power, places=3, msg=None, delta=None)
 
     def test_annual_energy_measurements(self):
         data = EnergyMeasurements.mng_objects.average_annual(2016, 'voltage_a', 'voltage_b', 'voltage_c')

@@ -1,8 +1,10 @@
 from __future__ import unicode_literals
 from abc import ABCMeta, abstractmethod
+from transductor.models import Transductor
 import socket
 import struct
 import sys
+import threading
 
 
 class SerialProtocol(object):
@@ -26,19 +28,9 @@ class SerialProtocol(object):
         pass
 
     @abstractmethod
-    def get_int_value_from_response(self, message_received_data):
+    def get_value_from_response(self, message_received_data):
         """
-        Abstract method responsible for read an integer value of a message sent by a transductor.
-
-        Args:
-            message_received_data (str): The data from received message.
-        """
-        pass
-
-    @abstractmethod
-    def get_float_value_from_response(self, message_received_data):
-        """
-        Abstract method responsible for read an float value of a message sent by a transductor.
+        Abstract method responsible for read an value of a message sent by transductor.
 
         Args:
             message_received_data (str): The data from received message.
@@ -111,7 +103,27 @@ class ModbusRTU(SerialProtocol):
 
         return messages_to_send
 
-    def get_int_value_from_response(self, message_received_data):
+    def get_value_from_response(self, message_received_data):
+        """
+        Method responsible to read a value (int/float) from a Modbus RTU response.
+
+        Args:
+            message_received_data: The Modbus RTU response.
+
+        Returns:
+            int: if the value on response is an int.
+            float: if the value on response is an float.
+        """
+        n_bytes = struct.unpack("1B", message_received_data[2])[0]
+
+        msg = bytearray(message_received_data[3:-2])
+
+        if n_bytes == 2:
+            return self._unpack_int_response(n_bytes, msg)
+        else:
+            return self._unpack_float_response(n_bytes, msg)
+
+    def _unpack_int_response(self, n_bytes, msg):
         """
         `Source Code <http://www.ccontrolsys.com/w/How_to_read_WattNode_Float_Registers_in_the_Python_Language>`_
 
@@ -121,10 +133,6 @@ class ModbusRTU(SerialProtocol):
         Returns:
             int: The value from response.
         """
-        n_bytes = struct.unpack("1B", message_received_data[2])[0]
-
-        msg = bytearray(message_received_data[3:-2])
-
         for i in range(0, n_bytes, 2):
             if sys.byteorder == "little":
                 msb = msg[i]
@@ -134,7 +142,7 @@ class ModbusRTU(SerialProtocol):
         value = struct.unpack("1h", msg)[0]
         return value
 
-    def get_float_value_from_response(self, message_received_data):
+    def _unpack_float_response(self, n_bytes, msg):
         """
         `Source Code <http://www.ccontrolsys.com/w/How_to_read_WattNode_Float_Registers_in_the_Python_Language>`_
 
@@ -144,10 +152,6 @@ class ModbusRTU(SerialProtocol):
         Returns:
             float: The value from response.
         """
-        n_bytes = struct.unpack("1B", message_received_data[2])[0]
-
-        msg = bytearray(message_received_data[3:-2])
-
         for i in range(0, n_bytes, 4):
             if sys.byteorder == "little":
                 msb = msg[i]
@@ -259,7 +263,7 @@ class UdpProtocol(TransportProtocol):
         receive_attemps (int): Total attempts to receive a message via socket UDP.
         max_receive_attempts (int): Maximum number of attemps to receive message via socket UDP.
     """
-    def __init__(self, serial_protocol, timeout=10.0, port=1001):
+    def __init__(self, serial_protocol, timeout=0.5, port=1001):
         super(UdpProtocol, self).__init__(serial_protocol, timeout, port)
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.settimeout(timeout)
@@ -325,3 +329,37 @@ class UdpProtocol(TransportProtocol):
             messages.append(message_received[0])
 
         return messages
+
+
+class DataCollector(object):
+    def __init__(self):
+        self.transductors = Transductor.objects.all()
+
+    def collect_data_thread(self, transductor):
+        # Creating instances of the serial and transport protocol used by the transductor
+        serial_protocol_instance = globals()[transductor.model.serial_protocol](transductor)
+        tranport_protocol_instance = globals()[transductor.model.transport_protocol](serial_protocol_instance)
+
+        try:
+            messages = tranport_protocol_instance.start_communication()
+        except BrokenTransductorException:
+            if not transductor.broken:
+                transductor.set_transductor_broken(True)
+
+            return None
+
+        if transductor.broken:
+            transductor.set_transductor_broken(False)
+
+        values = []
+
+        for message in messages:
+            values.append(serial_protocol_instance.get_value_from_response(message))
+
+        # measurements_instance = globals()[transductor.model.transport_protocol](transductor)
+        # measurements_instance.save_energy_measurements_by_response(values)
+
+    def perform_all_data_collection(self):
+        for transductor in self.transductors:
+            collection_thread = threading.Thread(target=self.collect_data_thread, args=(transductor,))
+            collection_thread.start()
