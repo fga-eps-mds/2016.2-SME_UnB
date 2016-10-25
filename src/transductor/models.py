@@ -39,6 +39,7 @@ class TransductorModel(models.Model):
     name = models.CharField(max_length=50, unique=True)
     transport_protocol = models.CharField(max_length=50)
     serial_protocol = models.CharField(max_length=50)
+    measurements_type = models.CharField(max_length=50)
     register_addresses = ArrayField(ArrayField(models.IntegerField()))
 
     def __str__(self):
@@ -130,6 +131,8 @@ class Measurements(PolymorphicModel):
     collection_date = models.DateField('date published', auto_now=True)
     collection_minute = models.IntegerField(default=None)
 
+    def save_measurements(self, values_list):
+        pass
 
 class EnergyMeasurementsManager(PolymorphicManager):
     def average_annual(self, year, *args):
@@ -221,7 +224,7 @@ class EnergyMeasurements(Measurements):
     def __str__(self):
         return '%s' % self.collection_date
 
-    def save_energy_measurements_by_response(self, values_list):
+    def save_measurements(self, values_list):
         self.voltage_a = values_list[0]
         self.voltage_b = values_list[1]
         self.voltage_c = values_list[2]

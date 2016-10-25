@@ -40,7 +40,7 @@ class ModBusRTUTestCase(TestCase):
     def test_read_int_value_from_response(self):
         response = '\x01\x03\x02\x00\xdc\xb9\xdd'
 
-        int_value = self.modbus_rtu.get_value_from_response(response)
+        int_value = self.modbus_rtu.get_measurement_value_from_response(response)
 
         self.assertEqual(int_value, 220)
 
@@ -49,9 +49,9 @@ class ModBusRTUTestCase(TestCase):
         response_2 = '\x01\x03\x04dIC\\\x05\xdc'
         response_3 = '\x01\x03\x04\xa3BCY\x89i'
 
-        float_value_1 = self.modbus_rtu.get_value_from_response(response_1)
-        float_value_2 = self.modbus_rtu.get_value_from_response(response_2)
-        float_value_3 = self.modbus_rtu.get_value_from_response(response_3)
+        float_value_1 = self.modbus_rtu.get_measurement_value_from_response(response_1)
+        float_value_2 = self.modbus_rtu.get_measurement_value_from_response(response_2)
+        float_value_3 = self.modbus_rtu.get_measurement_value_from_response(response_3)
 
         self.assertAlmostEqual(float_value_1, 220.372802734375, places=7, msg=None, delta=None)
         self.assertAlmostEqual(float_value_2, 220.39173889160156, places=7, msg=None, delta=None)
@@ -103,12 +103,12 @@ class ModBusRTUTestCase(TestCase):
 
     @mock.patch.object(ModbusRTU, '_unpack_int_response', return_value=1, autospec=True)
     @mock.patch.object(ModbusRTU, '_unpack_float_response', return_value=5.0, autospec=True)
-    def test_modbusrtu_get_value_from_response(self, float_mock_method, int_mock_method):
+    def test_modbusrtu_get_measurement_value_from_response(self, float_mock_method, int_mock_method):
         int_response = '\x01\x03\x02\x00\xdc\xb9\xdd'
         float_response = '\x01\x03\x04_pC\\\xd8\xf5'
 
-        int_value = self.modbus_rtu.get_value_from_response(int_response)
+        int_value = self.modbus_rtu.get_measurement_value_from_response(int_response)
         self.assertEqual(1, int_value)
 
-        float_value = self.modbus_rtu.get_value_from_response(float_response)
+        float_value = self.modbus_rtu.get_measurement_value_from_response(float_response)
         self.assertEqual(5.0, float_value)

@@ -50,7 +50,7 @@ setup(
     packages=find_packages('src'),
     install_requires=[
         'requests[security]',
-        'django==1.9',
+        'django==1.9.8',
         'psycopg2==2.6',
         'numpy',
         'pandas',

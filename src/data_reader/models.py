@@ -5,6 +5,7 @@ import socket
 import struct
 import sys
 import threading
+import importlib
 
 
 class SerialProtocol(object):
@@ -28,7 +29,7 @@ class SerialProtocol(object):
         pass
 
     @abstractmethod
-    def get_value_from_response(self, message_received_data):
+    def get_measurement_value_from_response(self, message_received_data):
         """
         Abstract method responsible for read an value of a message sent by transductor.
 
@@ -103,7 +104,7 @@ class ModbusRTU(SerialProtocol):
 
         return messages_to_send
 
-    def get_value_from_response(self, message_received_data):
+    def get_measurement_value_from_response(self, message_received_data):
         """
         Method responsible to read a value (int/float) from a Modbus RTU response.
 
@@ -293,7 +294,7 @@ class UdpProtocol(TransportProtocol):
             if not received_messages:
                 self.receive_attempts += 1
 
-        if self.receive_attempts == self.max_receive_attempts and not self.transductor.broken:
+        if self.receive_attempts == self.max_receive_attempts:
             raise BrokenTransductorException("Transductor is broken!")
 
         return received_messages
@@ -334,32 +335,33 @@ class UdpProtocol(TransportProtocol):
 class DataCollector(object):
     def __init__(self):
         self.transductors = Transductor.objects.all()
+        self.transductor_module = importlib.import_module("transductor.models")
 
     def collect_data_thread(self, transductor):
         # Creating instances of the serial and transport protocol used by the transductor
         serial_protocol_instance = globals()[transductor.model.serial_protocol](transductor)
         tranport_protocol_instance = globals()[transductor.model.transport_protocol](serial_protocol_instance)
-
         try:
             messages = tranport_protocol_instance.start_communication()
         except BrokenTransductorException:
             if not transductor.broken:
                 transductor.set_transductor_broken(True)
-
             return None
 
         if transductor.broken:
             transductor.set_transductor_broken(False)
 
-        values = []
+        measurements = []
 
         for message in messages:
-            values.append(serial_protocol_instance.get_value_from_response(message))
+            measurements.append(serial_protocol_instance.get_measurement_value_from_response(message))
 
-        # measurements_instance = globals()[transductor.model.transport_protocol](transductor)
-        # measurements_instance.save_energy_measurements_by_response(values)
+        GenericMeasurementsClass = getattr(self.transductor_module, transductor.measurements_type)
+        generic_measurements_instance = GenericMeasurementsClass(transductor=transductor)
+        generic_measurements_instance.save_measurements(measurements)
 
     def perform_all_data_collection(self):
         for transductor in self.transductors:
-            collection_thread = threading.Thread(target=self.collect_data_thread, args=(transductor,))
-            collection_thread.start()
+            self.collect_data_thread(transductor)
+            # collection_thread = threading.Thread(target=self.collect_data_thread, args=(transductor,))
+            # collection_thread.start()
