@@ -341,6 +341,7 @@ class DataCollector(object):
         # Creating instances of the serial and transport protocol used by the transductor
         serial_protocol_instance = globals()[transductor.model.serial_protocol](transductor)
         tranport_protocol_instance = globals()[transductor.model.transport_protocol](serial_protocol_instance)
+
         try:
             messages = tranport_protocol_instance.start_communication()
         except BrokenTransductorException:
@@ -356,12 +357,11 @@ class DataCollector(object):
         for message in messages:
             measurements.append(serial_protocol_instance.get_measurement_value_from_response(message))
 
-        GenericMeasurementsClass = getattr(self.transductor_module, transductor.measurements_type)
+        GenericMeasurementsClass = getattr(self.transductor_module, transductor.model.measurements_type)
         generic_measurements_instance = GenericMeasurementsClass(transductor=transductor)
         generic_measurements_instance.save_measurements(measurements)
 
     def perform_all_data_collection(self):
         for transductor in self.transductors:
-            self.collect_data_thread(transductor)
-            # collection_thread = threading.Thread(target=self.collect_data_thread, args=(transductor,))
-            # collection_thread.start()
+            collection_thread = threading.Thread(target=self.collect_data_thread, args=(transductor,))
+            collection_thread.start()

@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from polymorphic.manager import PolymorphicManager
 from django.db import models
+from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import FieldError
@@ -134,6 +135,7 @@ class Measurements(PolymorphicModel):
     def save_measurements(self, values_list):
         pass
 
+
 class EnergyMeasurementsManager(PolymorphicManager):
     def average_annual(self, year, *args):
         qs = self.get_queryset().filter(collection_date__year=year)
@@ -240,7 +242,8 @@ class EnergyMeasurements(Measurements):
         self.apparent_power_a = EnergyOperations.calculate_apparent_power(self.active_power_a, self.reactive_power_a)
         self.apparent_power_b = EnergyOperations.calculate_apparent_power(self.active_power_b, self.reactive_power_b)
         self.apparent_power_c = EnergyOperations.calculate_apparent_power(self.active_power_c, self.reactive_power_c)
-        print self.__dict__
+        self.collection_minute = timezone.now().minute
+        self.save()
 
 
 class EnergyOperations(object):
