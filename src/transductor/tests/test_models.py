@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
-from transductor.models import EnergyTransductor, TransductorModel, EnergyOperations, EnergyMeasurements
+from transductor.models import EnergyTransductor, TransductorModel, EnergyOperations, EnergyMeasurements, Measurements
 import numpy
 
 
@@ -62,7 +62,7 @@ class EnergyTransductorTestCase(TestCase):
 
         self.assertEqual(transductor.description, transductor.__str__())
 
-    def test_energy_operations(self):
+    def test_calculate_total_power_and_str_method(self):
         e_measurement = EnergyMeasurements.objects.get(voltage_a=122.875, voltage_b=122.784, voltage_c=121.611)
 
         colection_date = '%s' % e_measurement.collection_date
@@ -72,6 +72,11 @@ class EnergyTransductorTestCase(TestCase):
         total_active_power = EnergyOperations.calculate_total_power(e_measurement.active_power_a, e_measurement.active_power_b, e_measurement.active_power_c)
 
         self.assertAlmostEqual(8.716, total_active_power, places=3, msg=None, delta=None)
+
+    def test_calculate_apparent_power(self):
+        self.assertEqual(5, EnergyOperations.calculate_apparent_power(3, 4))
+        self.assertEqual(13, EnergyOperations.calculate_apparent_power(12, 5))
+        self.assertEqual(25, EnergyOperations.calculate_apparent_power(24, 7))
 
     def test_annual_energy_measurements(self):
         data = EnergyMeasurements.mng_objects.average_annual(2016, 'voltage_a', 'voltage_b', 'voltage_c')
@@ -86,6 +91,10 @@ class EnergyTransductorTestCase(TestCase):
 
         self.transductor.set_transductor_broken(False)
         self.assertFalse(self.transductor.broken)
+
+    def test_father_method_save_measurements(self):
+        measurements = Measurements()
+        self.assertEqual(None, measurements.save_measurements('any value'))
 
     def create_energy_measurements(self):
         for index in range(0, 4):

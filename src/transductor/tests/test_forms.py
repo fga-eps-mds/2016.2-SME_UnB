@@ -9,6 +9,7 @@ class EnergyTransductorForm(TestCase):
         t_model.name = "TR 4020"
         t_model.transport_protocol = "UDP"
         t_model.serial_protocol = "Mosbus RTU"
+        t_model.measurements_type = "EnergyMeasurements"
         t_model.register_addresses = [[68, 0], [70, 1]]
         t_model.save()
 

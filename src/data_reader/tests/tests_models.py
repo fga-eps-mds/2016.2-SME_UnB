@@ -117,28 +117,28 @@ class ModBusRTUTestCase(TestCase):
         float_value = self.modbus_rtu.get_measurement_value_from_response(float_response)
         self.assertEqual(5.0, float_value)
 
-    @mock.patch.object(DataCollector, 'collect_data_thread', return_value='any return', autospec=True)
+    @mock.patch.object(DataCollector, 'single_data_collection', return_value='any return', autospec=True)
     @mock.patch.object(Thread, 'start', return_value=None)
-    def test_data_collector_perform_all_data_collection(self, mock_start, mock_collect_data_thread):
+    def test_data_collector_perform_all_data_collection(self, mock_start, mock_single_data_collection):
         data_collector = DataCollector()
         data_collector.perform_all_data_collection()
 
         mock_start.assert_called_with()
 
     @mock.patch.object(UdpProtocol, 'start_communication', side_effect=BrokenTransductorException('Transductor is Broken!'))
-    def test_collect_data_thread_with_transductor_broken_and_receive_timeout(self, mock_start_communication):
+    def test_single_data_collection_with_transductor_broken_and_receive_timeout(self, mock_start_communication):
         self.transductor.broken = True
 
         data_collector = DataCollector()
-        data_collector.collect_data_thread(self.transductor)
+        data_collector.single_data_collection(self.transductor)
 
         mock_start_communication.assert_called_with()
 
     @mock.patch.object(EnergyTransductor, 'set_transductor_broken', return_value=None)
     @mock.patch.object(UdpProtocol, 'start_communication', side_effect=BrokenTransductorException('Transductor is Broken!'))
-    def test_collect_data_thread_with_transductor_not_broken_and_receive_timeout(self, mock_1, mock_2):
+    def test_single_data_collection_with_transductor_not_broken_and_receive_timeout(self, mock_1, mock_2):
         data_collector = DataCollector()
-        data_collector.collect_data_thread(self.transductor)
+        data_collector.single_data_collection(self.transductor)
 
         mock_1.assert_called_with()
         mock_2.assert_called_with(True)
@@ -147,11 +147,11 @@ class ModBusRTUTestCase(TestCase):
     @mock.patch.object(ModbusRTU, 'get_measurement_value_from_response', return_value=1)
     @mock.patch.object(EnergyTransductor, 'set_transductor_broken', return_value=None)
     @mock.patch.object(UdpProtocol, 'start_communication', return_value=['Message 1', 'Message 2'])
-    def test_collect_data_thread_with_transductor_broken_and_not_receive_timeout(self, mock_1, mock_2, mock_3, mock_4):
+    def test_single_data_collection_with_transductor_broken_and_not_receive_timeout(self, mock_1, mock_2, mock_3, mock_4):
         self.transductor.broken = True
 
         data_collector = DataCollector()
-        data_collector.collect_data_thread(self.transductor)
+        data_collector.single_data_collection(self.transductor)
 
         mock_1.assert_called_with()
         mock_2.assert_called_with(False)
@@ -164,9 +164,9 @@ class ModBusRTUTestCase(TestCase):
     @mock.patch.object(EnergyMeasurements, 'save_measurements', return_value=None)
     @mock.patch.object(ModbusRTU, 'get_measurement_value_from_response', return_value=1)
     @mock.patch.object(UdpProtocol, 'start_communication', return_value=['Message 1', 'Message 2'])
-    def test_collect_data_thread_with_transductor_broken_and_not_timeout(self, mock_1, mock_2, mock_3):
+    def test_single_data_collection_with_transductor_broken_and_not_timeout(self, mock_1, mock_2, mock_3):
         data_collector = DataCollector()
-        data_collector.collect_data_thread(self.transductor)
+        data_collector.single_data_collection(self.transductor)
 
         mock_1.assert_called_with()
 

@@ -323,9 +323,6 @@ class UdpProtocol(TransportProtocol):
                 message_received = self.socket.recvfrom(256)
             except socket.timeout:
                 return None
-            except socket.error:
-                # TODO: add exception
-                pass
 
             messages.append(message_received[0])
 
@@ -333,11 +330,29 @@ class UdpProtocol(TransportProtocol):
 
 
 class DataCollector(object):
+    """
+    Class responsible to handle all transductor measurements collect.
+
+    Attributes:
+        transductors (Transductor): The existing transductors.
+        transductor_module (module): The module that contains the transductor models.
+    """
     def __init__(self):
         self.transductors = Transductor.objects.all()
         self.transductor_module = importlib.import_module("transductor.models")
 
-    def collect_data_thread(self, transductor):
+    def single_data_collection(self, transductor):
+        """
+        Thread method responsible to handle all the communication used by a transductor and save the
+        measurements collected.
+
+        Args:
+            transductor (Transductor): The transductor used.
+
+        Returns:
+            None
+        """
+
         # Creating instances of the serial and transport protocol used by the transductor
         serial_protocol_instance = globals()[transductor.model.serial_protocol](transductor)
         tranport_protocol_instance = globals()[transductor.model.transport_protocol](serial_protocol_instance)
@@ -362,6 +377,12 @@ class DataCollector(object):
         generic_measurements_instance.save_measurements(measurements)
 
     def perform_all_data_collection(self):
+        """
+        Method responsible to start all transductors data collection simultaneously.
+
+        Returns:
+            None
+        """
         for transductor in self.transductors:
-            collection_thread = threading.Thread(target=self.collect_data_thread, args=(transductor,))
+            collection_thread = threading.Thread(target=self.single_data_collection, args=(transductor,))
             collection_thread.start()

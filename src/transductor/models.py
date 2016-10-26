@@ -133,6 +133,15 @@ class Measurements(PolymorphicModel):
     collection_minute = models.IntegerField(default=None)
 
     def save_measurements(self, values_list):
+        """
+        Method responsible to save measurements based on values list received.
+
+        Args:
+            values_list (list): The list with all important measurements values.
+
+        Returns:
+            None
+        """
         pass
 
 
@@ -227,6 +236,15 @@ class EnergyMeasurements(Measurements):
         return '%s' % self.collection_date
 
     def save_measurements(self, values_list):
+        """
+        Method responsible to save measurements based on values list received.
+
+        Args:
+            values_list (list): The list with all important measurements values.
+
+        Return:
+            None
+        """
         self.voltage_a = values_list[0]
         self.voltage_b = values_list[1]
         self.voltage_c = values_list[2]
@@ -249,15 +267,35 @@ class EnergyMeasurements(Measurements):
 class EnergyOperations(object):
     """
     Class responsible to perform energy mathematical operations.
-
-    Atributtes:
-        energy_measurement (EnergyMeasurements): Energy measurements related to a specific instant of time.
     """
 
     @classmethod
     def calculate_total_power(cls, a, b, c):
+        """
+        Method responsible to calculate the total active, reactive or apparent power
+        considering a three-phase energy system.
+
+        Args:
+            a (int/float): The active, reactive or apparent power on phase a.
+            b (int/float): The active, reactive or apparent power on phase b.
+            c (int/float): The active, reactive or apparent power on phase c.
+
+        Returns:
+            int: if the sum envolves integer numbers.
+            float: if the sum envolves float numbers.
+        """
         return (a + b + c)
 
     @classmethod
     def calculate_apparent_power(cls, active_power, reactive_power):
+        """
+        Method responsible to calculate the apparent power of a respective phase.
+
+        Args:
+            active_power (float): The active power on phase a, b or c.
+            reactive_power (float): The reactive power on phase a, b or c.
+
+        Returns:
+            float: the apparent power.
+        """
         return (active_power * active_power + reactive_power * reactive_power)**.5
