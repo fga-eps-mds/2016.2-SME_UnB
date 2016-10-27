@@ -32,6 +32,13 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
+    def test_getting_edit_self_user(self):
+        response = self.client.post(
+            '/accounts/self_edit/',
+        )
+        self.assertEqual(200, response.status_code)
+
+
     def test_getting_wrong_page_login(self):
         response = self.client.post(
             '/accounts/ladfogin/',
@@ -78,6 +85,90 @@ class TestLoginView(unittest.TestCase):
         response = self.client.get( '/accounts/register/')
 
         self.assertEqual(200, response.status_code)
+
+    def test_post_self_user_edit(self):
+        logged_in = self.client.login(username='testuser', password='12345')
+        response = self.client.post(
+            '/accounts/self_edit/',
+            {
+                'username': 'testsecond',
+                'password': '123456',
+                'confirmPassword': '123456',
+                'first_name': 'Testsecond',
+                'last_name': 'Lastname',
+                'email': 'test@email.com'
+            }
+        )
+
+    self.assertEqual(200, response.status_code)
+
+    def test_post_self_user_edit_wrong_name(self):
+        logged_in = self.client.login(username='testuser', password='12345')
+        response = self.client.post(
+            '/accounts/self_edit/',
+            {
+                'username': 'testsecond',
+                'password': '123456',
+                'confirmPassword': '123456',
+                'first_name': 'Testsecond234',
+                'last_name': 'Lastname',
+                'email': 'test@email.com'
+            }
+        )
+
+        self.assertEqual(200, response.status_code)
+
+    def test_post_self_user_edit_wrong_email(self):
+        logged_in = self.client.login(username='testuser', password='12345')
+        response = self.client.post(
+            '/accounts/self_edit/',
+            {
+                'username': 'testsecond',
+                'password': '123456',
+                'confirmPassword': '123456',
+                'first_name': 'Testsecond',
+                'last_name': 'Lastname',
+                'email': 'testemail.com'
+            }
+        )
+
+        self.assertEqual(200, response.status_code)
+
+    def test_post_self_user_edit_wrong_last_name(self):
+        logged_in = self.client.login(username='testuser', password='12345')
+        response = self.client.post(
+            '/accounts/self_edit/',
+            {
+                'username': 'testsecond',
+                'password': '123456',
+                'confirmPassword': '123456',
+                'first_name': 'Testsecond',
+                'last_name': 'Lastname9',
+                'email': 'test@email.com'
+            }
+        )
+
+        self.assertEqual(200, response.status_code)
+
+
+
+    def test_post_self_user_edit_wrong_pass(self):
+        logged_in = self.client.login(username='testuser', password='12345')
+        response = self.client.post(
+            '/accounts/self_edit/',
+            {
+                'username': 'testsecond',
+                'password': '12345',
+                'confirmPassword': '12345',
+                'first_name': 'Testsecond',
+                'last_name': 'Lastname',
+                'email': 'test@email.com'
+            }
+        )
+
+        self.assertEqual(200, response.status_code)
+
+
 
     def test_post_user_register(self):
         logged_in = self.client.login(username='testuser', password='12345')
