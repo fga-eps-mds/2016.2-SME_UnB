@@ -18,7 +18,7 @@
           <tr>
             <td>{{user.first_name}}</td>
             <td>{{user.last_name}}</td>
-            <td>{{user.email}}</td>
+            <td>{{user.username}}</td>
             <td><a  class="glyphicon glyphicon-trash" href="{% url 'users:delete_user' user.id %}"></a></td>
           </tr>
           {% endfor %}

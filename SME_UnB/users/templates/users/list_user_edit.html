@@ -24,7 +24,7 @@
           <tr>
             <td>{{user.first_name}}</td>
             <td>{{user.last_name}}</td>
-            <td>{{user.email}}</td>
+            <td>{{user.username}}</td>
             <td><a  class="glyphicon glyphicon-pencil" href="{% url 'users:edit_user' user.id %}"></a></td>
           </tr>
           {% endfor %}

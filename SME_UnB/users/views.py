@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
+from django.db import IntegrityError
 
 
 def home(request):
@@ -79,16 +80,19 @@ def register(request):
                 {'falha': resultCheck})
 
         # Fim do bloco que saira da view
+        first_name = form.get('first_name')
+        last_name = form.get('last_name')
+        password = form.get('password')
+        email = form.get('email')
 
         try:
             user = User.objects.create_user(
-                first_name=first_name, last_name=last_name, password=password, username=email)
+                        first_name=first_name, last_name=last_name, password=password, username=email)
+        except  IntegrityError as e:
+            return render(request, 'userRegister/register.html', {'falha': 'Invalid email, email already exist'})
         except:
-            return render(request, 'userRegister/register.html', {'falha': 'Email invalido!'})
+            return render(request, 'userRegister/register.html', {'falha': 'unexpected error'})
 
-        user.last_name = last_name
-        user.first_name = first_name
-        user.email = email
         give_permission(request, user)
         user.save()
 
@@ -238,7 +242,7 @@ def __list__(request, template):
 
 def __prepare_error_render__(request, fail_message, user):
 
-    return render(request, 'user/edit_user.html', {'falha': fail_message, 'user': user})
+    return render(request, 'users/edit_user.html', {'falha': fail_message, 'user': user})
 
 def __permision__(permision_type, codename, user):
 
