@@ -100,7 +100,7 @@ class TestLoginView(unittest.TestCase):
             }
         )
 
-    self.assertEqual(200, response.status_code)
+        self.assertEqual(200, response.status_code)
 
     def test_post_self_user_edit_wrong_name(self):
         logged_in = self.client.login(username='testuser', password='12345')

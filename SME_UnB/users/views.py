@@ -191,6 +191,40 @@ def check_permissions(user):
 
 
 @login_required
+def self_edit_user(request):
+
+    user_id = request.user.id
+    user = User.objects.get(id=user_id)
+
+    if request.method == "GET":
+        context = check_permissions(user)
+        return render(request, 'users/self_edit.html', context)
+
+    else:
+        form = request.POST
+        first_name = form.get('first_name')
+        last_name =  form.get('last_name')
+        email = form.get('email')
+
+        resultCheck = fullValidation(form)
+
+        if len(resultCheck) != 0:
+            return __prepare_error_render_self__(request, resultCheck, user)
+
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = email
+        user.email = email
+
+        context = check_permissions(user)
+        logger = logging.getLogger(__name__)
+        logger.info(request.user.__str__() + ' edited '  + user.__str__() )
+        context['info'] = 'usuario modificado com sucesso'
+
+        return render(request, 'users/self_edit.html', context)
+
+
+@login_required
 def edit_user(request, user_id):
 
     user = User.objects.get(id=user_id)
@@ -262,6 +296,10 @@ def __list__(request, template):
 def __prepare_error_render__(request, fail_message, user):
 
     return render(request, 'users/edit_user.html', {'falha': fail_message, 'user': user})
+
+def __prepare_error_render_self__(request, fail_message, user):
+
+    return render(request, 'users/self_edit.html', {'falha': fail_message, 'user': user})
 
 def __permision__(permision_type, codename, user):
 
