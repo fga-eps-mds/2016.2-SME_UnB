@@ -160,6 +160,8 @@ def fullValidationRegister(form):
     resultCheck += check_password_lenght(password, confirmPassword)
     resultCheck += check_password(password, confirmPassword)
 
+    return resultCheck
+
 @login_required
 def list_user_edit(request):
 
@@ -184,7 +186,7 @@ def check_permissions(user):
         "edit_users": has_edit_user_permission,
         "delete_users": has_delete_user_permission,
     }
-    
+
     return context
 
 
