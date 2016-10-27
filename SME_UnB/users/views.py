@@ -77,7 +77,7 @@ def register(request):
     else:
         form = request.POST
 
-        resultCheck = fullValidation(form)
+        resultCheck = fullValidationRegister(form)
 
         if len(resultCheck) != 0:
             return render(
@@ -119,8 +119,8 @@ def check_email(email):
     else:
         return ''
 
-def check_email_exist(email):
-    if User.objects.filter(email=email).exists():
+def check_email_exist(email,original_email):
+    if User.objects.filter(email=email).exists() and email != original_email:
         return ' -- E-mail já esta cadastrado no nosso banco de dados'
     else:
         return ''
@@ -140,18 +140,25 @@ def check_password(password, confirmPassword):
 def fullValidation(form):
     first_name = form.get('first_name')
     last_name = form.get('last_name')
-    password = form.get('password')
-    confirmPassword = form.get('confirmPassword')
     email = form.get('email')
+    original_email = form.get('original_email')
+
 
     resultCheck = ''
     resultCheck += check_name(first_name, last_name)
     resultCheck += check_email(email)
-    resultCheck += check_email_exist(email)
-    resultCheck += check_password_lenght(password, confirmPassword)
-    resultCheck += check_password(password, confirmPassword)
+    resultCheck += check_email_exist(email,original_email)
 
     return resultCheck
+
+def fullValidationRegister(form):
+    password = form.get('password')
+    confirmPassword = form.get('confirmPassword')
+
+    resultCheck = ''
+    resultCheck += fullValidation(form)
+    resultCheck += check_password_lenght(password, confirmPassword)
+    resultCheck += check_password(password, confirmPassword)
 
 @login_required
 def list_user_edit(request):
@@ -177,7 +184,7 @@ def check_permissions(user):
         "edit_users": has_edit_user_permission,
         "delete_users": has_delete_user_permission,
     }
-
+    
     return context
 
 
@@ -194,8 +201,6 @@ def edit_user(request, user_id):
         form = request.POST
         first_name = form.get('first_name')
         last_name =  form.get('last_name')
-        password = form.get('password')
-        confirPassword = form.get('confirmPassword')
         email = form.get('email')
 
         resultCheck = fullValidation(form)
@@ -207,8 +212,6 @@ def edit_user(request, user_id):
         user.last_name = last_name
         user.username = email
         user.email = email
-        user.set_password(password)
-
 
         give_permission(request, user)
 
