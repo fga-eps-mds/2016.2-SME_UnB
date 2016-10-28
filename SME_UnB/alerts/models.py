@@ -6,6 +6,8 @@ from enum import Enum
 import pusher
 from django.core import serializers
 from datetime import datetime
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your models here.
 
@@ -51,12 +53,19 @@ class UserNotification(object):
 
         alertJson = serializers.serialize('json', [ alert, ])
 
+
+        if priority == 4:
+            print "chegou"
+            send_mail('Subject here', 'Here is the message.', settings.EMAIL_HOST_USER,[user.email], fail_silently=False)
+
+
         alert.save()
 
         return alertJson
 
 
 class PriorityOfNotification(Enum):
+    DANGEROUS = 4
     HIGH = 3
     MEDIUM = 2
     LOW = 1
