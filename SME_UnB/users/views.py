@@ -50,6 +50,10 @@ def make_login(request):
         logger.info(user.__str__() + ' User is logged')
         login(request, user)
         message = "Logged"
+
+
+
+
         is_logged = True
     else:
         message = "Incorrect user"
@@ -193,20 +197,22 @@ def check_permissions(user):
 @login_required
 def self_edit_user(request):
 
-    user_id = request.user.id
-    user = User.objects.get(id=user_id)
+    user = User.objects.get(pk=request.user.id)
+    print(user)
 
     if request.method == "GET":
-        context = check_permissions(user)
-        return render(request, 'users/self_edit.html', context)
+        return render(request, 'users/self_edit.html',)
 
     else:
         form = request.POST
         first_name = form.get('first_name')
         last_name =  form.get('last_name')
         email = form.get('email')
+        password = form.get('password')
+        print(first_name)
+        print(password)
 
-        resultCheck = fullValidation(form)
+        resultCheck = fullValidationRegister(form)
 
         if len(resultCheck) != 0:
             return __prepare_error_render_self__(request, resultCheck, user)
@@ -215,13 +221,18 @@ def self_edit_user(request):
         user.last_name = last_name
         user.username = email
         user.email = email
+        if password != "":
+            user.set_password(password)
+        user.save()
 
-        context = check_permissions(user)
+        user = authenticate(username=email, password=user.password)
+        login(request, user)
+
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' edited '  + user.__str__() )
-        context['info'] = 'usuario modificado com sucesso'
 
-        return render(request, 'users/self_edit.html', context)
+
+        return render(request, 'users/dashboard.html')
 
 
 @login_required
