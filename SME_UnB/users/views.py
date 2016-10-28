@@ -209,8 +209,6 @@ def self_edit_user(request):
         last_name =  form.get('last_name')
         email = form.get('email')
         password = form.get('password')
-        print(first_name)
-        print(password)
 
         resultCheck = fullValidationRegister(form)
 
@@ -224,9 +222,6 @@ def self_edit_user(request):
         if password != "":
             user.set_password(password)
         user.save()
-
-        user = authenticate(username=email, password=user.password)
-        login(request, user)
 
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' edited '  + user.__str__() )
