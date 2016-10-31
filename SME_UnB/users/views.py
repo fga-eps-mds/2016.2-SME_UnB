@@ -12,6 +12,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 from django.db import IntegrityError
+from django.contrib.auth.decorators import user_passes_test
 
 import logging
 
@@ -70,6 +71,7 @@ def logout_view(request, *args, **kwargs):
 
 
 @login_required
+@user_passes_test(lambda user:user.is_staff, login_url='/accounts/dashboard/')
 def register(request):
 
     if request.method == "GET":
