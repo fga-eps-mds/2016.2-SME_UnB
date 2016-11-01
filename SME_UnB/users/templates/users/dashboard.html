@@ -11,8 +11,8 @@
       {%endif%}
       <li><a href="{% url 'transductor:index'%}">{% trans "Transductors" %}</a></li>
       {% if request.user.is_staff %}
-      {% endif %}
       <li><a href="{% url 'users:register' %}">{% trans "Register" %}</a></li>
+      {% endif %}      
       {%if perms.users.can_edit_user%}
       <li><a href="{% url 'users:list_user_edit' %}">{% trans "Edit Users" %}</a></li>
       {%endif%}
