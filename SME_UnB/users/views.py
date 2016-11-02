@@ -13,6 +13,9 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
+from django.core.mail import send_mail
+
+from SME_UnB.settings import EMAIL_HOST_USER
 
 import logging
 
@@ -82,6 +85,10 @@ def register(request):
         return render(request, 'userRegister/register.html')
     else:
         form = request.POST
+        first_name=form.get('first_name')
+        last_name=form.get('last_name')
+        password=form.get('password')
+        email=form.get('email')
 
         resultCheck = fullValidationRegister(form)
 
@@ -105,13 +112,38 @@ def register(request):
             return render(request, 'userRegister/register.html', {'falha': 'Invalid email, email already exist'})
         except:
             return render(request, 'userRegister/register.html', {'falha': 'unexpected error'})
-
         give_permission(request, user)
         user.save()
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' Registered ' + user.__str__() )
 
-        return render(request, 'users/dashboard.html')
+	print(email)
+	from django.core import mail
+	connection = mail.get_connection()
+
+	# Manually open the connection
+	connection.open()
+
+	# Construct an email message that uses the connection
+	email1 = mail.EmailMessage(
+	    'Hello',
+	    'Body goes here',
+	    'mds@sof2u.com',
+	    [email],
+	    connection=connection,
+	)
+	email1.send() # Send the email
+	"""
+	send_mail(
+            'Account registered with success',
+	    'Your account on SME-UNB was successfully created',
+	    'mds@sof2u.com',
+	    [email],
+	    fail_silently=False,
+	)
+	"""
+
+    return render(request, 'users/dashboard.html')
 
 def check_name(first_name, last_name):
     if not first_name.isalpha() or not last_name.isalpha():
