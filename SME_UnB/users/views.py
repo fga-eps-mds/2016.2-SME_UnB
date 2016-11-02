@@ -13,8 +13,11 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponse
 
+import json
 import logging
+import hashlib
 
 
 def home(request):
@@ -265,3 +268,66 @@ def __permision__(permision_type, codename, user):
     if permision_type == 'on':
         permision = Permission.objects.get(codename=codename)
         user.user_permissions.add(permision)
+
+def _generate_token_(user):
+    """TODO: Docstring for _genarate_token_.
+    :user: is a user witch like changes the password
+    :returns: unique token to a user an a day
+
+    """
+    username = user.username
+    password = user.password
+    date = "data"
+
+    plain_text = username + password + date
+    token = hashlib.sha256(plain_text.encode('utf-8')).hexdigest()
+
+    return token
+
+def forgot_password(request):
+    """TODO: Docstring for forgot_password.
+
+    :request: recive the data with email to send a requesto of a new password
+    :returns: render a page with  message to see your email if the emails exists
+    and render an error if dont
+
+    """
+
+    print(request)
+    def post(request):
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            token = _generate_token_(user)
+
+            # send email
+            # dustteam.com.br/accounts/reset_password/'token'
+
+            context = {
+                    'message':"Email enviado com sucesso",
+                    'validate':"A recuperação de senha irá expirar após as " + \
+                    "24hr do dia de hoje",
+                    }
+
+        except User.DoesNotExist as e:
+            context = {
+                    'message':"Email inválido",
+                    'validate':""
+                    }
+
+
+        return context
+
+    context_return = {}
+
+    if request.method == "POST":
+        context_return = post(request)
+
+        return HttpResponse(
+                json.dumps(context_return),
+                'application/json'
+                )
+    else:
+        template_name = "users/forgot_password.html"
+        return render(request, template_name, context_return)
+
