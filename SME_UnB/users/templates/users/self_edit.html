@@ -29,10 +29,15 @@
               <input type="text" name= "last_name" value="{{user.last_name}}" class="form-control">
             </div>
             <div class="form-group">
-              <p1>{% trans "Password:" %}</p1>
+              <p1>{% trans "Current Password :" %}</p1>
+              <input type="password" name ="currentPassword" placeholder="current Password" class="form-control">
+            </div>
+            <div class="form-group">
+              <p1>{% trans "New Password:" %}</p1>
               <input type="password" name ="password" placeholder="Password" class="form-control">
             </div>
             <div class="form-group">
+                <p1>{% trans "Confirm New Password:" %}</p1>
               <input type="password" name ="confirmPassword" placeholder="confirm password" class="form-control">
             </div>
             <div class="form-group">
