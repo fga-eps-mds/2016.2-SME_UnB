@@ -6,3 +6,4 @@ matplotlib
 reportlab
 django-nose
 coverage
+unipath

@@ -23,19 +23,13 @@
             <p2>{{falha}}</p2>
             {% csrf_token %}
             <div class="form-group">
-              <input type="text" name= "first_name" placeholder="{{user.first_name}}" class="form-control">
+              <input type="text" name= "first_name" value="{{user.first_name}}" class="form-control">
             </div>
             <div class="form-group">
-              <input type="text" name= "last_name" placeholder="{{user.last_name}}" class="form-control">
+              <input type="text" name= "last_name" value="{{user.last_name}}" class="form-control">
             </div>
             <div class="form-group">
-              <input type="text" name= "email" placeholder="{{user.email}}" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" name ="password" placeholder="Nova Senha" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" name ="confirmPassword" placeholder="confirmar nova senha" class="form-control">
+              <input type="text" name= "email" value="{{user.email}}" class="form-control">
             </div>
             <p1>{% trans "User type:" %}</p1>
             <div class="form-group">
@@ -70,6 +64,8 @@
               </div>
             </div>
             <button type="submit" class="btn btn-success" onclick="return confirm('Voce tem certeza ?')" >{% trans "Register" %}</button>
+            <input type="hidden" name="original_email" value="{{user.email}}">
+            <button type="submit" class="btn btn-success" >{% trans "Register" %}</button>
             <a class="btn btn-primary" href="{% url 'users:list_user_edit' %}" role="button">{% trans "Cancel" %}</a>
           </form>
         </div>

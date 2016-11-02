@@ -17,11 +17,13 @@
           </tr>
           {% for user in users %}
           <tr>
+            {% if user.email != request.user.email %}
             <td>{{user.first_name}}</td>
             <td>{{user.last_name}}</td>
-            <td>{{user.email}}</td>
+            <td>{{user.username}}</td>
             <td><a  class="glyphicon glyphicon-trash" href="{% url 'users:delete_user' user.id %}"></a></td>
           </tr>
+          {% endif %}
           {% endfor %}
         </table>
       </div>

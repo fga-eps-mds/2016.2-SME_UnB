@@ -7,12 +7,12 @@
     <ul class="sidebar-nav">
       {% block breadcrumb %}
       {%if perms.report.can_generate%}
-      <li><a href="{% url 'report:report' %}">{% trans "Reports" %}</a></li>
+      <li><a href="{% url 'report:transductors_filter' %}">{% trans "Reports" %}</a></li>
       {%endif%}
       <li><a href="{% url 'transductor:index'%}">{% trans "Transductors" %}</a></li>
       {% if request.user.is_staff %}
-      {% endif %}
       <li><a href="{% url 'users:register' %}">{% trans "Register" %}</a></li>
+      {% endif %}      
       {%if perms.users.can_edit_user%}
       <li><a href="{% url 'users:list_user_edit' %}">{% trans "Edit Users" %}</a></li>
       {%endif%}
@@ -37,6 +37,7 @@
       {% block dashboard_content %}
       <p><strong>{% trans "Usuário" %}</strong>: {{ request.user.username}}</p>
       <p><strong>{% trans "E-mail" %}</strong>: {{ request.user.email }}</p>
+      <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/self_edit/">Editar meus dados</a>
       {% endblock %}
     </div>
   </div>

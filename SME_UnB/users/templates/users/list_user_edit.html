@@ -21,14 +21,15 @@
               <th>{% trans "Edit" %}</th>
           </tr>
           {% for user in users %}
-          <tr>
-            <td>{{user.first_name}}</td>
-            <td>{{user.last_name}}</td>
-            <td>{{user.email}}</td>
-            <td><a  class="glyphicon glyphicon-pencil" href="{% url 'users:edit_user' user.id %}"></a></td>
-          </tr>
+            {% if user.id != request.user.id %}
+              <tr>
+                <td>{{user.first_name}}</td>
+                <td>{{user.last_name}}</td>
+                <td>{{user.username}}</td>
+                <td><a  class="glyphicon glyphicon-pencil" href="{% url 'users:edit_user' user.id %}"></a></td>
+              </tr>
+            {% endif %}
           {% endfor %}
-
           </tab
         </div>
       </div>

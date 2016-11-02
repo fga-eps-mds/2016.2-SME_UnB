@@ -9,7 +9,7 @@ class TestReportView(unittest.TestCase):
 
     def test_getting_page_report(self):
         response = self.client.post(
-            '/reports/report/',
+            '/reports/report/1/',
             {"username": 'temporary', 'password': 'temporary' }
         )
 
@@ -28,3 +28,19 @@ class TestReportView(unittest.TestCase):
         response = self.client.get('/reports/open_pdf/')
 
         self.assertEqual(200, response.status_code)
+
+    def test_getting_page_filter(self):
+        response = self.client.post(
+            '/reports/transductors_filter/',
+            {"username": 'temporary', 'password': 'temporary' }
+        )
+
+        self.assertEqual(200, response.status_code)
+
+    def test_getting_wrong_page_filter(self):
+        response = self.client.post(
+            '/reports/transductors_filter/',
+            {"username": 'temporary', 'password': 'temporary' }
+        )
+
+        self.assertEqual(404, response.status_code)
