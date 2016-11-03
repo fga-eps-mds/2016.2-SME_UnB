@@ -1,76 +1,130 @@
-{% load bootstrap3 %}
-{% bootstrap_css %}
-{% bootstrap_messages %}
-{% load i18n %}
-
-{% load staticfiles %}
+{% load bootstrap3 %} {% bootstrap_css %} {% bootstrap_messages %} {% load i18n %} {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}" />
 
 <head>
-  {% block title %}
-  <title>SME - UnB</title>
-  {% endblock %}
-  <link rel="stylesheet" type="text/css" href="{% static 'users/css/simple-sidebar.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}" />
-  <link type="text/css" rel="stylesheet" href="{% static "css/style.css" %}"  media="screen,projection"/>
+    {% block title %}
+    <title>SME - UnB</title>
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/simple-sidebar.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static " css/style.css " %}" media="screen,projection" />
+    <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      // Enable pusher logging - don't include this in production
+      Pusher.logToConsole = true;
+
+      var id = '{{request.user.id}}'
+      if(id != 'None') {
+
+        var pusher = new Pusher('01346f7690ac693e7adb', {
+          encrypted: true
+        });
+        var channel = pusher.subscribe('notification_'+'{{request.user.id}}');
+
+
+        channel.bind('create', function(data) {
+          var notification_name = 'notification_'+ data[0].pk;
+
+          console.log(data);
+          $("#allert-container").append(
+            getAlertType(data[0], notification_name)
+          );
+
+          $("#" + notification_name).click(function() {
+            $("[name=" + notification_name +"]").remove();
+          });
+        });
+
+        function getAlertType(notification, notification_name) {
+          var element = "";
+          switch (notification.fields.priority) {
+            case 1:
+            element = '<div class="alert alert-info" name="' + notification_name + '"> '+
+                      '   <a href="#" class="close" data-dismiss="alert" id="' + notification_name +'" aria-label="close">&times;</a> '+
+                          notification.fields.description +
+                      '</div>'
+              break;
+            case 2:
+              element = '<div class="alert alert-success" name="' + notification_name + '"> '+
+                        '   <a href="#" class="close" data-dismiss="alert" id="' + notification_name +'" aria-label="close">&times;</a> '+
+                        '   <strong>Sucesso: </strong> '+ notification.fields.description +
+                        '</div>'
+              break;
+            case 3:
+              element = '<div class="alert alert-warning" name="' + notification_name + '"> '+
+                        '   <a href="#" class="close" data-dismiss="alert" id="' + notification_name +'" aria-label="close">&times;</a> '+
+                        '   <strong>Alerta: </strong> '+ notification.fields.description +
+                        '</div>'
+              break;
+            default:
+              element +=  '<div class="alert alert-danger" name="' + notification_name + '"> '+
+                        '   <a href="#" class="close" data-dismiss="alert" id="' + notification_name +'" aria-label="close">&times;</a> '+
+                        '   <p><strong>Perigo: </strong> '+ notification.fields.description + "</p>";
+              if(notification.fields.local && notification.fields.local != "") {
+                element +="<p><strong>Local:</strong> " + notification.fields.local + "</p>";
+              }
+            
+              break;
+          }
+
+          return element;
+        }
+      }
+    </script>
 </head>
+
 <body>
+    {% include "notification.html" %}
     <nav class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 0px;">
-          <div class="container">
+        <div class="container">
             <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-              </button>
-              {% if user.is_authenticated %}
-                <a class="navbar-brand" href="{% url 'users:dashboard'%}">SME - UnB</a>
-              {% else %}
-                <a class="navbar-brand" href="/">SME - UnB</a>
-              {% endif %}
+              </button> {% if user.is_authenticated %}
+                <a class="navbar-brand" href="{% url 'users:dashboard'%}">SME - UnB</a> {% else %}
+                <a class="navbar-brand" href="/">SME - UnB</a> {% endif %}
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 {% if user.is_authenticated %}
-                  <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav">
                     <li><a href="#about">{% trans "About" %}</a></li>
                     <li><a href="#contact">{% trans "Contact" %}</a></li>
-                  </ul>
-                  <div class="navbar-right">
+                </ul>
+                <div class="navbar-right">
                     <ul class="nav navbar-nav navbar-right">
-                      <li class="">{% include "languages.html" %}</li>
+                        <li class="">{% include "languages.html" %}</li>
                     </ul>
                     <ul class="nav navbar-nav">
-                      <li><a href="{% url 'users:dashboard'%}"><b>{{ request.user.username }}</b></a></li>
+                        <li><a href="{% url 'users:dashboard'%}"><b>{{ request.user.username }}</b></a></li>
                     </ul>
                     <a href="{% url 'users:logout'%}"><button type = "button" class = "btn btn-danger navbar-btn">
                       <span class= "glyphicon glyphicon-log-out" aria-hidden="true"> </span> {% trans "Logout" %}
                       </button></a>
-                  </div>
+                </div>
                 {% else %}
-                  <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav">
                     <li><a href="#about">{% trans "About" %}</a></li>
                     <li><a href="#contact">{% trans "Contact" %}</a></li>
-                  </ul>
-                  <div class=" navbar-right">
+                </ul>
+                <div class=" navbar-right">
                     <ul class="nav navbar-nav navbar-right">
-                      <li class="">{% include "languages.html" %}</li>
+                        <li class="">{% include "languages.html" %}</li>
                     </ul>
                     <a href="{% url 'users:login'%}">
-                      <button type = "button" class = "btn btn-default navbar-btn">
+                        <button type="button" class="btn btn-default navbar-btn">
                         <span class= "glyphicon glyphicon-log-in" aria-hidden="true"> </span> {% trans "Login" %}
                       </button>
                     </a>
-                  </div>
+                </div>
                 {% endif %}
             </div>
-          </div>
-        </nav>
-        </div><!--/.nav-collapse -->
-      </div>
+        </div>
     </nav>
     <div class="container-fluid" style="padding-top: 50px;">
-      {% block body %}
-      {% endblock %}
+        {% block body %} {% endblock %}
     </div>
 </body>
