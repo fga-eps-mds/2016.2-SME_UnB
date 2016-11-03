@@ -11,10 +11,10 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
+from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
-
 from SME_UnB.settings import EMAIL_HOST_USER
 
 import logging
@@ -114,6 +114,10 @@ def register(request):
             return render(request, 'userRegister/register.html', {'falha': 'unexpected error'})
         give_permission(request, user)
         user.save()
+        messages.success(request, 'Usuario registrado com sucesso')
+
+        return HttpResponseRedirect(reverse("users:dashboard"))
+
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' Registered ' + user.__str__() )
 
@@ -199,6 +203,7 @@ def fullValidationRegister(form):
     resultCheck += check_password(password, confirmPassword)
 
     return resultCheck
+
 
 @login_required
 def list_user_edit(request):

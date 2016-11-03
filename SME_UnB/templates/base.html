@@ -101,7 +101,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="{% url 'users:dashboard'%}"><b>{{ request.user.username }}</b></a></li>
                     </ul>
-                    <a href="{% url 'users:logout'%}"><button type = "button" class = "btn btn-danger navbar-btn">
+                    <a onclick="return confirm('Voce tem certeza ?')" href="{% url 'users:logout'%}"><button type = "button" class = "btn btn-danger navbar-btn">
                       <span class= "glyphicon glyphicon-log-out" aria-hidden="true"> </span> {% trans "Logout" %}
                       </button></a>
                 </div>
