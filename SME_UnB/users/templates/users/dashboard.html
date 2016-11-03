@@ -20,14 +20,27 @@
 	    {%if perms.users.can_delete_user%}
       <li><a href="{% url 'users:list_user_delete' %}">{% trans "Delete Users" %}</a></li>
       {%endif%}
+      {%if perms.users.can_see_logging%}
+      <li><a href="{% url 'users:logging_list' %}">{% trans "Logging Users" %}</a></li>
+      {%endif%}
       {% endblock %}
     </ul>
   </div>
   <div id="page-content-wrapper">
     <div class="container-fluid">
+      {% if messages %}
+        <div class="row">
+          <div class="col-md-4 col-md-offset-8">
+            {% for message in messages %}
+            <p{% if message.tags == "success" %} class= "alert alert-success"{% endif %}>{{ message }}</p>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
       {% block dashboard_content %}
       <p><strong>{% trans "Usuário" %}</strong>: {{ request.user.username}}</p>
       <p><strong>{% trans "E-mail" %}</strong>: {{ request.user.email }}</p>
+      <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/self_edit/">Editar meus dados</a>
       {% endblock %}
     </div>
   </div>

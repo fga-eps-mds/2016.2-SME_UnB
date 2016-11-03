@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://127.0.0.1:3000/reports/invoice/" />
+<title>Teste de fatura</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Teste de fatura</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=current_input</td>
+	<td>220</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=amperage_input</td>
+	<td>35</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=center &gt; button[type=&quot;button&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=kw</td>
+	<td>Valor: 7.7 KiloWatts</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=hours_input</td>
+	<td>720</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='button'])[4]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=kwh</td>
+	<td>Valor utilizado: 5544 KW/h</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='button'])[5]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=price</td>
+	<td>Valor: R$3097.2775239999996</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@name='band'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='button'])[5]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=price</td>
+	<td>Valor: R$2932.2775239999996</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@name='band'])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='button'])[5]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=price</td>
+	<td>Valor: R$2794.7775239999996</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
