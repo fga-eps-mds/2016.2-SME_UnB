@@ -16,6 +16,7 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
 from SME_UnB.settings import EMAIL_HOST_USER
+import os
 
 import logging
 
@@ -85,10 +86,11 @@ def register(request):
         return render(request, 'userRegister/register.html')
     else:
         form = request.POST
-        first_name=form.get('first_name')
-        last_name=form.get('last_name')
-        password=form.get('password')
-        email=form.get('email')
+        first_name = form.get('first_name')
+        last_name = form.get('last_name')
+        password = form.get('password')
+        confirmPassword = form.get('confirmPassword')
+        email = form.get('email')
 
         resultCheck = fullValidationRegister(form)
 
@@ -111,7 +113,8 @@ def register(request):
         except  IntegrityError as e:
             return render(request, 'userRegister/register.html', {'falha': 'Invalid email, email already exist'})
         except:
-            return render(request, 'userRegister/register.html', {'falha': 'unexpected error'})
+            return render(request, 'userRegister/register.html', {'falha': 'Falha de Registro!'})
+
         give_permission(request, user)
         user.save()
         messages.success(request, 'Usuario registrado com sucesso')
@@ -221,6 +224,7 @@ def check_permissions(user):
     has_transductor_permission = 'checked' if user.has_perm('transductor.can_view_transductors') else ''
     has_edit_user_permission = 'checked' if user.has_perm('users.can_edit_user') else ''
     has_delete_user_permission = 'checked' if user.has_perm('users.can_delete_user') else ''
+    has_see_logging_permission = 'checked' if user.has_perm('users.can_see_logging') else ''
 
     context = {
         'user': user,
@@ -228,6 +232,7 @@ def check_permissions(user):
         "view_transductors": has_transductor_permission,
         "edit_users": has_edit_user_permission,
         "delete_users": has_delete_user_permission,
+        "see_logging": has_see_logging_permission,
     }
 
     return context
@@ -310,6 +315,7 @@ def give_permission(request, user):
     transductor_checkbox = request.POST.get('view_transductors')
     useredit_checkbox = request.POST.get('edit_users')
     userdelete_checkbox = request.POST.get('delete_users')
+    seelogging_checkbox = request.POST.get('seelogging_checkbox')
 
     user.user_permissions.clear()
 
@@ -317,6 +323,7 @@ def give_permission(request, user):
     __permision__(transductor_checkbox, 'can_view_transductors', user)
     __permision__(useredit_checkbox, 'can_edit_user', user)
     __permision__(userdelete_checkbox, 'can_delete_user', user)
+    __permision__(seelogging_checkbox, 'can_see_logging', user)
 
     user.save()
 
@@ -332,6 +339,13 @@ def delete_user(request, user_id):
         logger.info(request.user.__str__() + ' deleted  ' + user.__str__() )
         user.delete()
     return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
+@login_required
+def logging_list (request):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    file = open (BASE_DIR+'/SME_UnB/logging.logging', 'r')
+    file_contentes = file.read()
+
+    return render(request, 'users/logging_list.html',{'logging' : file_contentes})
 
 def __list__(request, template):
 

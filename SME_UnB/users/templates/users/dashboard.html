@@ -20,6 +20,9 @@
 	    {%if perms.users.can_delete_user%}
       <li><a href="{% url 'users:list_user_delete' %}">{% trans "Delete Users" %}</a></li>
       {%endif%}
+      {%if perms.users.can_see_logging%}
+      <li><a href="{% url 'users:logging_list' %}">{% trans "Logging Users" %}</a></li>
+      {%endif%}
       {% endblock %}
     </ul>
   </div>
