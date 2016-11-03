@@ -18,3 +18,4 @@ Vagrantfile
 SME_UnB/cover/
 SME_UnB/.coverage
 SME_UnB/.cache
+/SME_UnB/SME_UnB/logging.logging

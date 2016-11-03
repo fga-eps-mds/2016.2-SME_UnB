@@ -11,9 +11,14 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
+from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
+from django.core.mail import send_mail
+from SME_UnB.settings import EMAIL_HOST_USER
+import os
+
 
 import json
 import logging
@@ -54,6 +59,10 @@ def make_login(request):
         logger.info(user.__str__() + ' User is logged')
         login(request, user)
         message = "Logged"
+
+
+
+
         is_logged = True
     else:
         message = "Incorrect user"
@@ -81,8 +90,13 @@ def register(request):
         return render(request, 'userRegister/register.html')
     else:
         form = request.POST
+        first_name = form.get('first_name')
+        last_name = form.get('last_name')
+        password = form.get('password')
+        confirmPassword = form.get('confirmPassword')
+        email = form.get('email')
 
-        resultCheck = fullValidation(form)
+        resultCheck = fullValidationRegister(form)
 
         if len(resultCheck) != 0:
             return render(
@@ -103,14 +117,44 @@ def register(request):
         except  IntegrityError as e:
             return render(request, 'userRegister/register.html', {'falha': 'Invalid email, email already exist'})
         except:
-            return render(request, 'userRegister/register.html', {'falha': 'unexpected error'})
+            return render(request, 'userRegister/register.html', {'falha': 'Falha de Registro!'})
 
         give_permission(request, user)
         user.save()
+        messages.success(request, 'Usuario registrado com sucesso')
+
+        return HttpResponseRedirect(reverse("users:dashboard"))
+
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' Registered ' + user.__str__() )
 
-        return render(request, 'users/dashboard.html')
+	print(email)
+	from django.core import mail
+	connection = mail.get_connection()
+
+	# Manually open the connection
+	connection.open()
+
+	# Construct an email message that uses the connection
+	email1 = mail.EmailMessage(
+	    'Hello',
+	    'Body goes here',
+	    'mds@sof2u.com',
+	    [email],
+	    connection=connection,
+	)
+	email1.send() # Send the email
+	"""
+	send_mail(
+            'Account registered with success',
+	    'Your account on SME-UNB was successfully created',
+	    'mds@sof2u.com',
+	    [email],
+	    fail_silently=False,
+	)
+	"""
+
+    return render(request, 'users/dashboard.html')
 
 def check_name(first_name, last_name):
     if not first_name.isalpha() or not last_name.isalpha():
@@ -124,8 +168,8 @@ def check_email(email):
     else:
         return ''
 
-def check_email_exist(email):
-    if User.objects.filter(email=email).exists():
+def check_email_exist(email,original_email):
+    if User.objects.filter(email=email).exists() and email != original_email:
         return ' -- E-mail já esta cadastrado no nosso banco de dados'
     else:
         return ''
@@ -145,18 +189,28 @@ def check_password(password, confirmPassword):
 def fullValidation(form):
     first_name = form.get('first_name')
     last_name = form.get('last_name')
-    password = form.get('password')
-    confirmPassword = form.get('confirmPassword')
     email = form.get('email')
+    original_email = form.get('original_email')
+
 
     resultCheck = ''
     resultCheck += check_name(first_name, last_name)
     resultCheck += check_email(email)
-    resultCheck += check_email_exist(email)
+    resultCheck += check_email_exist(email,original_email)
+
+    return resultCheck
+
+def fullValidationRegister(form):
+    password = form.get('password')
+    confirmPassword = form.get('confirmPassword')
+
+    resultCheck = ''
+    resultCheck += fullValidation(form)
     resultCheck += check_password_lenght(password, confirmPassword)
     resultCheck += check_password(password, confirmPassword)
 
     return resultCheck
+
 
 @login_required
 def list_user_edit(request):
@@ -174,6 +228,7 @@ def check_permissions(user):
     has_transductor_permission = 'checked' if user.has_perm('transductor.can_view_transductors') else ''
     has_edit_user_permission = 'checked' if user.has_perm('users.can_edit_user') else ''
     has_delete_user_permission = 'checked' if user.has_perm('users.can_delete_user') else ''
+    has_see_logging_permission = 'checked' if user.has_perm('users.can_see_logging') else ''
 
     context = {
         'user': user,
@@ -181,9 +236,46 @@ def check_permissions(user):
         "view_transductors": has_transductor_permission,
         "edit_users": has_edit_user_permission,
         "delete_users": has_delete_user_permission,
+        "see_logging": has_see_logging_permission,
     }
 
     return context
+
+
+@login_required
+def self_edit_user(request):
+
+    user = User.objects.get(pk=request.user.id)
+    print(user)
+
+    if request.method == "GET":
+        return render(request, 'users/self_edit.html',)
+
+    else:
+        form = request.POST
+        first_name = form.get('first_name')
+        last_name =  form.get('last_name')
+        email = form.get('email')
+        password = form.get('password')
+
+        resultCheck = fullValidationRegister(form)
+
+        if len(resultCheck) != 0:
+            return __prepare_error_render_self__(request, resultCheck, user)
+
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = email
+        user.email = email
+        if password != "":
+            user.set_password(password)
+        user.save()
+
+        logger = logging.getLogger(__name__)
+        logger.info(request.user.__str__() + ' edited '  + user.__str__() )
+
+
+        return render(request, 'users/dashboard.html')
 
 
 @login_required
@@ -199,8 +291,6 @@ def edit_user(request, user_id):
         form = request.POST
         first_name = form.get('first_name')
         last_name =  form.get('last_name')
-        password = form.get('password')
-        confirPassword = form.get('confirmPassword')
         email = form.get('email')
 
         resultCheck = fullValidation(form)
@@ -212,8 +302,6 @@ def edit_user(request, user_id):
         user.last_name = last_name
         user.username = email
         user.email = email
-        user.set_password(password)
-
 
         give_permission(request, user)
 
@@ -231,6 +319,7 @@ def give_permission(request, user):
     transductor_checkbox = request.POST.get('view_transductors')
     useredit_checkbox = request.POST.get('edit_users')
     userdelete_checkbox = request.POST.get('delete_users')
+    seelogging_checkbox = request.POST.get('seelogging_checkbox')
 
     user.user_permissions.clear()
 
@@ -238,6 +327,7 @@ def give_permission(request, user):
     __permision__(transductor_checkbox, 'can_view_transductors', user)
     __permision__(useredit_checkbox, 'can_edit_user', user)
     __permision__(userdelete_checkbox, 'can_delete_user', user)
+    __permision__(seelogging_checkbox, 'can_see_logging', user)
 
     user.save()
 
@@ -253,6 +343,13 @@ def delete_user(request, user_id):
         logger.info(request.user.__str__() + ' deleted  ' + user.__str__() )
         user.delete()
     return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
+@login_required
+def logging_list (request):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    file = open (BASE_DIR+'/SME_UnB/logging.logging', 'r')
+    file_contentes = file.read()
+
+    return render(request, 'users/logging_list.html',{'logging' : file_contentes})
 
 def __list__(request, template):
 
@@ -262,6 +359,10 @@ def __list__(request, template):
 def __prepare_error_render__(request, fail_message, user):
 
     return render(request, 'users/edit_user.html', {'falha': fail_message, 'user': user})
+
+def __prepare_error_render_self__(request, fail_message, user):
+
+    return render(request, 'users/self_edit.html', {'falha': fail_message, 'user': user})
 
 def __permision__(permision_type, codename, user):
 
@@ -301,7 +402,25 @@ def forgot_password(request):
             token = _generate_token_(user)
 
             # send email
-            # dustteam.com.br/accounts/reset_password/'token'
+            text_plain = 'http://dustteam.com.br/accounts/reset_password/' + token
+            html = """\
+            <html>
+                <head></head>
+                <body>
+                    <p><href=%s>Link para recuperar a senha </a>.</p>
+                </body>
+            <\html>
+            """ % text_plain
+
+            forgotten_password_mail = mail.EmailMessage(
+        	    'Esqueceu sua senha?',
+        	    html,
+        	    'mds@sof2u.com',
+        	    [email],
+        	    connection=connection,
+        	)
+        	email1.send() # Send the email
+            #
 
             context = {
                     'message':"Email enviado com sucesso",
@@ -330,4 +449,3 @@ def forgot_password(request):
     else:
         template_name = "users/forgot_password.html"
         return render(request, template_name, context_return)
-
