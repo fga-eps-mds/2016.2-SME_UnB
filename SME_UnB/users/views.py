@@ -419,8 +419,7 @@ def forgot_password(request):
         	    [email],
         	    connection=connection,
         	)
-        	email1.send() # Send the email
-            #
+            forgotten_password_mail.send()
 
             context = {
                     'message':"Email enviado com sucesso",
