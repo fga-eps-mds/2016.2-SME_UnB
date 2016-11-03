@@ -22,6 +22,9 @@
           <label for="inputPassword" class="sr-only">{% trans "Password" %}</label>
           <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
         </div>
+        <div class="form-group">
+            <a href="{% url "users:forgot" %}">Esqueci a senha</a>
+        </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Log in" %}</button>
       </form>
     </div>

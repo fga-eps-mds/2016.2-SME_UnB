@@ -7,7 +7,7 @@
     {% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static 'users/css/simple-sidebar.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'data_reader/css/style.css' %}" />
-    <link type="text/css" rel="stylesheet" href="{% static " css/style.css " %}" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="{% static 'users/css/style.css' %}" media="screen,projection" />
     <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
@@ -65,4 +65,6 @@
     <div class="container-fluid" style="padding-top: 50px;">
         {% block body %} {% endblock %}
     </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>

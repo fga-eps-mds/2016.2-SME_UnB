@@ -65,7 +65,12 @@ $(function() {
 
             // handle a successful response
             success : function(json) {
-                console.log(json.message)
+                $('#confirmMessage').modal('show');
+                message = $("#message");
+                message[0].textContent = json.message;
+
+                validate = $("#validate");
+                validate[0].textContent = json.validate;
             },
 
             // handle a non-successful response
