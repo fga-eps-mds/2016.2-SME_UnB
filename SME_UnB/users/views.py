@@ -16,6 +16,7 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 from django.core.mail import send_mail
+from django.core import mail
 from SME_UnB.settings import EMAIL_HOST_USER
 import os
 
@@ -23,6 +24,7 @@ import os
 import json
 import logging
 import hashlib
+import datetime
 
 
 def home(request):
@@ -128,7 +130,6 @@ def register(request):
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' Registered ' + user.__str__() )
 
-	print(email)
 	from django.core import mail
 	connection = mail.get_connection()
 
@@ -246,7 +247,6 @@ def check_permissions(user):
 def self_edit_user(request):
 
     user = User.objects.get(pk=request.user.id)
-    print(user)
 
     if request.method == "GET":
         return render(request, 'users/self_edit.html',)
@@ -378,15 +378,20 @@ def _generate_token_(user):
     """
     username = user.username
     password = user.password
-    date = "data"
+    date = datetime.datetime.now()
+    day = date.day
 
-    plain_text = username + password + date
+    plain_text = username + password + day
     token = hashlib.sha256(plain_text.encode('utf-8')).hexdigest()
 
     return token
 
 def forgot_password(request):
     """TODO: Docstring for forgot_password.
+    Fixing html email
+    Make testes
+    make a app
+
 
     :request: recive the data with email to send a requesto of a new password
     :returns: render a page with  message to see your email if the emails exists
@@ -394,7 +399,6 @@ def forgot_password(request):
 
     """
 
-    print(request)
     def post(request):
         email = request.POST.get('email')
         try:
@@ -412,6 +416,8 @@ def forgot_password(request):
             <\html>
             """ % text_plain
 
+            connection = mail.get_connection()
+            connection.open()
             forgotten_password_mail = mail.EmailMessage(
         	    'Esqueceu sua senha?',
         	    html,
@@ -448,3 +454,72 @@ def forgot_password(request):
     else:
         template_name = "users/forgot_password.html"
         return render(request, template_name, context_return)
+
+def confirm_email(request, token):
+    """TODO: Docstring for confirm_email.
+
+    :request: TODO
+    :token: TODO
+    :returns: TODO
+
+    """
+    if request.method == "GET":
+        return render(request, "users/reset_password.html", {"token":token})
+    else:
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            token = _generate_token_(user)
+            if token == request.POST.get('token'):
+                context = {
+                        "message" : "O link está correto",
+                        "is_valid": "yes",
+                        "email": email,
+                        }
+            else:
+                context = {
+                        "message" : "Link Expirado!!",
+                        "is_valid": "no",
+                        }
+
+        except User.DoesNotExist as email_error:
+            context = {
+                    'message':"Email inválido",
+                    'is_valid':"no"
+                    }
+
+        return HttpResponse(
+                json.dumps(context),
+                'application/json'
+                )
+
+def reset_password(request):
+    """TODO: Docstring for reset_password.
+    :returns: TODO
+
+    """
+    if request.method == "POST":
+        password = request.POST.get("pass")
+        confirm_pass = request.POST.get("confirm_pass")
+        email = request.POST.get("email")
+
+        if password ==  confirm_pass:
+            user = User.objects.get(email=email)
+            user.set_password(password)
+            user.save()
+            message = "Senha alterada com sucesso"
+            is_valid = "yes"
+        else:
+            message = "as senhas são diferentes"
+            is_valid = "no"
+
+        context = {
+                "message": message,
+                "is_valid": is_valid,
+                }
+
+        return HttpResponse(
+                json.dumps(context),
+                'application/json'
+                )
+

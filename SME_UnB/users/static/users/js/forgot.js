@@ -49,6 +49,8 @@ $(function() {
             }
         }
     });
+
+    // Init here
     $('#forgot_btn').on('click', function(event){
         event.preventDefault();
         confirm_email();
