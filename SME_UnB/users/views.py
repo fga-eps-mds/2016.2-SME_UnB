@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-""" Represents the User's views, and it contains all the elements
-as the interface. For example buttons, text, boxes, etc."""
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Permission
@@ -23,11 +21,9 @@ import logging
 def home(request):
     return render(request, 'users/home.html')
 
-
 @login_required
 def dashboard(request):
     return render(request, 'users/dashboard.html')
-
 
 def show_login(request):
     if request.method == "GET":
@@ -55,9 +51,6 @@ def make_login(request):
         login(request, user)
         message = "Logged"
 
-
-
-
         is_logged = True
     else:
         message = "Incorrect user"
@@ -74,6 +67,7 @@ def logout_view(request, *args, **kwargs):
     kwargs['next_page'] = reverse('index')
     logger = logging.getLogger(__name__)
     logger.info(request.user.__str__() + ' Logout ' )
+
     return logout(request, *args, **kwargs)
 
 
@@ -103,15 +97,21 @@ def register(request):
         last_name = form.get('last_name')
         password = form.get('password')
         email = form.get('email')
+        user_type = form.get('user_type')
 
         try:
-
-            user = User.objects.create_user(
+            if user_type == 'common':
+                user = User.objects.create_user(
                         first_name=first_name, last_name=last_name, password=password, username=email)
+            else:
+                user = User.objects.create_superuser(
+                        first_name=first_name, last_name=last_name, password=password, username=first_name, email=email)
+
         except  IntegrityError as e:
             return render(request, 'userRegister/register.html', {'falha': 'Invalid email, email already exist'})
         except:
             return render(request, 'userRegister/register.html', {'falha': 'unexpected error'})
+
         give_permission(request, user)
         user.save()
         messages.success(request, 'Usuario registrado com sucesso')
@@ -184,7 +184,6 @@ def fullValidation(form):
     last_name = form.get('last_name')
     email = form.get('email')
     original_email = form.get('original_email')
-
 
     resultCheck = ''
     resultCheck += check_name(first_name, last_name)
@@ -265,7 +264,6 @@ def self_edit_user(request):
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' edited '  + user.__str__() )
 
-
         return render(request, 'users/dashboard.html')
 
 
@@ -336,6 +334,7 @@ def delete_user(request, user_id):
 def __list__(request, template):
 
     users = User.objects.all()
+
     return render(request, template, {'users':users})
 
 def __prepare_error_render__(request, fail_message, user):
