@@ -379,7 +379,7 @@ def _generate_token_(user):
     username = user.username
     password = user.password
     date = datetime.datetime.now()
-    day = date.day
+    day = str(date.day)
 
     plain_text = username + password + day
     token = hashlib.sha256(plain_text.encode('utf-8')).hexdigest()
