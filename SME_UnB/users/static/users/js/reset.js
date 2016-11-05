@@ -74,7 +74,7 @@ $(function() {
             "class='form-control' placeholder='Password' required>";
 
         var label_confirm_pass = "<label for='confirmPassword' class='sr-only'>Confirm Password</label>";
-        var input_confirm_pass = "<input type='confirmPassword' id='confirmPassword' name='confirmPassword'" +
+        var input_confirm_pass = "<input type='password' id='confirmPassword' name='confirmPassword'" +
             " class='form-control' placeholder='Confirm Password' required>";
 
         $('#content-form').append(form);
