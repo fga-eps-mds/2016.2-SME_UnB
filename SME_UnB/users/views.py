@@ -14,6 +14,9 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
 from SME_UnB.settings import EMAIL_HOST_USER
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+import os
 
 import logging
 
@@ -79,10 +82,11 @@ def register(request):
         return render(request, 'userRegister/register.html')
     else:
         form = request.POST
-        first_name=form.get('first_name')
-        last_name=form.get('last_name')
-        password=form.get('password')
-        email=form.get('email')
+        first_name = form.get('first_name')
+        last_name = form.get('last_name')
+        password = form.get('password')
+        confirmPassword = form.get('confirmPassword')
+        email = form.get('email')
 
         resultCheck = fullValidationRegister(form)
 
@@ -178,6 +182,12 @@ def check_password(password, confirmPassword):
         return ' -- Senha inválida! Senhas de cadastros diferentes'
     else:
         return ''
+def check_current_password(user, currentPassword):
+
+    if not user.check_password(currentPassword):
+        return ' -- Campo de Senha atual diferente da Senha Atual!'
+    else:
+        return ''
 
 def fullValidation(form):
     first_name = form.get('first_name')
@@ -192,12 +202,15 @@ def fullValidation(form):
 
     return resultCheck
 
-def fullValidationRegister(form):
+def fullValidationRegister(form, user=None):
+    currentPassword = form.get('currentPassword')
     password = form.get('password')
     confirmPassword = form.get('confirmPassword')
 
     resultCheck = ''
     resultCheck += fullValidation(form)
+    if user != None:
+        resultCheck += check_current_password(user, currentPassword)
     resultCheck += check_password_lenght(password, confirmPassword)
     resultCheck += check_password(password, confirmPassword)
 
@@ -220,6 +233,7 @@ def check_permissions(user):
     has_transductor_permission = 'checked' if user.has_perm('transductor.can_view_transductors') else ''
     has_edit_user_permission = 'checked' if user.has_perm('users.can_edit_user') else ''
     has_delete_user_permission = 'checked' if user.has_perm('users.can_delete_user') else ''
+    has_see_logging_permission = 'checked' if user.has_perm('users.can_see_logging') else ''
 
     context = {
         'user': user,
@@ -227,6 +241,7 @@ def check_permissions(user):
         "view_transductors": has_transductor_permission,
         "edit_users": has_edit_user_permission,
         "delete_users": has_delete_user_permission,
+        "see_logging": has_see_logging_permission,
     }
 
     return context
@@ -245,10 +260,13 @@ def self_edit_user(request):
         form = request.POST
         first_name = form.get('first_name')
         last_name =  form.get('last_name')
-        email = form.get('email')
+        #email = form.get('email')
+        email = request.user.username
         password = form.get('password')
+        currentPassword = form.get('currentPassword')
+        print(currentPassword)
 
-        resultCheck = fullValidationRegister(form)
+        resultCheck = fullValidationRegister(form,user)
 
         if len(resultCheck) != 0:
             return __prepare_error_render_self__(request, resultCheck, user)
@@ -257,9 +275,12 @@ def self_edit_user(request):
         user.last_name = last_name
         user.username = email
         user.email = email
-        if password != "":
-            user.set_password(password)
+        user.set_password(password)
+
         user.save()
+
+        #login(request,user)
+        update_session_auth_hash(request, user)
 
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' edited '  + user.__str__() )
@@ -308,6 +329,7 @@ def give_permission(request, user):
     transductor_checkbox = request.POST.get('view_transductors')
     useredit_checkbox = request.POST.get('edit_users')
     userdelete_checkbox = request.POST.get('delete_users')
+    seelogging_checkbox = request.POST.get('seelogging_checkbox')
 
     user.user_permissions.clear()
 
@@ -315,6 +337,7 @@ def give_permission(request, user):
     __permision__(transductor_checkbox, 'can_view_transductors', user)
     __permision__(useredit_checkbox, 'can_edit_user', user)
     __permision__(userdelete_checkbox, 'can_delete_user', user)
+    __permision__(seelogging_checkbox, 'can_see_logging', user)
 
     user.save()
 
@@ -330,6 +353,13 @@ def delete_user(request, user_id):
         logger.info(request.user.__str__() + ' deleted  ' + user.__str__() )
         user.delete()
     return render (request, 'users/dashboard.html', {'info': 'usuario deletado com sucesso'})
+@login_required
+def logging_list (request):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    file = open (BASE_DIR+'/SME_UnB/logging.logging', 'r')
+    file_contentes = file.read()
+
+    return render(request, 'users/logging_list.html',{'logging' : file_contentes})
 
 def __list__(request, template):
 

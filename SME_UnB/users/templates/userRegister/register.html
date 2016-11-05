@@ -59,7 +59,12 @@
               </div>
               <div class="checkbox">
                 <label class="checkbox-inline checkbox-success">
-                  <input type="checkbox" id="permissions_checkbox3" name="delete_users"> {% trans "Delete Users" %}
+                  <input type="checkbox" id="permissions_checkbox4" name="delete_users"> {% trans "Delete Users" %}
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="checkbox-inline checkbox-success">
+                  <input type="checkbox" id="permissions_checkbox5" name="see_logging" {{see_logging}} > {% trans "See Logging" %}
                 </label>
               </div>
               <button type="submit" class="btn btn-success btn-lg btn-block" onclick="return confirm('Voce tem certeza ?')" >{% trans "Register" %}</button>
