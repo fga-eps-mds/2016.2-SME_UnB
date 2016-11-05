@@ -16,6 +16,8 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
 from SME_UnB.settings import EMAIL_HOST_USER
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 import os
 
 import logging
@@ -256,8 +258,11 @@ def self_edit_user(request):
         form = request.POST
         first_name = form.get('first_name')
         last_name =  form.get('last_name')
-        email = form.get('email')
+        #email = form.get('email')
+        email = request.user.username
         password = form.get('password')
+        currentPassword = form.get('currentPassword')
+        print(currentPassword)
 
         resultCheck = fullValidationRegister(form,user)
 
@@ -268,9 +273,12 @@ def self_edit_user(request):
         user.last_name = last_name
         user.username = email
         user.email = email
-        if password != "":
-            user.set_password(password)
+        user.set_password(password)
+
         user.save()
+
+        #login(request,user)
+        update_session_auth_hash(request, user)
 
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' edited '  + user.__str__() )
