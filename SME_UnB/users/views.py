@@ -55,10 +55,6 @@ def make_login(request):
         logger.info(user.__str__() + ' User is logged')
         login(request, user)
         message = "Logged"
-
-
-
-
         is_logged = True
     else:
         message = "Incorrect user"
@@ -181,6 +177,12 @@ def check_password(password, confirmPassword):
         return ' -- Senha inválida! Senhas de cadastros diferentes'
     else:
         return ''
+def check_current_password(user, currentPassword):
+
+    if not user.check_password(currentPassword):
+        return ' -- Campo de Senha atual diferente da Senha Atual!'
+    else:
+        return ''
 
 def fullValidation(form):
     first_name = form.get('first_name')
@@ -196,12 +198,15 @@ def fullValidation(form):
 
     return resultCheck
 
-def fullValidationRegister(form):
+def fullValidationRegister(form, user=None):
+    currentPassword = form.get('currentPassword')
     password = form.get('password')
     confirmPassword = form.get('confirmPassword')
 
     resultCheck = ''
     resultCheck += fullValidation(form)
+    if user != None:
+        resultCheck += check_current_password(user, currentPassword)
     resultCheck += check_password_lenght(password, confirmPassword)
     resultCheck += check_password(password, confirmPassword)
 
@@ -254,7 +259,7 @@ def self_edit_user(request):
         email = form.get('email')
         password = form.get('password')
 
-        resultCheck = fullValidationRegister(form)
+        resultCheck = fullValidationRegister(form,user)
 
         if len(resultCheck) != 0:
             return __prepare_error_render_self__(request, resultCheck, user)
