@@ -36,7 +36,7 @@ class TestLoginView(unittest.TestCase):
         response = self.client.post(
             '/accounts/self_edit/',
         )
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(302, response.status_code)
 
 
     def test_getting_wrong_page_login(self):
