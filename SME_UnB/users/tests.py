@@ -359,3 +359,22 @@ class TestLoginView(unittest.TestCase):
 
         has_generate_report = True if self.user.has_perm('report.can_generate') else False
         self.assertTrue(has_generate_report)
+
+    def test_is_reseting_password(self):
+        old_pass = self.user.password
+
+        self.client.post(
+            '/user/reset_password/',
+            {
+                'pass': '123456',
+                'confirm_pass': '123456',
+                'email': 'test@email.com'
+            }
+        )
+        new_pass = User.objects.get(username='testuser')
+
+        password_has_changed = True if old_pass is not new_pass else False
+
+        print(old_pass == new_pass)
+
+        self.assertTrue(password_has_changed)

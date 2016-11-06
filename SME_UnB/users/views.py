@@ -20,7 +20,8 @@ from django.core import mail
 from SME_UnB.settings import EMAIL_HOST_USER
 import os
 
-
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import json
 import logging
 import hashlib
@@ -416,11 +417,13 @@ def forgot_password(request):
             <\html>
             """ % text_plain
 
+            email_html = MIMEText(html, 'html')
+
             connection = mail.get_connection()
             connection.open()
             forgotten_password_mail = mail.EmailMessage(
         	    'Esqueceu sua senha?',
-        	    html,
+        	    email_html,
         	    'mds@sof2u.com',
         	    [email],
         	    connection=connection,
@@ -429,17 +432,15 @@ def forgot_password(request):
 
             context = {
                     'message':"Email enviado com sucesso",
-                    'validate':"A recuperação de senha irá expirar após as " + \
+                    'validator':"A recuperação de senha irá expirar após as " + \
                     "24hr do dia de hoje",
                     }
 
         except User.DoesNotExist as e:
             context = {
-                    'message':"Email inválido",
-                    'validate':""
+                    'message':"Este email não existe ou é invalido",
+                    'validate':"Digite novamente"
                     }
-
-
         return context
 
     context_return = {}
@@ -522,4 +523,3 @@ def reset_password(request):
                 json.dumps(context),
                 'application/json'
                 )
-
