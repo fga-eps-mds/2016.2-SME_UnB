@@ -11,16 +11,13 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
-
-
-import datetime
-
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
-import matplotlib.patches as mpatches
-
 from transductor.models import EnergyMeasurements, EnergyTransductor,TransductorModel
+
+import datetime
+import matplotlib.patches as mpatches
 
 
 def create_graphic(path, array_date, array_dateb, array_datec, array_data, label):
@@ -139,7 +136,6 @@ def __minValue(arrayData):
 def __maxValue(arrayData):
 
     arrayData.sort(reverse=True)
-
     return arrayData[0]
 
 def __average(arrayData):
@@ -286,6 +282,7 @@ def open_pdf(request):
         response['Content-Disposition'] = 'filename=Relatorio.pdf'
         return response
     pdf.closed
+
 @login_required
 def invoice(request):
     return render(request, 'invoice/invoice.html')

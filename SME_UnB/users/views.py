@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-""" Represents the User's views, and it contains all the elements
-as the interface. For example buttons, text, boxes, etc."""
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Permission
@@ -16,6 +14,8 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
 from SME_UnB.settings import EMAIL_HOST_USER
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 import os
 
 import logging
@@ -24,11 +24,9 @@ import logging
 def home(request):
     return render(request, 'users/home.html')
 
-
 @login_required
 def dashboard(request):
     return render(request, 'users/dashboard.html')
-
 
 def show_login(request):
     if request.method == "GET":
@@ -56,9 +54,6 @@ def make_login(request):
         login(request, user)
         message = "Logged"
 
-
-
-
         is_logged = True
     else:
         message = "Incorrect user"
@@ -75,6 +70,7 @@ def logout_view(request, *args, **kwargs):
     kwargs['next_page'] = reverse('index')
     logger = logging.getLogger(__name__)
     logger.info(request.user.__str__() + ' Logout ' )
+
     return logout(request, *args, **kwargs)
 
 
@@ -105,15 +101,20 @@ def register(request):
         last_name = form.get('last_name')
         password = form.get('password')
         email = form.get('email')
+        user_type = form.get('user_type')
 
         try:
-
-            user = User.objects.create_user(
+            if user_type == 'common':
+                user = User.objects.create_user(
                         first_name=first_name, last_name=last_name, password=password, username=email)
+            else:
+                user = User.objects.create_superuser(
+                        first_name=first_name, last_name=last_name, password=password, username=first_name, email=email)
+
         except  IntegrityError as e:
             return render(request, 'userRegister/register.html', {'falha': 'Invalid email, email already exist'})
         except:
-            return render(request, 'userRegister/register.html', {'falha': 'Falha de Registro!'})
+            return render(request, 'userRegister/register.html', {'falha': 'unexpected error'})
 
         give_permission(request, user)
         user.save()
@@ -181,13 +182,18 @@ def check_password(password, confirmPassword):
         return ' -- Senha inválida! Senhas de cadastros diferentes'
     else:
         return ''
+def check_current_password(user, currentPassword):
+
+    if not user.check_password(currentPassword):
+        return ' -- Campo de Senha atual diferente da Senha Atual!'
+    else:
+        return ''
 
 def fullValidation(form):
     first_name = form.get('first_name')
     last_name = form.get('last_name')
     email = form.get('email')
     original_email = form.get('original_email')
-
 
     resultCheck = ''
     resultCheck += check_name(first_name, last_name)
@@ -196,12 +202,15 @@ def fullValidation(form):
 
     return resultCheck
 
-def fullValidationRegister(form):
+def fullValidationRegister(form, user=None):
+    currentPassword = form.get('currentPassword')
     password = form.get('password')
     confirmPassword = form.get('confirmPassword')
 
     resultCheck = ''
     resultCheck += fullValidation(form)
+    if user != None:
+        resultCheck += check_current_password(user, currentPassword)
     resultCheck += check_password_lenght(password, confirmPassword)
     resultCheck += check_password(password, confirmPassword)
 
@@ -251,10 +260,13 @@ def self_edit_user(request):
         form = request.POST
         first_name = form.get('first_name')
         last_name =  form.get('last_name')
-        email = form.get('email')
+        #email = form.get('email')
+        email = request.user.username
         password = form.get('password')
+        currentPassword = form.get('currentPassword')
+        print(currentPassword)
 
-        resultCheck = fullValidationRegister(form)
+        resultCheck = fullValidationRegister(form,user)
 
         if len(resultCheck) != 0:
             return __prepare_error_render_self__(request, resultCheck, user)
@@ -263,13 +275,15 @@ def self_edit_user(request):
         user.last_name = last_name
         user.username = email
         user.email = email
-        if password != "":
-            user.set_password(password)
+        user.set_password(password)
+
         user.save()
+
+        #login(request,user)
+        update_session_auth_hash(request, user)
 
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' edited '  + user.__str__() )
-
 
         return render(request, 'users/dashboard.html')
 
@@ -350,6 +364,7 @@ def logging_list (request):
 def __list__(request, template):
 
     users = User.objects.all()
+
     return render(request, template, {'users':users})
 
 def __prepare_error_render__(request, fail_message, user):

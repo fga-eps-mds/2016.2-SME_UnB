@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-{% extends 'base.html' %}
+{% extends "users/dashboard.html" %}
 {% load i18n %}
 
 {% block title %}
 <title>{% trans "Simulated invoice" %}</title>
 {% endblock %}
 
-{% block body %}
+{% block dashboard_content %}
 <head>
   <meta charset="UTF-8">
   <script>
