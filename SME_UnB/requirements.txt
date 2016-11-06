@@ -7,3 +7,4 @@ reportlab
 django-nose
 coverage
 unipath
+pusher
