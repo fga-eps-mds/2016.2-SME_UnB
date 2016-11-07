@@ -23,7 +23,7 @@
   <div class="col-xs-6 col-md-6">
     <div class="form-group">
       {% load staticfiles %}
-      <img src="{% static 'currentGraphic.png' %}"/>
+      <img src="{% static 'currentGraphic' %}{{transductor_id}}.png"/>
       <table class ="table table-bordered">
           <tr>
               <th>Phase</th>
@@ -61,7 +61,7 @@
   <div class="col-xs-6 col-md-6">
     <div class="form-group">
       {% load staticfiles %}
-      <img src="{% static 'voltageGraphic.png' %}"/>
+      <img src="{% static  'voltageGraphic' %}{{transductor_id}}.png"/>
       <table class ="table table-bordered">
           <tr>
               <th>Phase</th>
@@ -97,7 +97,7 @@
   <div class="col-xs-6 col-md-6">
     <div class="form-group">
       {% load staticfiles %}
-      <img src="{% static 'activePowerGraphic.png' %}"/>
+      <img src="{% static  'activePowerGraphic' %}{{transductor_id}}.png"/>
       <table class ="table table-bordered">
           <tr>
               <th>Phase</th>
@@ -133,7 +133,7 @@
   <div class="col-xs-6 col-md-6">
     <div class="form-group">
       {% load staticfiles %}
-      <img src="{% static 'reactivePowerGraphic.png' %}"/>
+      <img src="{% static  'reactivePowerGraphic' %}{{transductor_id}}.png"/>
       <table class ="table table-bordered">
           <tr>
               <th>Phase</th>
@@ -169,7 +169,7 @@
   <div class="col-xs-6 col-md-6">
     <div class="form-group">
       {% load staticfiles %}
-      <img src="{% static 'apparentPowerGraphic.png' %}"/>
+      <img src="{% static 'apparentPowerGraphic' %}{{transductor_id}}.png"/>
       <table class ="table table-bordered">
           <tr>
               <th>Phase</th>

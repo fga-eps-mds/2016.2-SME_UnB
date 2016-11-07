@@ -197,7 +197,7 @@ def report(request,transductor_id):
     data = [4, 6, 23, 7, 4, 2]
 
     create_graphic(
-        'report/static/currentGraphic.png',
+        'report/static/currentGraphic'+ transductor_id +'.png',
         current_a,
         current_b,
         current_c,
@@ -205,7 +205,7 @@ def report(request,transductor_id):
         _('Current'))
 
     create_graphic(
-        'report/static/voltageGraphic.png',
+        'report/static/voltageGraphic'+ transductor_id +'.png',
         voltage_a,
         voltage_b,
         voltage_c,
@@ -213,7 +213,7 @@ def report(request,transductor_id):
         _('Voltage'))
 
     create_graphic(
-        'report/static/activePowerGraphic.png',
+        'report/static/activePowerGraphic'+ transductor_id +'.png',
         active_power_a,
         active_power_b,
         active_power_c,
@@ -221,7 +221,7 @@ def report(request,transductor_id):
         _('Active Power'))
 
     create_graphic(
-        'report/static/reactivePowerGraphic.png',
+        'report/static/reactivePowerGraphic'+ transductor_id +'.png',
         reactive_power_a,
         reactive_power_b,
         reactive_power_c,
@@ -229,7 +229,7 @@ def report(request,transductor_id):
         _('Reactive Power'))
 
     create_graphic(
-        'report/static/apparentPowerGraphic.png',
+        'report/static/apparentPowerGraphic'+ transductor_id +'.png',
         apparent_power_a,
         apparent_power_b,
         apparent_power_c,
@@ -268,7 +268,8 @@ def report(request,transductor_id):
                     'Current':currentInformation,
                     'activePower':activePowerInformation,
                     'reactivePower':reactivePowerInformation,
-                    'apparentPower':apparentPowerInformation}
+                    'apparentPower':apparentPowerInformation,
+                    'transductor_id':transductor_id}
 
     return render(request, 'graphics/report.html',information)
 
