@@ -51,7 +51,7 @@ def forgot_password(request):
             token = _generate_token_(user)
 
             # send email
-            text_plain = 'http://dustteam.com.br/accounts/reset_password/' + token
+            text_plain = 'http://dustteam.com.br/retrieve_password/forgot/' + token
 
             #unicode(html)
 
@@ -110,6 +110,7 @@ def confirm_email(request, token):
             user = User.objects.get(email=email)
             token = _generate_token_(user)
             if token == request.POST.get('token'):
+                print("token correto")
                 context = {
                         "message" : "O link está correto",
                         "is_valid": "yes",
@@ -138,17 +139,21 @@ def reset_password(request):
 
     """
     if request.method == "POST":
-        password = request.POST.get("pass")
-        confirm_pass = request.POST.get("confirm_pass")
+        password = request.POST.get("inputPassword")
+        confirm_pass = request.POST.get("confirmPassword")
+        print("que isso mano " + password + " " + confirm_pass)
         email = request.POST.get("email")
 
         if password ==  confirm_pass:
+            print("EH IGUAL")
+
             user = User.objects.get(email=email)
             user.set_password(password)
             user.save()
             message = "Senha alterada com sucesso"
             is_valid = "yes"
         else:
+            print("DEU RUMIMIDSMI")
             message = "as senhas são diferentes"
             is_valid = "no"
 

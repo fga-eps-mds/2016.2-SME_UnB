@@ -53,6 +53,7 @@ $(function() {
     // Init here
     $('#forgot_btn').on('click', function(event){
         event.preventDefault();
+        $('#loading_img').show();
         confirm_email();
     });
 
@@ -67,7 +68,9 @@ $(function() {
 
             // handle a successful response
             success : function(json) {
+                $('#loading_img').hide();
                 $('#confirmMessage').modal('show');
+                console.log("deu bom no js - redirecionando");
                 message = $("#message");
                 message[0].textContent = json.message;
 

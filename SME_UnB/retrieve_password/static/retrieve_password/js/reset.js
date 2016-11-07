@@ -100,6 +100,7 @@ $(function() {
 
     // AJAX for posting
     function reset_password() {
+      console.log("resetando o pass");
         $.ajax({
             url : "/accounts/reset_pass/", // the endpoint
             type : "POST", // http method
