@@ -10,9 +10,11 @@
       <li><a href="{% url 'report:transductors_filter' %}">{% trans "Reports" %}</a></li>
       {%endif%}
       <li><a href="{% url 'transductor:index'%}">{% trans "Transductors" %}</a></li>
+      <li><a href="{% url 'report:invoice' %}">{% trans "Invoice" %}</a></li>
+      {% endblock %}
       {% if request.user.is_staff %}
       <li><a href="{% url 'users:register' %}">{% trans "Register" %}</a></li>
-      {% endif %}      
+      {% endif %}
       {%if perms.users.can_edit_user%}
       <li><a href="{% url 'users:list_user_edit' %}">{% trans "Edit Users" %}</a></li>
       {%endif%}
@@ -23,7 +25,6 @@
       {%if perms.users.can_see_logging%}
       <li><a href="{% url 'users:logging_list' %}">{% trans "Logging Users" %}</a></li>
       {%endif%}
-      {% endblock %}
     </ul>
   </div>
   <div id="page-content-wrapper">

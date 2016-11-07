@@ -18,8 +18,8 @@ before_install:
     - sudo apt-get install -y build-essential
     - sudo apt-get install -y libpq-dev
     - sudo apt-get install -y python-psycopg2
-    - sudo apt-get install postgresql-9.4 -y
-
+    - sudo service postgresql start
+    
     # Call a script to configure the database
     - ./.travis/config_db.sh
 

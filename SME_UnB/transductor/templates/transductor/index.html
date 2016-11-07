@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends "users/dashboard.html" %}
 {% load i18n %}
 {% block title %}
     <title>{% trans "Transductors" %}</title>
 {% endblock %}
 
-{% block body %}
+{% block dashboard_content %}
 <div class="col-md-6">
             {%if perms.transductor.can_view_transductors%}
   <table class="table table-striped">
