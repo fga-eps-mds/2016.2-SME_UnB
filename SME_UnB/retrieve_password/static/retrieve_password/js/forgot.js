@@ -59,7 +59,7 @@ $(function() {
     // AJAX for posting
     function confirm_email() {
         $.ajax({
-            url : "/accounts/forgot/", // the endpoint
+            url : "/retrieve_password/forgot/", // the endpoint
             type : "POST", // http method
             data : {
                 email: $('#email').val(),

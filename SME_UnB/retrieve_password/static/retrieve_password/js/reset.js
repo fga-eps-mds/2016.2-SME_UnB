@@ -126,7 +126,7 @@ $(function() {
     // AJAX for posting
     function confirm_email() {
         $.ajax({
-            url : "/accounts/reset/0/", // the endpoint
+            url : "/retrieve_password/reset/0/", // the endpoint
             type : "POST", // http method
             data : {
                 email: $('#email').val(),

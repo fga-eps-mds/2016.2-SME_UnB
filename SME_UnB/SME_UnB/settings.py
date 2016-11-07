@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'users',
     'report',
     'alerts',
+    'retrieve_password',
     'django_nose',
 ]
 ### Email log module -
