@@ -11,13 +11,16 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
+
+
+import datetime
+
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
-from transductor.models import EnergyMeasurements, EnergyTransductor,TransductorModel
-
-import datetime
 import matplotlib.patches as mpatches
+
+from transductor.models import EnergyMeasurements, EnergyTransductor,TransductorModel
 
 
 def create_graphic(path, array_date, array_dateb, array_datec, array_data, label):
@@ -67,7 +70,7 @@ def create_graphic(path, array_date, array_dateb, array_datec, array_data, label
     return path
 
 
-def generatePdf():
+def generatePdf(transductor_id):
     import time
     from reportlab.lib.enums import TA_JUSTIFY
     from reportlab.lib.pagesizes import letter
@@ -75,15 +78,15 @@ def generatePdf():
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from reportlab.lib.units import inch
 
-    doc = SimpleDocTemplate("report/static/Relatorio.pdf",pagesize=letter,
+    doc = SimpleDocTemplate("report/static/Relatorio"+transductor_id+".pdf",pagesize=letter,
                             rightMargin=72,leftMargin=72,
                             topMargin=72,bottomMargin=18)
     Story=[]
-    logo = "report/static/currentGraphic.png"
-    logo2 = "report/static/voltageGraphic.png"
-    logo3 = "report/static/activePowerGraphic.png"
-    logo4 = "report/static/reactivePowerGraphic.png"
-    logo5 = "report/static/apparentPowerGraphic.png"
+    logo = "report/static/currentGraphic"+transductor_id+".png"
+    logo2 = "report/static/voltageGraphic"+transductor_id+".png"
+    logo3 = "report/static/activePowerGraphic"+transductor_id+".png"
+    logo4 = "report/static/reactivePowerGraphic"+transductor_id+".png"
+    logo5 = "report/static/apparentPowerGraphic"+transductor_id+".png"
 
     magName = "Pythonista"
     issueNum = 12
@@ -136,6 +139,7 @@ def __minValue(arrayData):
 def __maxValue(arrayData):
 
     arrayData.sort(reverse=True)
+
     return arrayData[0]
 
 def __average(arrayData):
@@ -236,7 +240,7 @@ def report(request,transductor_id):
         date,
         _('Apparent Power'))
 
-    generatePdf()
+    generatePdf(transductor_id)
 
     maxVoltage = [__maxValue(voltage_a),__maxValue(voltage_b),__maxValue(voltage_c)]
     minVoltage = [__minValue(voltage_a),__minValue(voltage_b),__minValue(voltage_c)]
@@ -277,13 +281,12 @@ def report(request,transductor_id):
 def transductors_filter(request):
     return render(request,'graphics/transductors_filter.html',{'transductors': EnergyTransductor.objects.all()});
 
-def open_pdf(request):
-    with open('report/static/Relatorio.pdf', 'r') as pdf:
+def open_pdf(request,transductor_id):
+    with open('report/static/Relatorio'+transductor_id+'.pdf', 'r') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
-        response['Content-Disposition'] = 'filename=Relatorio.pdf'
+        response['Content-Disposition'] = 'filename=Relatorio'+transductor_id+'.pdf'
         return response
     pdf.closed
-
 @login_required
 def invoice(request):
     return render(request, 'invoice/invoice.html')
