@@ -19,13 +19,19 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Alert',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True,
+                 serialize=False,
+                 verbose_name='ID')),
                 ('status', models.BooleanField()),
                 ('description', models.CharField(max_length=50)),
-                ('creation_date', models.DateTimeField(verbose_name='date published')),
+                ('creation_date',
+                 models.DateTimeField(verbose_name='date published')),
                 ('local', models.CharField(max_length=50)),
                 ('priority', models.IntegerField()),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'permissions': (('can_check_alerts', 'Can Check Alerts'),),
