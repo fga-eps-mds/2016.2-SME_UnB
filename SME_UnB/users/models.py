@@ -8,6 +8,7 @@ import pusher
 class EmailUserManager(BaseUserManager):
     pass
 
+
 class UserPermissions(models.Model):
 
     class Meta:
@@ -18,7 +19,6 @@ class UserPermissions(models.Model):
 
 
 class UserNotification(object):
-
 
     @staticmethod
     def send_notification(id, message):
@@ -34,4 +34,5 @@ class UserNotification(object):
           secret=APP_SECRET,
           ssl=True
         )
-        pusher_client.trigger(NOTIFICATION_PREFIX + str(id), CREATE_EVENT, message)
+        pusher_client.trigger(NOTIFICATION_PREFIX + str(id),
+                              CREATE_EVENT, message)
