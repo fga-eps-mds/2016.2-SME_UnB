@@ -108,18 +108,16 @@ def register(request):
 
         try:
             if user_type == 'common':
-                user = User.objects.create_user(
-                        first_name=first_name,
-                        last_name=last_name,
-                        password=password,
-                        username=email)
+                user = User.objects.create_user(first_name=first_name,
+                                                last_name=last_name,
+                                                password=password,
+                                                username=email)
             else:
-                user = User.objects.create_superuser(
-                        first_name=first_name,
-                        last_name=last_name,
-                        password=password,
-                        username=first_name,
-                        email=email)
+                user = User.objects.create_superuser(first_name=first_name,
+                                                     last_name=last_name,
+                                                     password=password,
+                                                     username=first_name,
+                                                     email=email)
 
         except IntegrityError as e:
             return render(request,
@@ -153,7 +151,7 @@ def register(request):
             [email],
             connection=connection,)
         email1.send()  # Send the email
-	"""
+    """
         send_mail(
             'Account registered with success',
             'Your account on SME-UNB was successfully created',

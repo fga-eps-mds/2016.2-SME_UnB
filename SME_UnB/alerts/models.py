@@ -40,12 +40,10 @@ class UserNotification(object):
                                                       message,
                                                       local, priority)
 
-        pusher_client = pusher.Pusher(
-          app_id=APP_ID,
-          key=APP_KEY,
-          secret=APP_SECRET,
-          ssl=True
-        )
+        pusher_client = pusher.Pusher(app_id=APP_ID,
+                                      key=APP_KEY,
+                                      secret=APP_SECRET,
+                                      ssl=True)
 
         pusher_client.trigger(NOTIFICATION_PREFIX + str(id_user),
                               CREATE_EVENT,

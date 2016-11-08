@@ -129,23 +129,17 @@ class CommunicationProtocol(models.Model):
         data.active_power_b = self._get_float_value_from_response(messages[7])
         data.active_power_c = self._get_float_value_from_response(messages[8])
 
-        data.reactive_power_a =
-        self._get_float_value_from_response(messages[9])
+        data.reactive_power_a = self._get_float_value_from_response(messages[9])
 
-        data.reactive_power_b =
-        self._get_float_value_from_response(messages[10])
+        data.reactive_power_b = self._get_float_value_from_response(messages[10])
 
-        data.reactive_power_c =
-        self._get_float_value_from_response(messages[11])
+        data.reactive_power_c = self._get_float_value_from_response(messages[11])
 
-        data.apparent_power_a =
-        sqrt(data.active_power_a**2 + data.reactive_power_a**2)
+        data.apparent_power_a = sqrt(data.active_power_a**2 + data.reactive_power_a**2)
 
-        data.apparent_power_b =
-        sqrt(data.active_power_b**2 + data.reactive_power_b**2)
+        data.apparent_power_b = sqrt(data.active_power_b**2 + data.reactive_power_b**2)
 
-        data.apparent_power_c =
-        sqrt(data.active_power_c**2 + data.reactive_power_c**2)
+        data.apparent_power_c = sqrt(data.active_power_c**2 + data.reactive_power_c**2)
 
         data.collection_date = collection_time
 

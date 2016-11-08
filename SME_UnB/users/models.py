@@ -28,11 +28,10 @@ class UserNotification(object):
         NOTIFICATION_PREFIX = 'notification_'
         CREATE_EVENT = 'create'
         print(NOTIFICATION_PREFIX + str(id))
-        pusher_client = pusher.Pusher(
-          app_id=APP_ID,
-          key=APP_KEY,
-          secret=APP_SECRET,
-          ssl=True
-        )
+        pusher_client = pusher.Pusher(app_id=APP_ID,
+                                      key=APP_KEY,
+                                      secret=APP_SECRET,
+                                      ssl=True)
+
         pusher_client.trigger(NOTIFICATION_PREFIX + str(id),
                               CREATE_EVENT, message)

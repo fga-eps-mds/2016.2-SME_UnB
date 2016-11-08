@@ -16,10 +16,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserPermissions',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False,
+                                        verbose_name='ID')),
             ],
             options={
-                'permissions': (('can_delete_user', 'Can delete Users'), ('can_edit_user', 'Can edit Users')),
+                'permissions': (('can_delete_user', 'Can delete Users'),
+                                ('can_edit_user', 'Can edit Users')),
             },
         ),
     ]
