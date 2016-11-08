@@ -13,7 +13,9 @@ def index(request):
     template_name = 'transductor/index.html'
     transductors_list = EnergyTransductor.objects.all()
 
-    return render(request, template_name, {'transductors_list': transductors_list})
+    return render(request, template_name,
+                  {'transductors_list': transductors_list})
+
 
 @login_required
 def detail(request, transductor_id):
@@ -30,7 +32,9 @@ def detail(request, transductor_id):
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
 
-    return render(request, template_name, {'measurements': data, 'transductor': transductor})
+    return render(request, template_name,
+                  {'measurements': data, 'transductor': transductor})
+
 
 @login_required
 def new(request):
@@ -49,13 +53,16 @@ def new(request):
                 transductor.save()
             except ValidationError, err:
                 errors = '; '.join(err.messages)
-                return render(request, 'transductor/new.html', {'form': form, 'errors': errors})
+                return render(request, 'transductor/new.html',
+                              {'form': form, 'errors': errors})
 
-            return redirect('transductor:detail', transductor_id=transductor.id)
+            return redirect('transductor:detail',
+                            transductor_id=transductor.id)
     else:
         form = EnergyForm()
 
     return render(request, 'transductor/new.html', {'form': form})
+
 
 @login_required
 def edit(request, transductor_id):
@@ -71,13 +78,15 @@ def edit(request, transductor_id):
                 edited_transductor.save()
             except ValidationError, err:
                 errors = '; '.join(err.messages)
-                return render(request, 'transductor/new.html', {'form': form, 'errors': errors})
+                return render(request, 'transductor/new.html',
+                              {'form': form, 'errors': errors})
 
             return redirect('transductor:index')
     else:
         form = EnergyForm(instance=transductor)
 
     return render(request, 'transductor/new.html', {'form': form})
+
 
 @login_required
 def delete(request, transductor_id):
@@ -91,4 +100,5 @@ def model_index(request):
     template_name = 'transductor/model_index.html'
     transductors_models = TransductorModel.objects.all()
 
-    return render(request, template_name, {'transductors_models': transductors_models})
+    return render(request, template_name,
+                  {'transductors_models': transductors_models})
