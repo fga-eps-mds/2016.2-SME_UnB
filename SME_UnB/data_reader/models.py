@@ -84,17 +84,22 @@ class CommunicationProtocol(models.Model):
         alarm = VoltageObserver()
 
         try:
-            thread.start_new_thread(self._thread_data_collection, (new_socket, messages_to_send, alarm))
+            thread.start_new_thread(self._thread_data_collection,
+                                   (new_socket, messages_to_send, alarm))
         except:
             print "Can't create thread"
 
         return True
 
-    def _thread_data_collection(self, socket, messages_to_send, alarm):
+    def _thread_data_collection(self,
+                                socket,
+                                messages_to_send,
+                                alarm):
         messages = []
 
         for i in range(len(messages_to_send)):
-            socket.sendto(messages_to_send[i], (self.transductor.ip_address, self.port))
+            socket.sendto(messages_to_send[i],
+                         (self.transductor.ip_address, self.port))
             message_received = socket.recvfrom(256)
 
             messages.append(message_received[0])
@@ -102,9 +107,12 @@ class CommunicationProtocol(models.Model):
             # Event('new data received', value)
 
         collection_time = timezone.now()
-        self._create_measurements_from_data_collected(messages, collection_time)
+        self._create_measurements_from_data_collected(messages,
+                                                      collection_time)
 
-    def _create_measurements_from_data_collected(self, messages, collection_time):
+    def _create_measurements_from_data_collected(self,
+                                                 messages,
+                                                 collection_time):
         data = Measurements()
 
         data.transductor = self.transductor
@@ -121,13 +129,23 @@ class CommunicationProtocol(models.Model):
         data.active_power_b = self._get_float_value_from_response(messages[7])
         data.active_power_c = self._get_float_value_from_response(messages[8])
 
-        data.reactive_power_a = self._get_float_value_from_response(messages[9])
-        data.reactive_power_b = self._get_float_value_from_response(messages[10])
-        data.reactive_power_c = self._get_float_value_from_response(messages[11])
+        data.reactive_power_a =
+        self._get_float_value_from_response(messages[9])
 
-        data.apparent_power_a = sqrt(data.active_power_a**2 + data.reactive_power_a**2)
-        data.apparent_power_b = sqrt(data.active_power_b**2 + data.reactive_power_b**2)
-        data.apparent_power_c = sqrt(data.active_power_c**2 + data.reactive_power_c**2)
+        data.reactive_power_b =
+        self._get_float_value_from_response(messages[10])
+
+        data.reactive_power_c =
+        self._get_float_value_from_response(messages[11])
+
+        data.apparent_power_a =
+        sqrt(data.active_power_a**2 + data.reactive_power_a**2)
+
+        data.apparent_power_b =
+        sqrt(data.active_power_b**2 + data.reactive_power_b**2)
+
+        data.apparent_power_c =
+        sqrt(data.active_power_c**2 + data.reactive_power_c**2)
 
         data.collection_date = collection_time
 
