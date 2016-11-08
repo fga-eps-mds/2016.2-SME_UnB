@@ -14,14 +14,16 @@ from django.utils.translation import ugettext as _
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
-from transductor.models import EnergyMeasurements, EnergyTransductor,TransductorModel
+from transductor.models import EnergyMeasurements
+from transductor.models import EnergyTransductor, TransductorModel
 
 import datetime
 import matplotlib.patches as mpatches
 
 
-def create_graphic(path, array_date, array_dateb, array_datec, array_data, label):
-    title = _('Monitoring')+' '+ label
+def create_graphic(path, array_date, array_dateb,
+                   array_datec, array_data, label):
+    title = _('Monitoring') + ' ' + label
 
     fig = Figure()
 
@@ -35,7 +37,7 @@ def create_graphic(path, array_date, array_dateb, array_datec, array_data, label
     xb = []
     xc = []
 
-    for i in range(len(array_data)) :
+    for i in range(len(array_data)):
         x.append(array_data[i])
         y.append(array_date[i])
         xb.append(array_data[i])
@@ -75,10 +77,10 @@ def generatePdf():
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from reportlab.lib.units import inch
 
-    doc = SimpleDocTemplate("report/static/Relatorio.pdf",pagesize=letter,
-                            rightMargin=72,leftMargin=72,
-                            topMargin=72,bottomMargin=18)
-    Story=[]
+    doc = SimpleDocTemplate("report/static/Relatorio.pdf", pagesize=letter,
+                            rightMargin=72, leftMargin=72,
+                            topMargin=72, bottomMargin=18)
+    Story = []
     logo = "report/static/currentGraphic.png"
     logo2 = "report/static/voltageGraphic.png"
     logo3 = "report/static/activePowerGraphic.png"
@@ -114,7 +116,6 @@ def generatePdf():
     Story.append(Paragraph(ptext, styles["Normal"]))
     Story.append(Spacer(1, 12))
 
-
     ptext = '<font size=12>%s</font>' % full_name
     Story.append(Paragraph(ptext, styles["Normal"]))
     for part in address_parts:
@@ -128,29 +129,32 @@ def generatePdf():
 
     doc.build(Story)
 
+
 def __minValue(arrayData):
 
     arrayData.sort()
     return arrayData[0]
+
 
 def __maxValue(arrayData):
 
     arrayData.sort(reverse=True)
     return arrayData[0]
 
+
 def __average(arrayData):
     total = 0
     for i in arrayData:
         total += i
 
-    if(len(arrayData)!=0):
+    if(len(arrayData) != 0):
         return total/len(arrayData)
     else:
         return 0
 
-@login_required
-def report(request,transductor_id):
 
+@login_required
+def report(request, transductor_id):
     now = datetime.datetime.now()
     delta = datetime.timedelta(days=1)
 
@@ -238,43 +242,97 @@ def report(request,transductor_id):
 
     generatePdf()
 
-    maxVoltage = [__maxValue(voltage_a),__maxValue(voltage_b),__maxValue(voltage_c)]
-    minVoltage = [__minValue(voltage_a),__minValue(voltage_b),__minValue(voltage_c)]
-    averageVoltage = [__average(voltage_a),__average(voltage_b),__average(voltage_c)]
+    maxVoltage = [__maxValue(voltage_a),
+                  __maxValue(voltage_b),
+                  __maxValue(voltage_c)]
 
-    maxCurrent = [__maxValue(current_a),__maxValue(current_b),__maxValue(current_c)]
-    minCurrent = [__minValue(current_a),__minValue(current_b),__minValue(current_c)]
-    averageCurrent = [__average(current_a),__average(current_b),__average(current_c)]
+    minVoltage = [__minValue(voltage_a),
+                  __minValue(voltage_b),
+                  __minValue(voltage_c)]
 
-    maxActivePower = [__maxValue(active_power_a),__maxValue(active_power_b),__maxValue(active_power_c)]
-    minActivePower = [__minValue(active_power_a),__minValue(active_power_b),__minValue(active_power_c)]
-    averageActivePower = [__average(active_power_a),__average(active_power_b),__average(active_power_c)]
+    averageVoltage = [__average(voltage_a),
+                      __average(voltage_b),
+                      __average(voltage_c)]
 
-    maxReactivePower = [__maxValue(reactive_power_a),__maxValue(reactive_power_b),__maxValue(reactive_power_c)]
-    minReactivePower = [__minValue(reactive_power_a),__minValue(reactive_power_b),__minValue(reactive_power_c)]
-    averageReactivePower = [__average(reactive_power_a),__average(reactive_power_b),__average(reactive_power_c)]
+    maxCurrent = [__maxValue(current_a),
+                  __maxValue(current_b),
+                  __maxValue(current_c)]
 
-    maxApparentPower = [__maxValue(apparent_power_a),__maxValue(apparent_power_b),__maxValue(apparent_power_c)]
-    minApparentPower = [__minValue(apparent_power_a),__minValue(apparent_power_b),__minValue(apparent_power_c)]
-    averageApparentPower = [__average(apparent_power_a),__average(apparent_power_b),__average(apparent_power_c)]
+    minCurrent = [__minValue(current_a),
+                  __minValue(current_b),
+                  __minValue(current_c)]
 
-    VoltageInformation = {'max':maxVoltage,'min':minVoltage,'average':averageVoltage}
-    currentInformation = {'max':maxCurrent,'min':minCurrent,'average':averageCurrent}
-    activePowerInformation = {'max':maxActivePower,'min':minActivePower,'average':averageActivePower}
-    reactivePowerInformation = {'max':maxReactivePower,'min':minReactivePower,'average':averageReactivePower}
-    apparentPowerInformation = {'max':maxApparentPower,'min':minApparentPower,'average':averageApparentPower}
+    averageCurrent = [__average(current_a),
+                      __average(current_b),
+                      __average(current_c)]
 
-    information = {'voltage':VoltageInformation,
-                    'Current':currentInformation,
-                    'activePower':activePowerInformation,
-                    'reactivePower':reactivePowerInformation,
-                    'apparentPower':apparentPowerInformation}
+    maxActivePower = [__maxValue(active_power_a),
+                      __maxValue(active_power_b),
+                      __maxValue(active_power_c)]
 
-    return render(request, 'graphics/report.html',information)
+    minActivePower = [__minValue(active_power_a),
+                      __minValue(active_power_b),
+                      __minValue(active_power_c)]
+
+    averageActivePower = [__average(active_power_a),
+                          __average(active_power_b),
+                          __average(active_power_c)]
+
+    maxReactivePower = [__maxValue(reactive_power_a),
+                        __maxValue(reactive_power_b),
+                        __maxValue(reactive_power_c)]
+
+    minReactivePower = [__minValue(reactive_power_a),
+                        __minValue(reactive_power_b),
+                        __minValue(reactive_power_c)]
+
+    averageReactivePower = [__average(reactive_power_a),
+                            __average(reactive_power_b),
+                            __average(reactive_power_c)]
+
+    maxApparentPower = [__maxValue(apparent_power_a),
+                        __maxValue(apparent_power_b),
+                        __maxValue(apparent_power_c)]
+
+    minApparentPower = [__minValue(apparent_power_a),
+                        __minValue(apparent_power_b),
+                        __minValue(apparent_power_c)]
+
+    averageApparentPower = [__average(apparent_power_a),
+                            __average(apparent_power_b),
+                            __average(apparent_power_c)]
+
+    VoltageInformation = {'max': maxVoltage, 'min': minVoltage,
+                          'average': averageVoltage}
+
+    currentInformation = {'max': maxCurrent, 'min': minCurrent,
+                          'average': averageCurrent}
+
+    activePowerInformation = {'max': maxActivePower, 'min': minActivePower,
+                              'average': averageActivePower}
+
+    reactivePowerInformation = {'max': maxReactivePower,
+                                'min': minReactivePower,
+                                'average': averageReactivePower}
+
+    apparentPowerInformation = {'max': maxApparentPower,
+                                'min': minApparentPower,
+                                'average': averageApparentPower}
+
+    information = {'voltage': VoltageInformation,
+                   'Current': currentInformation,
+                   'activePower': activePowerInformation,
+                   'reactivePower': reactivePowerInformation,
+                   'apparentPower': apparentPowerInformation}
+
+    return render(request, 'graphics/report.html', information)
+
 
 @login_required
 def transductors_filter(request):
-    return render(request,'graphics/transductors_filter.html',{'transductors': EnergyTransductor.objects.all()});
+    return render(request, 'graphics/transductors_filter.html',
+                  {'transductors': EnergyTransductor.objects.all()})
+
 
 def open_pdf(request):
     with open('report/static/Relatorio.pdf', 'r') as pdf:
@@ -282,6 +340,7 @@ def open_pdf(request):
         response['Content-Disposition'] = 'filename=Relatorio.pdf'
         return response
     pdf.closed
+
 
 @login_required
 def invoice(request):
