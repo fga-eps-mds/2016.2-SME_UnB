@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'alerts',
     'django_nose',
 ]
-### Email log module -
+# Email log module -
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -132,7 +132,7 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_URL = 'users:logout'
 
-#email configuration
+# email configuration
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.zoho.com'
 EMAIL_HOST_USER = 'mds@sof2u.com'

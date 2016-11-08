@@ -177,7 +177,8 @@ def report(request, transductor_id):
     apparent_power_b = []
     apparent_power_c = []
 
-    for i in EnergyMeasurements.objects.all().filter(transductor=EnergyTransductor.objects.get(id=transductor_id)):
+    tranductorEn = EnergyTransductor.objects.get(id=transductor_id)
+    for i in EnergyMeasurements.objects.all().filter(transductor=tranductorEn):
 
         date.append(i.collection_date)
         voltage_a.append(i.voltage_a)
@@ -196,7 +197,7 @@ def report(request, transductor_id):
         apparent_power_b.append(i.apparent_power_b)
         apparent_power_c.append(i.apparent_power_c)
 
-        #now+=delta
+        # now+=delta
 
     data = [4, 6, 23, 7, 4, 2]
 
