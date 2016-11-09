@@ -5,17 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.views import login
 from django.contrib.auth.views import logout
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.views.generic import CreateView
+from django.shortcuts import render
 from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
-from django.core.mail import send_mail
-from SME_UnB.settings import EMAIL_HOST_USER
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 from django.core import mail
 import os
 
@@ -88,7 +84,6 @@ def register(request):
         first_name = form.get('first_name')
         last_name = form.get('last_name')
         password = form.get('password')
-        confirmPassword = form.get('confirmPassword')
         email = form.get('email')
 
         resultCheck = fullValidationRegister(form)
