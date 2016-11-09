@@ -1,21 +1,12 @@
 from django.shortcuts import render
-from django.views.generic import CreateView
-from django.http import HttpResponseRedirect
-from django.contrib.auth.views import login
-from django.contrib.auth.views import logout
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse_lazy, reverse
-from cStringIO import StringIO
-from reportlab.platypus.flowables import Image
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
 from transductor.models import EnergyMeasurements
-from transductor.models import EnergyTransductor, TransductorModel
+from transductor.models import EnergyTransductor
 
 import datetime
 import matplotlib.patches as mpatches
