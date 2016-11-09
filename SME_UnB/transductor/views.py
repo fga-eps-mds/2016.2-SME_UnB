@@ -21,7 +21,9 @@ def index(request):
 def detail(request, transductor_id):
     template_name = 'transductor/detail.html'
     transductor = get_object_or_404(EnergyTransductor, pk=transductor_id)
-    measurements = EnergyTransductor.objects.get(id=transductor_id).energymeasurements_set.all()
+
+    measurements = EnergyTransductor.objects \
+        .get(id=transductor_id).energymeasurements_set.all()
     paginator = Paginator(measurements, 4)
     page = request.GET.get('page')
 

@@ -245,12 +245,26 @@ def list_user_delete(request):
 
 
 def check_permissions(user):
-
-    has_report_permission = 'checked'if user.has_perm('report.can_generate') else ''
-    has_transductor_permission = 'checked' if user.has_perm('transductor.can_view_transductors') else ''
-    has_edit_user_permission = 'checked' if user.has_perm('users.can_edit_user') else ''
-    has_delete_user_permission = 'checked' if user.has_perm('users.can_delete_user') else ''
-    has_see_logging_permission = 'checked'if user.has_perm('users.can_see_logging') else ''
+    if user.has_perm('report.can_generate'):
+        has_report_permission = 'checked'
+    else:
+        has_report_permission = ''
+    if user.has_perm('transductor.can_view_transductors'):
+        has_transductor_permission = 'checked'
+    else:
+        has_transductor_permission = ''
+    if user.has_perm('users.can_edit_user'):
+        has_edit_user_permission = 'checked'
+    else:
+        has_edit_user_permission = ''
+    if user.has_perm('users.can_delete_user'):
+        has_delete_user_permission = 'checked'
+    else:
+        has_delete_user_permission = ''
+    if user.has_perm('users.can_see_logging'):
+        has_see_logging_permission = 'checked'
+    else:
+        has_see_logging_permission = ''
 
     context = {
         'user': user,
