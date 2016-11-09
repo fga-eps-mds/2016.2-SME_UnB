@@ -1,9 +1,5 @@
-from django.test import TestCase
-from django.test import Client
-from django.contrib.auth.models import User, Permission
-from mock import Mock, MagicMock, patch
-from django.core.mail import send_mail
-from alerts.models import *
+from django.contrib.auth.models import User
+from mock import Mock, patch
 
 import unittest
 
