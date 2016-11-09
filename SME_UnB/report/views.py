@@ -5,6 +5,7 @@ from django.contrib.auth.views import login
 from django.contrib.auth.views import logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy, reverse
+from django.core import serializers
 from cStringIO import StringIO
 from reportlab.platypus.flowables import Image
 from reportlab.pdfgen import canvas
@@ -12,14 +13,13 @@ from reportlab.lib.pagesizes import letter
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 
-
 import datetime
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
 import matplotlib.patches as mpatches
-
+import json
 from transductor.models import EnergyMeasurements, EnergyTransductor,TransductorModel
 
 
@@ -290,3 +290,17 @@ def open_pdf(request,transductor_id):
 @login_required
 def invoice(request):
     return render(request, 'invoice/invoice.html')
+
+
+def get_measurements_filter_transductor(request, transductor_id):
+
+    measurements = EnergyMeasurements.objects.all().filter(transductor=EnergyTransductor.objects.get(id=transductor_id))
+    return HttpResponse(serializers.serialize('json',measurements),'application/json')
+
+def list_transductors(request):
+
+    return HttpResponse(serializers.serialize('json',EnergyTransductor.objects.all()))
+
+@login_required
+def return_chart(request):
+    return render(request,'graphics/chart.html')
