@@ -53,7 +53,7 @@ def create_graphic(path, array_date, array_dateb,
     ax.set_ylabel(label)
     ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
     fig.autofmt_xdate()
-    canvas = FigureCanvas(fig)
+    # canvas = FigureCanvas(fig)
 
     fig.savefig(path)
 
@@ -336,4 +336,5 @@ def open_pdf(request):
 
 @login_required
 def invoice(request):
+
     return render(request, 'invoice/invoice.html')
