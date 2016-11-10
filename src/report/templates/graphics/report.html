@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+<title>{% trans "Reports" %}</title>
+{% endblock %}
+
+
+{% block body %}
+
+
+<div class="form-group">
+  <h1 class='text-center'>{% trans "Report" %}</h1>
+  <div class="row">
+    <div class="col-md-2 col-md-offset-5">
+      <a class="btn btn-primary btn-lg btn-block" href="{% url 'report:open_pdf' transductor_id %}" target="_blank" role="button">{% trans "Generate PDF" %}&raquo;</a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-6 col-md-3"></div>
+  <div class="col-xs-6 col-md-6">
+    <div class="form-group">
+      {% load staticfiles %}
+      <img src="{% static 'currentGraphic' %}{{transductor_id}}.png"/>
+      <table class ="table table-bordered">
+          <tr>
+              <th>Phase</th>
+              <th>Max. value</th>
+              <th>Min. Value</th>
+              <th>Average Value</th>
+          </tr>
+          <tr>
+              <td>Phase 1</td>
+              <td>{{Current.max.0}}</td>
+              <td>{{Current.min.0}}</td>
+              <td>{{Current.average.0}}</td>
+          </tr>
+          <tr>
+              <td>Phase 2</td>
+              <td>{{Current.max.1}}</td>
+              <td>{{Current.min.1}}</td>
+              <td>{{Current.average.1}}</td>
+          </tr>
+          <tr>
+              <td>Phase 3</td>
+              <td>{{Current.max.2}}</td>
+              <td>{{Current.min.2}}</td>
+              <td>{{Current.average.2}}</td>
+          </tr>
+
+      </table class ="table table-bordered">
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-xs-6 col-md-3"></div>
+  <div class="col-xs-6 col-md-6">
+    <div class="form-group">
+      {% load staticfiles %}
+      <img src="{% static  'voltageGraphic' %}{{transductor_id}}.png"/>
+      <table class ="table table-bordered">
+          <tr>
+              <th>Phase</th>
+              <th>Max. value</th>
+              <th>Min. Value</th>
+              <th>Average Value</th>
+          </tr>
+          <tr>
+              <td>Phase 1</td>
+              <td>{{voltage.max.0}}</td>
+              <td>{{voltage.min.0}}</td>
+              <td>{{voltage.average.0}}</td>
+          </tr>
+          <tr>
+              <td>Phase 2</td>
+              <td>{{voltage.max.1}}</td>
+              <td>{{voltage.min.1}}</td>
+              <td>{{voltage.average.1}}</td>
+          </tr>
+          <tr>
+              <td>Phase 3</td>
+              <td>{{voltage.max.2}}</td>
+              <td>{{voltage.min.2}}</td>
+              <td>{{voltage.average.2}}</td>
+          </tr>
+
+      </table class ="table table-bordered">
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-6 col-md-3"></div>
+  <div class="col-xs-6 col-md-6">
+    <div class="form-group">
+      {% load staticfiles %}
+      <img src="{% static  'activePowerGraphic' %}{{transductor_id}}.png"/>
+      <table class ="table table-bordered">
+          <tr>
+              <th>Phase</th>
+              <th>Max. value</th>
+              <th>Min. Value</th>
+              <th>Average Value</th>
+          </tr>
+          <tr>
+              <td>Phase 1</td>
+              <td>{{activePower.max.0}}</td>
+              <td>{{activePower.min.0}}</td>
+              <td>{{activePower.average.0}}</td>
+          </tr>
+          <tr>
+              <td>Phase 2</td>
+              <td>{{activePower.max.1}}</td>
+              <td>{{activePower.min.1}}</td>
+              <td>{{activePower.average.1}}</td>
+          </tr>
+          <tr>
+              <td>Phase 3</td>
+              <td>{{activePower.max.2}}</td>
+              <td>{{activePower.min.2}}</td>
+              <td>{{activePower.average.2}}</td>
+          </tr>
+
+      </table class ="table table-bordered">
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-6 col-md-3"></div>
+  <div class="col-xs-6 col-md-6">
+    <div class="form-group">
+      {% load staticfiles %}
+      <img src="{% static  'reactivePowerGraphic' %}{{transductor_id}}.png"/>
+      <table class ="table table-bordered">
+          <tr>
+              <th>Phase</th>
+              <th>Max. value</th>
+              <th>Min. Value</th>
+              <th>Average Value</th>
+          </tr>
+          <tr>
+              <td>Phase 1</td>
+              <td>{{reactivePower.max.0}}</td>
+              <td>{{reactivePower.min.0}}</td>
+              <td>{{reactivePower.average.0}}</td>
+          </tr>
+          <tr>
+              <td>Phase 2</td>
+              <td>{{reactivePower.max.1}}</td>
+              <td>{{reactivePower.min.1}}</td>
+              <td>{{reactivePower.average.1}}</td>
+          </tr>
+          <tr>
+              <td>Phase 3</td>
+              <td>{{reactivePower.max.2}}</td>
+              <td>{{reactivePower.min.2}}</td>
+              <td>{{reactivePower.average.2}}</td>
+          </tr>
+
+      </table class ="table table-bordered">
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-6 col-md-3"></div>
+  <div class="col-xs-6 col-md-6">
+    <div class="form-group">
+      {% load staticfiles %}
+      <img src="{% static 'apparentPowerGraphic' %}{{transductor_id}}.png"/>
+      <table class ="table table-bordered">
+          <tr>
+              <th>Phase</th>
+              <th>Max. value</th>
+              <th>Min. Value</th>
+              <th>Average Value</th>
+          </tr>
+          <tr>
+              <td>Phase 1</td>
+              <td>{{apparentPower.max.0}}</td>
+              <td>{{apparentPower.min.0}}</td>
+              <td>{{apparentPower.average.0}}</td>
+          </tr>
+          <tr>
+              <td>Phase 2</td>
+              <td>{{apparentPower.max.1}}</td>
+              <td>{{apparentPower.min.1}}</td>
+              <td>{{apparentPower.average.1}}</td>
+          </tr>
+          <tr>
+              <td>Phase 3</td>
+              <td>{{apparentPower.max.2}}</td>
+              <td>{{apparentPower.min.2}}</td>
+              <td>{{apparentPower.average.2}}</td>
+          </tr>
+
+      </table class ="table table-bordered">
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

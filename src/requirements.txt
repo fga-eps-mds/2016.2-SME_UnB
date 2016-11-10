@@ -1,0 +1,12 @@
+requests[security]
+Django==1.9.8
+django-bootstrap3
+psycopg2==2.6.1
+matplotlib
+reportlab
+django-nose
+unipath
+pusher
+coverage==3.6
+Sphinx
+django-polymorphic
