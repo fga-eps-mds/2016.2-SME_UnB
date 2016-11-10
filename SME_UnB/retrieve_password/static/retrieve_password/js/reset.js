@@ -53,21 +53,21 @@ $(function() {
 
     $('#reset_btn').on('click', function(event){
         event.preventDefault();
-        confirm_email();
+        alert("hello there");
+        //confirm_email();
     });
 
     function add_pass_fields(email){
-
-        $("#myModalLabel")[0].textContent = "Alterar senha";
+        $("#myModalLabel")[0].textContent = "Mudar senha";
 
         var tittle = "<h2 class='form-signin-heading text-center'>Nova senha</h2>";
-        var email = "<input id='email' type='hidden' value='" + email + "' name='email' />"
+        var email = "<input id='email' type='' value='" + email + "' name='email' />"
 
         var div_new_pass = "<div id='form-group-confirm' class='form-group'></div>";
         var div_confirm_pass = "<div id='form-group' class='form-group'></div>";
 
         var form = "<form  id='form-pass' class='form-signin'></form>";
-        var button_pass = "<button id='reset_pass' class='btn btn-lg btn-primary btn-block'>Trocar senha</button>";
+        var button_pass = "<button id='reset_password_button' class='btn btn-lg btn-primary btn-block'>Trocar senha</button>";
 
         var label_new_pass = "<label for='inputPassword' class='sr-only'>{% trans 'Password' %}</label>";
         var input_new_pass = "<input type='password' id='inputPassword' name='password'" +
@@ -93,6 +93,7 @@ $(function() {
         $('#form-pass').append(button_pass);
 
         $('#reset_pass').on('click', function(event){
+          alert("hello therdsadase");
             reset_password();
         });
     };
@@ -100,9 +101,8 @@ $(function() {
 
     // AJAX for posting
     function reset_password() {
-      console.log("resetando o pass");
         $.ajax({
-            url : "/accounts/reset_pass/", // the endpoint
+            url : "/retrieve_password/reset/", // the endpoint
             type : "POST", // http method
             data : {
                 pass: $('#inputPassword').val(),
@@ -112,11 +112,12 @@ $(function() {
 
             // handle a successful response
             success : function(json) {
-                alert(json.message);
+                alert("ALERTA reset_password " + json.message);
             },
 
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
+              alert("hello ther34343e");
                 $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                     " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
                 console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
@@ -136,11 +137,14 @@ $(function() {
 
             // handle a successful response
             success : function(json) {
+              console.log(url + "success");
                 if(json.is_valid == "yes"){
+                  alert("json is valid()");
                     $("#content-form").empty();
                     add_pass_fields(json.email);
                 }
                 else{
+                    console.log(url + "failed");
                     $("#tittle-confirm")[0].textContent = json.message;
                     $("#email").remove();
                     $("#reset_btn").remove();

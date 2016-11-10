@@ -70,7 +70,7 @@ $(function() {
             success : function(json) {
                 $('#loading_img').hide();
                 $('#confirmMessage').modal('show');
-                console.log("deu bom no js - redirecionando");
+
                 message = $("#message");
                 message[0].textContent = json.message;
 

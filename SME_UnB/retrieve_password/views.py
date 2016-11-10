@@ -1,16 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, Permission
+from django.contrib.auth.views import login
+from django.contrib.auth.views import logout
+from django.core.urlresolvers import reverse_lazy, reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.views.generic import CreateView
 from django.contrib import messages
+from django.db import IntegrityError
+from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.core import mail
 from SME_UnB.settings import EMAIL_HOST_USER
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+import os
+
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
 import json
 import logging
 import hashlib
@@ -45,13 +57,14 @@ def forgot_password(request):
 
     """
     def post(request):
+        print("post")
         email = request.POST.get('email')
         try:
             user = User.objects.get(email=email)
             token = _generate_token_(user)
 
             # send email
-            text_plain = 'http://dustteam.com.br/retrieve_password/forgot/' + token
+            text_plain = 'localhost:3000/retrieve_password/reset/' + token
 
             #unicode(html)
 
@@ -70,7 +83,7 @@ def forgot_password(request):
 
             context = {
                     'message':"Email enviado com sucesso",
-                    'validator':"A recuperação de senha irá expirar após as " + \
+                    'validate':"A recuperação de senha irá expirar após as " + \
                     "24hr do dia de hoje",
                     }
 
@@ -95,6 +108,8 @@ def forgot_password(request):
         return render(request, template_name, context_return)
 
 def confirm_email(request, token):
+    print("confirm_email")
+
     """TODO: Docstring for confirm_email.
 
     :request: TODO
@@ -110,7 +125,6 @@ def confirm_email(request, token):
             user = User.objects.get(email=email)
             token = _generate_token_(user)
             if token == request.POST.get('token'):
-                print("token correto")
                 context = {
                         "message" : "O link está correto",
                         "is_valid": "yes",
@@ -134,6 +148,7 @@ def confirm_email(request, token):
                 )
 
 def reset_password(request):
+    print("reset_password")
     """TODO: Docstring for reset_password.
     :returns: TODO
 
@@ -141,11 +156,9 @@ def reset_password(request):
     if request.method == "POST":
         password = request.POST.get("inputPassword")
         confirm_pass = request.POST.get("confirmPassword")
-        print("que isso mano " + password + " " + confirm_pass)
         email = request.POST.get("email")
 
         if password ==  confirm_pass:
-            print("EH IGUAL")
 
             user = User.objects.get(email=email)
             user.set_password(password)
