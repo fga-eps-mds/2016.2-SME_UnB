@@ -153,19 +153,19 @@ def _create_measurements_from_data_collected(self,
         for i in range(0, n_bytes, 4):
             if sys.byteorder == "little":
                 msb = msg[i]
-                msg[i] = msg[i+1]
-                msg[i+1] = msb
+                msg[i] = msg[i + 1]
+                msg[i + 1] = msb
 
-                msb = msg[i+2]
-                msg[i+2] = msg[i+3]
-                msg[i+3] = msb
+                msb = msg[i + 2]
+                msg[i + 2] = msg[i + 3]
+                msg[i + 3] = msb
             else:
                 msb = msg[i]
-                lsb = msg[i+1]
-                msg[i] = msg[i+2]
-                msg[i+1] = msg[i+3]
-                msg[i+2] = msb
-                msg[i+3] = lsb
+                lsb = msg[i + 1]
+                msg[i] = msg[i + 2]
+                msg[i + 1] = msg[i + 3]
+                msg[i + 2] = msb
+                msg[i + 3] = lsb
 
         value = struct.unpack("1f", msg)[0]
         return value

@@ -19,6 +19,6 @@ urlpatterns = [
     url(r'^delete_user/(?P<user_id>[0-9]+)/',
         views.delete_user,
         name="delete_user"),
-    url(r'^self_edit/',  views.self_edit_user, name="self_edit_user"),
+    url(r'^self_edit/', views.self_edit_user, name="self_edit_user"),
     url(r'^logging_list/', views.logging_list, name="logging_list"),
 ]

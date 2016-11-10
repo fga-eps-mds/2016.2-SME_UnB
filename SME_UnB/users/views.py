@@ -386,7 +386,7 @@ def delete_user(request, user_id):
 @login_required
 def logging_list(request):
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    file = open(BASE_DIR+'/SME_UnB/logging.logging', 'r')
+    file = open(BASE_DIR + '/SME_UnB/logging.logging', 'r')
     file_contentes = file.read()
 
     return render(request, 'users/logging_list.html',

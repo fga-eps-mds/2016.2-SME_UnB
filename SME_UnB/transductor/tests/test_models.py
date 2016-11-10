@@ -54,6 +54,6 @@ class EnergyTransductorTestCase(TestCase):
 
     def test_str_from_energy_transductor(self):
         transductor = EnergyTransductor.objects. \
-                      get(ip_address="111.111.111.111")
+            get(ip_address="111.111.111.111")
 
         self.assertEqual(transductor.description, transductor.__str__())

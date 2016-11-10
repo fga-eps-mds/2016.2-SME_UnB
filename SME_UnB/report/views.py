@@ -53,7 +53,7 @@ def create_graphic(path, array_date, array_dateb,
     ax.set_ylabel(label)
     ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
     fig.autofmt_xdate()
-    # canvas = FigureCanvas(fig)
+    canvas = FigureCanvas(fig)
 
     fig.savefig(path)
 
@@ -88,11 +88,11 @@ def generatePdf():
     full_name = "SME-UnB"
     address_parts = ["Campus Universitario UnB", "Brasilia-DF, 70910-900"]
 
-    im = Image(logo, 8*inch, 5*inch)
-    im2 = Image(logo2, 8*inch, 5*inch)
-    im3 = Image(logo3, 8*inch, 5*inch)
-    im4 = Image(logo4, 8*inch, 5*inch)
-    im5 = Image(logo5, 8*inch, 5*inch)
+    im = Image(logo, 8 * inch, 5 * inch)
+    im2 = Image(logo2, 8 * inch, 5 * inch)
+    im3 = Image(logo3, 8 * inch, 5 * inch)
+    im4 = Image(logo4, 8 * inch, 5 * inch)
+    im5 = Image(logo5, 8 * inch, 5 * inch)
 
     Story.append(im)
     Story.append(im2)
@@ -139,7 +139,7 @@ def __average(arrayData):
         total += i
 
     if(len(arrayData) != 0):
-        return total/len(arrayData)
+        return total / len(arrayData)
     else:
         return 0
 
@@ -336,5 +336,4 @@ def open_pdf(request):
 
 @login_required
 def invoice(request):
-
     return render(request, 'invoice/invoice.html')
