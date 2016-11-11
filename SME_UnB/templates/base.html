@@ -10,9 +10,12 @@
     <link type="text/css" rel="stylesheet" href="{% static " css/style.css " %}" media="screen,projection" />
     <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <!-- TODO: separate in a diferent js file -->
     <script>
       // Enable pusher logging - don't include this in production
-      Pusher.logToConsole = true;
+      Pusher.logToConsole = false;
 
       var id = '{{request.user.id}}'
       if(id != 'None') {
@@ -64,7 +67,7 @@
               if(notification.fields.local && notification.fields.local != "") {
                 element +="<p><strong>Local:</strong> " + notification.fields.local + "</p>";
               }
-            
+
               break;
           }
 

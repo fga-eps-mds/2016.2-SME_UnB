@@ -287,20 +287,19 @@ def open_pdf(request,transductor_id):
         response['Content-Disposition'] = 'filename=Relatorio'+transductor_id+'.pdf'
         return response
     pdf.closed
+
 @login_required
 def invoice(request):
     return render(request, 'invoice/invoice.html')
 
 
 def get_measurements_filter_transductor(request, transductor_id):
-
     measurements = EnergyMeasurements.objects.all().filter(transductor=EnergyTransductor.objects.get(id=transductor_id))
     return HttpResponse(serializers.serialize('json',measurements),'application/json')
 
 def list_transductors(request):
-
     return HttpResponse(serializers.serialize('json',EnergyTransductor.objects.all()))
 
 @login_required
 def return_chart(request):
-    return render(request,'graphics/chart.html')
+    return render(request,'graphics/chart.html', {'all_transductors' : EnergyTransductor.objects.all()})
