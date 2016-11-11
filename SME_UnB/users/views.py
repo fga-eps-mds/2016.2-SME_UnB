@@ -157,13 +157,15 @@ def register(request):
 
     return render(request, 'users/dashboard.html')
 
-    def check_name(first_name, last_name):
+
+def check_name(first_name, last_name):
         if not first_name.isalpha() or not last_name.isalpha():
             return 'Nome deve conter apenas letras'
         else:
             return ''
 
-    def check_email(email):
+
+def check_email(email):
         if '@' not in email or '.' not in email or ' ' in email:
             return' - Email inválido!Esse e-mail não esta em um formato válido'
         else:
@@ -405,14 +407,16 @@ def __prepare_error_render__(request, fail_message, user):
     return render(request, 'users/edit_user.html', {'falha': fail_message,
                                                     'user': user})
 
-    def __prepare_error_render_self__(request, fail_message, user):
+
+def __prepare_error_render_self__(request, fail_message, user):
 
         return render(request,
                       'users/self_edit.html',
                       {'falha': fail_message,
                        'user': user})
 
-    def __permision__(permision_type, codename, user):
+
+def __permision__(permision_type, codename, user):
 
         if permision_type == 'on':
             permision = Permission.objects.get(codename=codename)
