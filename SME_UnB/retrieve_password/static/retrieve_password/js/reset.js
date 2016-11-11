@@ -57,6 +57,7 @@ $(function() {
     });
 
     function add_pass_fields(email){
+
         $("#myModalLabel")[0].textContent = "Mudar senha";
 
         var tittle = "<h2 class='form-signin-heading text-center'>Nova senha</h2>";
@@ -91,8 +92,7 @@ $(function() {
 
         $('#form-pass').append(button_pass);
 
-        $('#reset_pass').on('click', function(event){
-          alert("hello therdsadase");
+        $('#reset_password_button').on('click', function(event){
             reset_password();
         });
     };
@@ -101,7 +101,7 @@ $(function() {
     // AJAX for posting
     function reset_password() {
         $.ajax({
-            url : "/retrieve_password/reset/", // the endpoint
+            url : "/retrieve_password/reset_password/", // the endpoint
             type : "POST", // http method
             data : {
                 pass: $('#inputPassword').val(),
@@ -116,7 +116,6 @@ $(function() {
 
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
-              alert("hello ther34343e");
                 $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                     " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
                 console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
@@ -128,7 +127,7 @@ $(function() {
     function confirm_email() {
         $.ajax({
             url : "/retrieve_password/reset/0/", // the endpoint
-            type : "POST", // http method
+            type : "POST", // http method"
             data : {
                 email: $('#email').val(),
                 token: $('#token').val(),
@@ -141,7 +140,7 @@ $(function() {
                     add_pass_fields(json.email);
                 }
                 else{
-                    console.log(url + "failed");
+                  //TODO -- error div
                     $("#tittle-confirm")[0].textContent = json.message;
                     $("#email").remove();
                     $("#reset_btn").remove();

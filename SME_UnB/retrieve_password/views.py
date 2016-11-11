@@ -21,8 +21,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 import os
 
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from django.http import JsonResponse
 import json
 import logging
 import hashlib
@@ -58,7 +57,7 @@ def forgot_password(request):
         try:
             user = User.objects.get(email=email)
             token = _generate_token_(user)
-
+            print(token)
             # send email
             password_change_message = "A password reset has been requested for \
             the SME_UnB username: " + user.username + "\n\nIf you did not make \
@@ -170,8 +169,6 @@ def reset_password(request):
                 "message": message,
                 "is_valid": is_valid,
                 }
-
-        return HttpResponse(
-                json.dumps(context),
-                'application/json'
-                )
+        print(returning)
+        
+        return JsonResponse(context)
