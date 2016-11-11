@@ -69,13 +69,19 @@ $(function() {
             // handle a successful response
             success : function(json) {
                 $('#loading_img').hide();
-                $('#confirmMessage').modal('show');
-
+                //$('#confirmMessage').modal('show');
                 message = $("#message");
                 message[0].textContent = json.message;
-
                 validate = $("#validate");
                 validate[0].textContent = json.validate;
+
+                if(json.message == "Este email não existe ou é invalido"){
+                  $("#error_msg").show();
+                }
+                else{
+                  $("#error_msg").hide();
+                  $("#success_panel").show();
+                }
             },
 
             // handle a non-successful response

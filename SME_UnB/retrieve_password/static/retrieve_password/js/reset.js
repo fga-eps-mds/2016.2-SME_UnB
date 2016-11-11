@@ -53,8 +53,7 @@ $(function() {
 
     $('#reset_btn').on('click', function(event){
         event.preventDefault();
-        alert("hello there");
-        //confirm_email();
+        confirm_email();
     });
 
     function add_pass_fields(email){
@@ -137,9 +136,7 @@ $(function() {
 
             // handle a successful response
             success : function(json) {
-              console.log(url + "success");
                 if(json.is_valid == "yes"){
-                  alert("json is valid()");
                     $("#content-form").empty();
                     add_pass_fields(json.email);
                 }

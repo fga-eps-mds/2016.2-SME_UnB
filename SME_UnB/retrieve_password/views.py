@@ -29,11 +29,12 @@ import hashlib
 import datetime
 
 def _generate_token_(user):
-    """TODO: Docstring for _genarate_token_.
-    :user: is a user witch like changes the password
-    :returns: unique token to a user an a day
-
     """
+    _genarate_token_ : Takes a serie of arguments and generate a hash with them
+    :user: is a user witch like changes the password
+    :returns: unique hash token with username, password, date.day
+    """
+
     username = user.username
     password = user.password
     date = datetime.datetime.now()
@@ -45,36 +46,32 @@ def _generate_token_(user):
     return token
 
 def forgot_password(request):
-    """TODO: Docstring for forgot_password.
-    Fixing html email
-    Make testes
-    make a app
-
-
+    """
+    forgot_password :
     :request: recive the data with email to send a requesto of a new password
     :returns: render a page with  message to see your email if the emails exists
     and render an error if dont
-
     """
+
     def post(request):
-        print("post")
         email = request.POST.get('email')
         try:
             user = User.objects.get(email=email)
             token = _generate_token_(user)
 
             # send email
-            text_plain = 'localhost:3000/retrieve_password/reset/' + token
+            password_change_message = "A password reset has been requested for \
+            the SME_UnB username: " + user.username + "\n\nIf you did not make \
+            this request, it is safe to ignore this email.\n" + "\nIf you do \
+            actualy want to reset your password, please visit this link: \n\n"
 
-            #unicode(html)
-
-            #email_html = MIMEText(html, 'html')
+            link_plain = 'localhost:3000/retrieve_password/reset/' + token
 
             connection = mail.get_connection()
             connection.open()
             forgotten_password_mail = mail.EmailMessage(
         	    'Esqueceu sua senha?',
-        	    text_plain,
+        	    password_change_message + link_plain,
         	    'mds@sof2u.com',
         	    [email],
         	    connection=connection,
@@ -108,17 +105,15 @@ def forgot_password(request):
         return render(request, template_name, context_return)
 
 def confirm_email(request, token):
-    print("confirm_email")
-
     """TODO: Docstring for confirm_email.
-
     :request: TODO
     :token: TODO
     :returns: TODO
 
     """
     if request.method == "GET":
-        return render(request, "retrieve_password/reset_password.html", {"token":token})
+        return render(request, "retrieve_password/reset_password.html", \
+        {"token":token})
     else:
         email = request.POST.get('email')
         try:
@@ -148,7 +143,9 @@ def confirm_email(request, token):
                 )
 
 def reset_password(request):
+
     print("reset_password")
+
     """TODO: Docstring for reset_password.
     :returns: TODO
 
@@ -166,7 +163,6 @@ def reset_password(request):
             message = "Senha alterada com sucesso"
             is_valid = "yes"
         else:
-            print("DEU RUMIMIDSMI")
             message = "as senhas são diferentes"
             is_valid = "no"
 
