@@ -72,6 +72,10 @@ class Transductor(PolymorphicModel):
     creation_date = models.DateTimeField('date published', auto_now=True)
     broken = models.BooleanField(default=False)
 
+    class Meta:
+        abstract = True
+        permissions = (("can_view_transductors", "Can view Transductors Page"),)
+        
     def set_transductor_broken(self, new_status):
         """
         Method responsible to change transductor broken status.
@@ -84,6 +88,8 @@ class Transductor(PolymorphicModel):
         """
         self.broken = new_status
         self.save()
+
+
 
 
 class EnergyTransductor(Transductor):

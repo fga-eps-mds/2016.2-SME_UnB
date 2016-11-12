@@ -302,7 +302,7 @@ def edit_user(request, user_id):
         first_name = form.get('first_name')
         last_name =  form.get('last_name')
         email = form.get('email')
-
+        user_type = form.get('user_type')
         resultCheck = fullValidation(form)
 
         if len(resultCheck) != 0:
@@ -312,6 +312,11 @@ def edit_user(request, user_id):
         user.last_name = last_name
         user.username = email
         user.email = email
+
+        if user_type == 'common':
+            user.is_superuser = False
+        else:
+            user.is_superuser = True
 
         give_permission(request, user)
 
