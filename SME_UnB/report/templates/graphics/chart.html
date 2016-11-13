@@ -14,8 +14,13 @@
   </select>
   <button type="button" id="select_transductor_btn">{% trans "Select" %}</button>
   <button type="button" id="current_chart">Current Chart</button>
-  
-  <div id="curve_chart" style="width: 900px; height: 500px"></div>
+
+  <br>
+  <div id="dashboard_div">
+      <div id="column_filter"></div>
+      <div id="curve_chart" style="width: 900px; height: 500px"></div>
+      <div id="filter_div"></div>
+  </div>
 
 <script src="{% static 'js/chart.js' %}"></script>
 {% endblock %}
