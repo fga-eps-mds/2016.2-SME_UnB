@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import update_session_auth_hash
-from django.core import mail
+
 import os
 
 import logging
@@ -84,6 +84,7 @@ def register(request):
         first_name = form.get('first_name')
         last_name = form.get('last_name')
         password = form.get('password')
+        confirmPassword = form.get('confirmPassword')
         email = form.get('email')
 
         resultCheck = fullValidationRegister(form)
@@ -115,12 +116,10 @@ def register(request):
                                                      email=email)
 
         except IntegrityError as e:
-            return render(request,
-                          'userRegister/register.html',
+            return render(request, 'userRegister/register.html',
                           {'falha': 'Invalid email, email already exist'})
         except:
-            return render(request,
-                          'userRegister/register.html',
+            return render(request, 'userRegister/register.html',
                           {'falha': 'unexpected error'})
 
         give_permission(request, user)
@@ -131,102 +130,105 @@ def register(request):
 
         logger = logging.getLogger(__name__)
         logger.info(request.user.__str__() + ' Registered ' + user.__str__())
-        print(email)
 
+        print(email)
+        from django.core import mail
         connection = mail.get_connection()
 
         # Manually open the connection
         connection.open()
 
         # Construct an email message that uses the connection
-        email1 = mail.EmailMessage(
-            'Hello',
-            'Body goes here',
-            'mds@sof2u.com',
-            [email],
-            connection=connection,)
+        email1 = mail.EmailMessage('Hello',
+                                   'Body goes here',
+                                   'mds@sof2u.com',
+                                   [email],
+                                   connection=connection,)
+
         email1.send()  # Send the email
-    """
-        send_mail(
+	"""
+    send_mail(
             'Account registered with success',
             'Your account on SME-UNB was successfully created',
             'mds@sof2u.com',
             [email],
-            fail_silently=False,)
+            fail_silently=False,
+            )
     """
 
     return render(request, 'users/dashboard.html')
 
 
 def check_name(first_name, last_name):
-        if not first_name.isalpha() or not last_name.isalpha():
-            return 'Nome deve conter apenas letras'
-        else:
-            return ''
+    if not first_name.isalpha() or not last_name.isalpha():
+        return 'Nome deve conter apenas letras'
+    else:
+        return ''
 
 
 def check_email(email):
-        if '@' not in email or '.' not in email or ' ' in email:
-            return' - Email inválido!Esse e-mail não esta em um formato válido'
-        else:
-            return ''
+    if '@' not in email or '.' not in email or ' ' in email:
+        return ' -- Email inválido! Esse e-mail não esta em um formato válido'
+    else:
+        return ''
 
 
 def check_email_exist(email, original_email):
-    if User.objects.filter(email=email).exists()and email != original_email:
-            return ' -- E-mail já esta cadastrado no nosso banco de dados'
+    if User.objects.filter(email=email).exists() and email != original_email:
+        return ' -- E-mail já esta cadastrado no nosso banco de dados'
     else:
-            return ''
+        return ''
 
 
 def check_password_lenght(password, confirmPassword):
-        if len(password) < 6 and password != confirmPassword:
-            return ' - Senha Inválida, digite uma senha com no mínimo 6 letras'
-        else:
-            return ''
+    if len(password) < 6 and password != confirmPassword:
+        return ' -- Senha Inválida, digite uma senha com no mínimo 6 letras'
+    else:
+        return ''
 
 
 def check_password(password, confirmPassword):
-        if password != confirmPassword:
-            return ' - Senha inválida! Senhas de cadastros diferentes'
-        else:
-            return ''
+    if password != confirmPassword:
+        return ' -- Senha inválida! Senhas de cadastros diferentes'
+    else:
+        return ''
 
 
 def check_current_password(user, currentPassword):
-        if not user.check_password(currentPassword):
-            return ' - Campo de Senha atual diferente da Senha Atual!'
-        else:
-            return ''
+
+    if not user.check_password(currentPassword):
+        return ' -- Campo de Senha atual diferente da Senha Atual!'
+    else:
+        return ''
 
 
 def fullValidation(form):
-        first_name = form.get('first_name')
-        last_name = form.get('last_name')
-        email = form.get('email')
-        original_email = form.get('original_email')
+    first_name = form.get('first_name')
+    last_name = form.get('last_name')
+    email = form.get('email')
+    original_email = form.get('original_email')
 
-        resultCheck = ''
-        resultCheck += check_name(first_name, last_name)
-        resultCheck += check_email(email)
-        resultCheck += check_email_exist(email, original_email)
+    resultCheck = ''
+    resultCheck += check_name(first_name, last_name)
+    resultCheck += check_email(email)
+    resultCheck += check_email_exist(email, original_email)
 
-        return resultCheck
+    return resultCheck
 
 
 def fullValidationRegister(form, user=None):
-        currentPassword = form.get('currentPassword')
-        password = form.get('password')
-        confirmPassword = form.get('confirmPassword')
+    currentPassword = form.get('currentPassword')
+    password = form.get('password')
+    confirmPassword = form.get('confirmPassword')
 
-        resultCheck = ''
-        resultCheck += fullValidation(form)
-        if user is not None:
-            resultCheck += check_current_password(user, currentPassword)
-            resultCheck += check_password_lenght(password, confirmPassword)
-            resultCheck += check_password(password, confirmPassword)
+    resultCheck = ''
+    resultCheck += fullValidation(form)
+    if user is not None:
+        resultCheck += check_current_password(user, currentPassword)
+        resultCheck += check_password_lenght(password, confirmPassword)
+        resultCheck += check_password(password, confirmPassword)
 
-            return resultCheck
+    return resultCheck
 
 
 @login_required
@@ -242,26 +244,17 @@ def list_user_delete(request):
 
 
 def check_permissions(user):
-    if user.has_perm('report.can_generate'):
-        has_report_permission = 'checked'
-    else:
-        has_report_permission = ''
-    if user.has_perm('transductor.can_view_transductors'):
-        has_transductor_permission = 'checked'
-    else:
-        has_transductor_permission = ''
-    if user.has_perm('users.can_edit_user'):
-        has_edit_user_permission = 'checked'
-    else:
-        has_edit_user_permission = ''
-    if user.has_perm('users.can_delete_user'):
-        has_delete_user_permission = 'checked'
-    else:
-        has_delete_user_permission = ''
-    if user.has_perm('users.can_see_logging'):
-        has_see_logging_permission = 'checked'
-    else:
-        has_see_logging_permission = ''
+
+    has_report_permission = 'checked' if user. \
+        has_perm('report.can_generate') else ''
+    has_transductor_permission = 'checked' if user. \
+        has_perm('transductor.can_view_transductors') else ''
+    has_edit_user_permission = 'checked' if user. \
+        has_perm('users.can_edit_user') else ''
+    has_delete_user_permission = 'checked' if user. \
+        has_perm('users.can_delete_user') else ''
+    has_see_logging_permission = 'checked' if user. \
+        has_perm('users.can_see_logging') else ''
 
     context = {
         'user': user,
@@ -404,20 +397,18 @@ def __list__(request, template):
 
 def __prepare_error_render__(request, fail_message, user):
 
-    return render(request, 'users/edit_user.html', {'falha': fail_message,
-                                                    'user': user})
+    return render(request, 'users/edit_user.html',
+                  {'falha': fail_message, 'user': user})
 
 
 def __prepare_error_render_self__(request, fail_message, user):
 
-        return render(request,
-                      'users/self_edit.html',
-                      {'falha': fail_message,
-                       'user': user})
+    return render(request, 'users/self_edit.html',
+                  {'falha': fail_message, 'user': user})
 
 
 def __permision__(permision_type, codename, user):
 
-        if permision_type == 'on':
-            permision = Permission.objects.get(codename=codename)
-            user.user_permissions.add(permision)
+    if permision_type == 'on':
+        permision = Permission.objects.get(codename=codename)
+        user.user_permissions.add(permision)
