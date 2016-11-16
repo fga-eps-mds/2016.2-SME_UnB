@@ -4,23 +4,41 @@
 {% load static %}
 
 {% block dashboard_content %}
-  <select class="form-control" id="selectTransductor">
-    <option value="" selected="true"> {% trans "Select a Transductor" %} </option>
-    {% for transductor in all_transductors %}
-    <option value="{{transductor.id}}">
-      {{transductor.description}}
-    </option>
-    {% endfor %}
-  </select>
-  <button type="button" id="select_transductor_btn">{% trans "Select" %}</button>
-  <button type="button" id="current_chart">Current Chart</button>
 
-  <br>
-  <div id="dashboard_div">
-      <div id="column_filter"></div>
-      <div id="curve_chart" style="width: 900px; height: 500px"></div>
-      <div id="filter_div"></div>
+<head>
+<style media="screen">
+#select_transductor_btn{
+  display: table;
+  float: inherit;
+  padding: 5px;
+}
+</style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="span2 well" id="select_transductor">
+      <h3 class="info">Escolha um transdutor.</h3>
+      <h5 class="info2">Mostrar gráficos do transdutor:</h5>
+      <select required class="form-control" id="selectTransductor" style="width: 40%;">
+        <option value="" selected="true"> {% trans "Select a Transductor" %} </option>
+        {% for transductor in all_transductors %}
+        <option value="{{transductor.id}}">
+          {{transductor.description}}
+        </option>
+        {% endfor %}
+      </select>
+      <button type="button" id="select_transductor_btn">{% trans "Select" %}</button>
+    </div>
+
+    <div class="container-fluid" id="dashboard_div">
+      <div class="row">
+        <div class="col-lg-2 well wll-sm" id="column_filter" hidden="true"></div>
+        <div class="col-lg-4" id="curve_chart" style="width: 900px; height: 500px"></div>
+      </div>
+      <div class="container row" id="filter_div"></div>
+    </div>
+
   </div>
-
-<script src="{% static 'js/chart.js' %}"></script>
+  <script src="{% static 'js/chart.js' %}"></script>
+</body>
 {% endblock %}

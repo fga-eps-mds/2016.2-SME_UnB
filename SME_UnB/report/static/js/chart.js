@@ -13,6 +13,7 @@
               success: function(response){
                   transductor_data = response;
                   console.log(transductor_data);
+                  $("#column_filter").show();
                   draw_initial_chart();
               }
           })
@@ -43,7 +44,7 @@
       data = google.visualization.arrayToDataTable(data);
 
       var options = {
-          title: 'Company Performance',
+          title: 'Gráficos do transdutor ',
           curveType: 'function',
           legend: { position: 'bottom' }
         };
@@ -97,7 +98,7 @@
             'options': {
                 'filterColumnLabel': 'colLabel',
                 'ui': {
-                    'label': 'Data Filter',
+                    'label': 'Filtro de dados',
                     'allowTyping': false,
                     'allowMultiple': true,
                     labelStacking: 'horizontal'
