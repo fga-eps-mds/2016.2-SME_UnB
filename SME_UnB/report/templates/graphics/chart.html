@@ -5,15 +5,6 @@
 
 {% block dashboard_content %}
 
-<head>
-<style media="screen">
-#select_transductor_btn{
-  display: table;
-  float: inherit;
-  padding: 5px;
-}
-</style>
-</head>
 <body>
   <div class="container-fluid">
     <div class="span2 well" id="select_transductor">
@@ -33,7 +24,7 @@
     <div class="container-fluid" id="dashboard_div">
       <div class="row">
         <div class="col-lg-2 well wll-sm" id="column_filter" hidden="true"></div>
-        <div class="col-lg-4" id="curve_chart" style="width: 900px; height: 500px"></div>
+        <div class="container col-lg-10" id="curve_chart"></div>
       </div>
       <div class="container row" id="filter_div"></div>
     </div>
