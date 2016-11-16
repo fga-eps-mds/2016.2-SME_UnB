@@ -59,9 +59,9 @@ def forgot_password(request):
             token = _generate_token_(user)
             print(token)
             # send email
-            password_change_message = "A password reset has been requested for \
-            the SME_UnB username: " + user.username + "\n\nIf you did not make \
-            this request, it is safe to ignore this email.\n" + "\nIf you do \
+            password_change_message = "A password reset has been requested for\
+            the SME_UnB username: " + user.username + "\n\nIf you did not make\
+            this request, it is safe to ignore this email.\n\nIf you do\
             actualy want to reset your password, please visit this link: \n\n"
 
             link_plain = 'localhost:3000/retrieve_password/reset/' + token
@@ -142,14 +142,12 @@ def confirm_email(request, token):
                 )
 
 def reset_password(request):
-
-    print("reset_password")
-
     """TODO: Docstring for reset_password.
     :returns: TODO
 
     """
     if request.method == "POST":
+        print(password + "\n" + confirm_pass)
         password = request.POST.get("inputPassword")
         confirm_pass = request.POST.get("confirmPassword")
         email = request.POST.get("email")
@@ -169,6 +167,8 @@ def reset_password(request):
                 "message": message,
                 "is_valid": is_valid,
                 }
-        print(returning)
-        
-        return JsonResponse(context)
+
+        return HttpResponse(
+                json.dumps(context),
+                'application/json'
+                )

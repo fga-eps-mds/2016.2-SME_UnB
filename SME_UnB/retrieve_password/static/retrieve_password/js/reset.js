@@ -100,22 +100,28 @@ $(function() {
 
     // AJAX for posting
     function reset_password() {
-        $.ajax({
-            url : "/retrieve_password/reset_password/", // the endpoint
+      alert("djmskldjslDSADASDASk");
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      $.ajax({
+            url : "/retrieve_password/reset/", // the endpoint
             type : "POST", // http method
             data : {
-                pass: $('#inputPassword').val(),
-                confirm_pass: $('#confirmPassword').val(),
+                inputPassword: $('#inputPassword').val(),
+                confirmPassword: $('#confirmPassword').val(),
                 email: $('#email').val(),
             }, // data sent with the post request
 
             // handle a successful response
             success : function(json) {
-                alert("ALERTA reset_password " + json.message);
+                alert("djmskldjslk");
             },
 
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
+              alert("error");
                 $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                     " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
                 console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
