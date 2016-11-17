@@ -57,12 +57,12 @@ def forgot_password(request):
         try:
             user = User.objects.get(email=email)
             token = _generate_token_(user)
-            print(token)
+            print(token + "\n")
             # send email
-            password_change_message = "A password reset has been requested for\
-            the SME_UnB username: " + user.username + "\n\nIf you did not make\
-            this request, it is safe to ignore this email.\n\nIf you do\
-            actualy want to reset your password, please visit this link: \n\n"
+            password_change_message = "A password reset has been requested for \
+the SME_UnB username:" + user.username + "\n\nIf you did not make \
+this request, it is safe to ignore this email.\n\nIf you do \
+actualy want to reset your password, please visit this link: \n\n"
 
             link_plain = 'localhost:3000/retrieve_password/reset/' + token
 
@@ -104,7 +104,7 @@ def forgot_password(request):
         return render(request, template_name, context_return)
 
 def confirm_email(request, token):
-    """TODO: Docstring for confirm_email.
+    """TODO: Method that confirms if email exists on database
     :request: TODO
     :token: TODO
     :returns: TODO
@@ -142,18 +142,18 @@ def confirm_email(request, token):
                 )
 
 def reset_password(request):
-    """TODO: Docstring for reset_password.
-    :returns: TODO
-
     """
+    Confirms if the password is correct and then change it according to input
+    returns: Json message with output.
+    """
+
+    print("chegou request reset_password")
     if request.method == "POST":
-        print(password + "\n" + confirm_pass)
         password = request.POST.get("inputPassword")
         confirm_pass = request.POST.get("confirmPassword")
         email = request.POST.get("email")
 
         if password ==  confirm_pass:
-
             user = User.objects.get(email=email)
             user.set_password(password)
             user.save()
