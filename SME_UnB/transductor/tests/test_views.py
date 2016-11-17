@@ -10,7 +10,8 @@ class EnergyTransductorViewsTestCase(TestCase):
         t_model.name = "TR 4020"
         t_model.internet_protocol = "UDP"
         t_model.serial_protocol = "Modbus RTU"
-        t_model.register_addresses = [68, 70, 72, 74, 76, 78, 80, 82, 84, 88, 90, 92]
+        t_model.register_addresses = [68, 70, 72, 74, 76, 78, 80,
+                                      82, 84, 88, 90, 92]
         t_model.save()
 
     def test_index_access_and_template(self):
@@ -29,7 +30,10 @@ class EnergyTransductorViewsTestCase(TestCase):
     def test_index_with_transductor(self):
         t_model = TransductorModel.objects.get(name="TR 4020")
 
-        transductor = self.create_energy_transductor(1, "Test", "111.111.111.111", t_model)
+        transductor = self.create_energy_transductor(1,
+                                                     "Test",
+                                                     "111.111.111.111",
+                                                     t_model)
 
         url = reverse('transductor:index')
         response = self.client.get(url)
@@ -48,10 +52,25 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         response = self.client.post(url, params)
 
-        self.assertFormError(response, 'form', 'serie_number', 'This field is required.')
-        self.assertFormError(response, 'form', 'ip_address', 'This field is required.')
-        self.assertFormError(response, 'form', 'description', 'This field is required.')
-        self.assertFormError(response, 'form', 'transductor_model', 'This field is required.')
+        self.assertFormError(response,
+                             'form',
+                             'serie_number',
+                             'This field is required.')
+
+        self.assertFormError(response,
+                             'form',
+                             'ip_address',
+                             'This field is required.')
+
+        self.assertFormError(response,
+                             'form',
+                             'description',
+                             'This field is required.')
+
+        self.assertFormError(response,
+                             'form',
+                             'transductor_model',
+                             'This field is required.')
 
     def test_create_valid_energy_transductor(self):
         t_model = TransductorModel.objects.get(name="TR 4020")
@@ -68,18 +87,23 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         response = self.client.post(url, params)
 
-        self.assertEqual(transductor_count + 1, EnergyTransductor.objects.count())
+        self.assertEqual(transductor_count + 1,
+                         EnergyTransductor.objects.count())
 
         t_id = EnergyTransductor.objects.get(ip_address='111.111.111.111').id
 
-        detail_url = reverse('transductor:detail', kwargs={'transductor_id': t_id})
+        detail_url = reverse('transductor:detail',
+                             kwargs={'transductor_id': t_id})
 
         self.assertRedirects(response, detail_url)
 
     def test_not_create_transductor_with_same_ip_address(self):
         t_model = TransductorModel.objects.get(name="TR 4020")
 
-        transductor = self.create_energy_transductor(1, "Test", "111.111.111.111", t_model)
+        transductor = self.create_energy_transductor(1,
+                                                     "Test",
+                                                     "111.111.111.111",
+                                                     t_model)
 
         url = reverse('transductor:new')
 
@@ -92,7 +116,11 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         response = self.client.post(url, params)
 
-        self.assertFormError(response, 'form', 'ip_address', 'Energy transductor with this Ip address already exists.')
+        self.assertFormError(response,
+                             'form',
+                             'ip_address',
+                             'Energy transductor with this \
+                             Ip address already exists.')
 
     def test_not_create_transductor_with_wrong_ip_address(self):
         t_model = TransductorModel.objects.get(name="TR 4020")
@@ -108,20 +136,33 @@ class EnergyTransductorViewsTestCase(TestCase):
 
         response = self.client.post(url, params)
 
-        self.assertFormError(response, 'form', 'ip_address', 'Incorrect IP address format')
+        self.assertFormError(response,
+                             'form',
+                             'ip_address',
+                             'Incorrect IP address format')
 
     def test_energy_transductor_detail(self):
         t_model = TransductorModel.objects.get(name="TR 4020")
 
-        transductor = self.create_energy_transductor(1, "Test", "111.111.111.111", t_model)
+        transductor = self.create_energy_transductor(1,
+                                                     "Test",
+                                                     "111.111.111.111",
+                                                     t_model)
 
-        url = reverse('transductor:detail', kwargs={'transductor_id': transductor.id})
+        url = reverse('transductor:detail',
+                      kwargs={'transductor_id': transductor.id})
+
         response = self.client.get(url)
 
         self.assertEqual(200, response.status_code)
         self.assertIn("No measurement avaiable", response.content)
 
-    def create_energy_transductor(self, serie_number, description, ip_address, t_model):
+    def create_energy_transductor(self,
+                                  serie_number,
+                                  description,
+                                  ip_address,
+                                  t_model):
+
         transductor = EnergyTransductor()
         transductor.serie_number = serie_number
         transductor.description = description

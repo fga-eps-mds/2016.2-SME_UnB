@@ -1,7 +1,7 @@
-from django.test import TestCase
 from django.test import Client
 from django.contrib.auth.models import User, Permission
 import unittest
+
 
 class TestLoginView(unittest.TestCase):
     def setUp(self):
@@ -27,7 +27,7 @@ class TestLoginView(unittest.TestCase):
     def test_getting_page_login(self):
         response = self.client.post(
             '/accounts/login/',
-            {"username": 'temporary', 'password': 'temporary' }
+            {"username": 'temporary', 'password': 'temporary'}
         )
 
         self.assertEqual(200, response.status_code)
@@ -39,54 +39,61 @@ class TestLoginView(unittest.TestCase):
         self.assertEqual(302, response.status_code)
 
 
-    def test_getting_wrong_page_login(self):
+def test_getting_wrong_page_login(self):
         response = self.client.post(
             '/accounts/ladfogin/',
-            {"username": 'temporary', 'password': 'temporary' }
+            {"username": 'temporary', 'password': 'temporary'}
         )
 
         self.assertEqual(404, response.status_code)
 
-    def test_getting_page_home(self):
+
+def test_getting_page_home(self):
         response = self.client.get(
             '/accounts/dashboard/',
         )
 
         self.assertEqual(302, response.status_code)
 
-    def test_getting_wrong_page_home(self):
+
+def test_getting_wrong_page_home(self):
         response = self.client.get(
             '/accounts/dash/',
         )
 
         self.assertEqual(404, response.status_code)
 
-    def test_getting_wrong_page_edit_user(self):
+
+def test_getting_wrong_page_edit_user(self):
         response = self.client.get(
             'accounts/edit_user/1/',
         )
 
         self.assertEqual(404, response.status_code)
 
-    def test_getting_list_user_edit(self):
+
+def test_getting_list_user_edit(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get( '/accounts/list_user_edit/')
+        response = self.client.get('/accounts/list_user_edit/')
 
         self.assertEqual(200, response.status_code)
 
-    def test_getting_list_user_delete(self):
+
+def test_getting_list_user_delete(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get( '/accounts/list_user_delete/')
+        response = self.client.get('/accounts/list_user_delete/')
 
         self.assertEqual(200, response.status_code)
 
-    def test_getting_user_register(self):
+
+def test_getting_user_register(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get( '/accounts/register/')
+        response = self.client.get('/accounts/register/')
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_self_user_edit(self):
+
+def test_post_self_user_edit(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/self_edit/',
@@ -102,7 +109,8 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_self_user_edit_wrong_name(self):
+
+def test_post_self_user_edit_wrong_name(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/self_edit/',
@@ -118,7 +126,8 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_self_user_edit_wrong_email(self):
+
+def test_post_self_user_edit_wrong_email(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/self_edit/',
@@ -134,7 +143,8 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_self_user_edit_wrong_last_name(self):
+
+def test_post_self_user_edit_wrong_last_name(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/self_edit/',
@@ -151,8 +161,7 @@ class TestLoginView(unittest.TestCase):
         self.assertEqual(200, response.status_code)
 
 
-
-    def test_post_self_user_edit_wrong_pass(self):
+def test_post_self_user_edit_wrong_pass(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/self_edit/',
@@ -169,8 +178,7 @@ class TestLoginView(unittest.TestCase):
         self.assertEqual(200, response.status_code)
 
 
-
-    def test_post_user_register(self):
+def test_post_user_register(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/register/',
@@ -186,7 +194,8 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_user_register_wrong_name(self):
+
+def test_post_user_register_wrong_name(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/register/',
@@ -202,7 +211,8 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_user_register_wrong_email(self):
+
+def test_post_user_register_wrong_email(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/register/',
@@ -218,7 +228,8 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_user_register_many_users(self):
+
+def test_post_user_register_many_users(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/register/',
@@ -234,7 +245,8 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_user_edit(self):
+
+def test_post_user_edit(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/edit_user/1/',
@@ -250,13 +262,15 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_getting_user_edit(self):
+
+def test_getting_user_edit(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get( '/accounts/edit_user/1/')
+        response = self.client.get('/accounts/edit_user/1/')
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_user_edit_wrong_pass_confirm(self):
+
+def test_post_user_edit_wrong_pass_confirm(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/edit_user/1/',
@@ -272,7 +286,8 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_user_edit_wrong_pass(self):
+
+def test_post_user_edit_wrong_pass(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/edit_user/1/',
@@ -289,7 +304,7 @@ class TestLoginView(unittest.TestCase):
         self.assertEqual(200, response.status_code)
 
 
-    def test_post_user_edit_wrong_first_name(self):
+def test_post_user_edit_wrong_first_name(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/edit_user/1/',
@@ -305,7 +320,8 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_post_user_edit_wrong_last_name(self):
+
+def test_post_user_edit_wrong_last_name(self):
         logged_in = self.client.login(username='testuser', password='12345')
         response = self.client.post(
             '/accounts/edit_user/1/',
@@ -321,41 +337,55 @@ class TestLoginView(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_getting_user_delete(self):
+
+def test_getting_user_delete(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get( '/accounts/delete_user/1/')
+        response = self.client.get('/accounts/delete_user/1/')
 
         self.assertEqual(200, response.status_code)
 
-    def test_getting_user_logout(self):
+
+def test_getting_user_logout(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get( '/accounts/logout/')
+        response = self.client.get('/accounts/logout/')
 
         self.assertEqual(302, response.status_code)
 
-    def test_post_user_delete(self):
+
+def test_post_user_delete(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.post( '/accounts/delete_user/2/')
+        response = self.client.post('/accounts/delete_user/2/')
 
         self.assertEqual(200, response.status_code)
 
-    def test_given_perm_delete_user(self):
-        has_deleteUser_permission = Permission.objects.get(codename='can_delete_user')
-        self.user.user_permissions.add(has_deleteUser_permission)
 
-        has_delete_user_permission = True if self.user.has_perm('users.can_delete_user') else False
-        self.assertTrue(has_delete_user_permission)
+def test_given_perm_delete_user(self):
+    perm = Permission.objects.get(codename='can_delete_user')
+    has_deleteUser_permission = perm
+    self.user.user_permissions.add(has_deleteUser_permission)
+    if self.user.has_perm('users.can_delete_user'):
+        has_delete_user_permission = True
+    else:
+        has_delete_user_permission = False
+    self.assertTrue(has_delete_user_permission)
 
-    def test_given_perm_edit_user(self):
+
+def test_given_perm_edit_user(self):
         has_edit_permission = Permission.objects.get(codename='can_edit_user')
         self.user.user_permissions.add(has_edit_permission)
-
-        has_edit_user_permission = True if self.user.has_perm('users.can_edit_user') else False
+        if self.user.has_perm('users.can_edit_user'):
+            has_edit_user_permission = True
+        else:
+            has_edit_user_permission = False
         self.assertTrue(has_edit_user_permission)
 
-    def test_given_perm_generate_report(self):
+
+def test_given_perm_generate_report(self):
         has_generate = Permission.objects.get(codename='can_generate')
         self.user.user_permissions.add(has_generate)
 
-        has_generate_report = True if self.user.has_perm('report.can_generate') else False
+        if self.user.has_perm('report.can_generate'):
+            has_generate_report = True
+        else:
+            has_generate_report = False
         self.assertTrue(has_generate_report)

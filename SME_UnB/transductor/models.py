@@ -34,6 +34,7 @@ class Transductor(models.Model):
             ("can_view_transductors", "Can view Transductors Page"),
         )
 
+
 class EnergyTransductor(Transductor):
 
     def __str__(self):
@@ -50,7 +51,8 @@ class Measurements(models.Model):
 
 class EnergyMeasurements(Measurements):
 
-    transductor = models.ForeignKey(EnergyTransductor, on_delete=models.CASCADE)
+    transductor = models.ForeignKey(EnergyTransductor,
+                                    on_delete=models.CASCADE)
 
     voltage_a = models.FloatField(default=None)
     voltage_b = models.FloatField(default=None)
@@ -76,10 +78,14 @@ class EnergyMeasurements(Measurements):
         return '%s' % self.collection_date
 
     def calculate_total_active_power(self):
-        return (self.active_power_a + self.active_power_b + self.active_power_c)
+        return (self.active_power_a +
+                self.active_power_b +
+                self.active_power_c)
 
     def calculate_total_reactive_power(self):
-        return (self.reactive_power_a + self.reactive_power_b + self.reactive_power_c)
+        return (self.reactive_power_a +
+                self.reactive_power_b +
+                self.reactive_power_c)
 
     def calculate_total_apparent_power(self):
         ap_phase_a = self.apparent_power_a

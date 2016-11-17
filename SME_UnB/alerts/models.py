@@ -11,18 +11,20 @@ from django.conf import settings
 
 # Create your models here.
 
+
 class Alert(models.Model):
     status = models.BooleanField()
     description = models.CharField(max_length=50)
     creation_date = models.DateTimeField(default=datetime.now())
     local = models.CharField(max_length=50)
     priority = models.IntegerField()
-    user =  models.ForeignKey(User)
+    user = models.ForeignKey(User)
 
     class Meta:
         permissions = (
             ("can_check_alerts", "Can Check Alerts"),
         )
+
 
 class UserNotification(object):
 
@@ -34,32 +36,40 @@ class UserNotification(object):
         NOTIFICATION_PREFIX = 'notification_'
         CREATE_EVENT = 'create'
 
-        alertJson = UserNotification.__create_alert__(id_user, message, local, priority)
+        alertJson = UserNotification.__create_alert__(id_user,
+                                                      message,
+                                                      local, priority)
 
-        pusher_client = pusher.Pusher(
-          app_id=APP_ID,
-          key=APP_KEY,
-          secret=APP_SECRET,
-          ssl=True
-        )
+        pusher_client = pusher.Pusher(app_id=APP_ID,
+                                      key=APP_KEY,
+                                      secret=APP_SECRET,
+                                      ssl=True)
 
-        pusher_client.trigger(NOTIFICATION_PREFIX + str(id_user), CREATE_EVENT, alertJson)
+        pusher_client.trigger(NOTIFICATION_PREFIX + str(id_user),
+                              CREATE_EVENT,
+                              alertJson)
 
     @staticmethod
     def __create_alert__(id_user, message, local, priority):
-        user = User.objects.get(id = id_user)
+        user = User.objects.get(id=id_user)
 
-        alert = Alert(user = user, status = False, description = message, local=local, priority = priority)
+        alert = Alert(user=user,
+                      status=False,
+                      description=message,
+                      local=local,
+                      priority=priority)
 
-        alertJson = serializers.serialize('json', [ alert, ])
-
+        alertJson = serializers.serialize('json', [alert, ])
 
         if priority == 4:
             print "chegou"
-            send_mail('Subject here', 'Here is the message.', settings.EMAIL_HOST_USER,[user.email], fail_silently=False)
+            send_mail('Subject here',
+                      'Here is the message.',
+                      settings.EMAIL_HOST_USER,
+                      [user.email],
+                      fail_silently=False)
 
-
-        alert.save()
+            alert.save()
 
         return alertJson
 

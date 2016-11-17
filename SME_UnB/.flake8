@@ -1,0 +1,14 @@
+[flake8]
+
+ignore =
+    #Variables unused
+    F841,
+    #Methods undefined
+    F821
+
+exclude =
+        .git,
+        __pycache__,
+        *migrations*.py,
+        cookbooks,
+        .vagrant

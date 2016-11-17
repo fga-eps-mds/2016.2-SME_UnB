@@ -1,9 +1,9 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 
-from transductor.models import EnergyTransductor
+# from transductor.models import EnergyTransductor
 
 # Create your views here.
 
 
-#def index(request):
- #   return render(request, "alerts/index.html")
+# def index(request):
+#   return render(request, "alerts/index.html")

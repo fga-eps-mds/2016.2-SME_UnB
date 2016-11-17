@@ -1,12 +1,12 @@
 """Directly data manager,logic appliations so as to theirs rules"""
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.auth.base_user import BaseUserManager
 import pusher
 
 
 class EmailUserManager(BaseUserManager):
     pass
+
 
 class UserPermissions(models.Model):
 
@@ -19,7 +19,6 @@ class UserPermissions(models.Model):
 
 class UserNotification(object):
 
-
     @staticmethod
     def send_notification(id, message):
         APP_ID = '259103'
@@ -28,10 +27,10 @@ class UserNotification(object):
         NOTIFICATION_PREFIX = 'notification_'
         CREATE_EVENT = 'create'
         print(NOTIFICATION_PREFIX + str(id))
-        pusher_client = pusher.Pusher(
-          app_id=APP_ID,
-          key=APP_KEY,
-          secret=APP_SECRET,
-          ssl=True
-        )
-        pusher_client.trigger(NOTIFICATION_PREFIX + str(id), CREATE_EVENT, message)
+        pusher_client = pusher.Pusher(app_id=APP_ID,
+                                      key=APP_KEY,
+                                      secret=APP_SECRET,
+                                      ssl=True)
+
+        pusher_client.trigger(NOTIFICATION_PREFIX + str(id),
+                              CREATE_EVENT, message)
