@@ -31,8 +31,35 @@
             <div class="form-group">
               <input type="password" name ="confirmPassword" placeholder="confirm password" class="form-control">
             </div>
+
+            <script type="text/javascript">
+            $(document).ready(function(){
+                $('#radios').click(function() {
+                    if ($('#inlineRadio2').is(':checked')){
+                        document.getElementById('permissions_checkbox1').disabled=true;
+                        document.getElementById('permissions_checkbox2').disabled=true;
+                        document.getElementById('permissions_checkbox3').disabled=true;
+                        document.getElementById('permissions_checkbox5').disabled=true;
+                        document.getElementById('permissions_checkbox4').disabled=true;
+                        $('input:checkbox').removeAttr('checked');
+
+                    }
+                    else {
+                        document.getElementById('permissions_checkbox1').disabled=false;
+                        document.getElementById('permissions_checkbox2').disabled=false;
+                        document.getElementById('permissions_checkbox3').disabled=false;
+                        document.getElementById('permissions_checkbox4').disabled=false;
+                        document.getElementById('permissions_checkbox5').disabled=false;
+
+                    }
+                });
+            });
+
+
+            </script>
+
             <p1>{% trans "User type:" %}</p1>
-            <div class="form-group">
+            <div class="form-group" id="radios">
               <label class="radio-inline">
                 <input type="radio" name="user_type" id="inlineRadio1" value="common"> {% trans "Commun User" %}
               </label>
@@ -41,7 +68,8 @@
               </label>
             </div>
             <p1>{% trans "Access level:" %}</p1>
-            <div class="form-group">
+
+            <div class="form-group" id="check_privilage">
               <div class="checkbox">
                 <label class="checkbox-inline checkbox-success">
                   <input type="checkbox" id="permissions_checkbox1" name="can_generate" > {% trans "Generate Report" %}
