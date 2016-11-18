@@ -40,16 +40,12 @@ INSTALLED_APPS = [
     'users',
     'report',
     'alerts',
+    'retrieve_password',
     'django_nose',
 ]
-# Email log module -
+
+### Email log module -
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'smeunb2016@gmail.com'
-EMAIL_HOST_PASSWORD = 'mdsgpp2016'
-DEFAULT_FROM_EMAIL = 'smeunb2016@gmail.com'
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
@@ -143,6 +139,14 @@ EMAIL_HOST_USER = 'mds@sof2u.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST_PASSWORD = 'mdsfga2016'
 EMAIL_PORT = 587
+
+#email configuration
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.zoho.com'
+# EMAIL_HOST_USER = 'mds@sof2u.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST_PASSWORD = 'mdsfga2016'
+# EMAIL_PORT = 587
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

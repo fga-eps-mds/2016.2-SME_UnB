@@ -62,7 +62,6 @@ class UserNotification(object):
         alertJson = serializers.serialize('json', [alert, ])
 
         if priority == 4:
-            print "chegou"
             send_mail('Subject here',
                       'Here is the message.',
                       settings.EMAIL_HOST_USER,

@@ -11,11 +11,21 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth.decorators import user_passes_test
+
+from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.core import mail
+from SME_UnB.settings import EMAIL_HOST_USER
 from django.contrib.auth import update_session_auth_hash
 
 import os
 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import json
 import logging
+import hashlib
+import datetime
 
 
 def home(request):
@@ -129,32 +139,34 @@ def register(request):
         return HttpResponseRedirect(reverse("users:dashboard"))
 
         logger = logging.getLogger(__name__)
-        logger.info(request.user.__str__() + ' Registered ' + user.__str__())
 
-        print(email)
-        from django.core import mail
-        connection = mail.get_connection()
+        logger.info(request.user.__str__() + ' Registered ' + user.__str__() )
 
-        # Manually open the connection
-        connection.open()
+	from django.core import mail
+	connection = mail.get_connection()
 
-        # Construct an email message that uses the connection
-        email1 = mail.EmailMessage('Hello',
-                                   'Body goes here',
-                                   'mds@sof2u.com',
-                                   [email],
-                                   connection=connection,)
+	# Manually open the connection
+	connection.open()
 
-        email1.send()  # Send the email
-	"""
-    send_mail(
-            'Account registered with success',
-            'Your account on SME-UNB was successfully created',
-            'mds@sof2u.com',
-            [email],
-            fail_silently=False,
-            )
-    """
+	# Construct an email message that uses the connection
+	email1 = mail.EmailMessage(
+	    'Hello',
+	    'Body goes here',
+	    'mds@sof2u.com',
+	    [email],
+	    connection=connection,
+	)
+	email1.send() # Send the email
+# >>>>>>> forgot_password
+# 	"""
+#     send_mail(
+#             'Account registered with success',
+#             'Your account on SME-UNB was successfully created',
+#             'mds@sof2u.com',
+#             [email],
+#             fail_silently=False,
+#             )
+#     """
 
     return render(request, 'users/dashboard.html')
 
@@ -272,7 +284,6 @@ def check_permissions(user):
 def self_edit_user(request):
 
     user = User.objects.get(pk=request.user.id)
-    print(user)
 
     if request.method == "GET":
         return render(request, 'users/self_edit.html',)
