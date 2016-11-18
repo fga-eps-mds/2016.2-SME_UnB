@@ -11,7 +11,7 @@ from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
 import matplotlib.patches as mpatches
 
-from transductor.models import EnergyMeasurements, EnergyTransductor,
+from transductor.models import EnergyMeasurements, EnergyTransductor
 from transductor.models import TransductorModel
 
 
@@ -320,7 +320,7 @@ def report(request, transductor_id):
                    'Current': currentInformation,
                    'activePower': activePowerInformation,
                    'reactivePower': reactivePowerInformation,
-                   'apparentPower': apparentPowerInformation
+                   'apparentPower': apparentPowerInformation,
                    'transductor_id': transductor_id}
 
     return render(request, 'graphics/report.html', information)
@@ -335,7 +335,7 @@ def transductors_filter(request):
 def open_pdf(request, transductor_id):
     with open('report/static/Relatorio'+transductor_id+'.pdf', 'r') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
-        response['Content-Disposition'] = 'filename=Relatorio' +
+        response['Content-Disposition'] = 'filename=Relatorio' + \
         transductor_id+'.pdf'
         return response
     pdf.closed
