@@ -1,8 +1,15 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
+from django.core.urlresolvers import reverse_lazy, reverse
+from django.core import serializers
+from cStringIO import StringIO
+from reportlab.platypus.flowables import Image
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
-
 
 import datetime
 
@@ -13,6 +20,7 @@ import matplotlib.patches as mpatches
 
 from transductor.models import EnergyMeasurements, EnergyTransductor
 from transductor.models import TransductorModel
+import json
 
 
 def create_graphic(path, array_date, array_dateb,
@@ -340,7 +348,18 @@ def open_pdf(request, transductor_id):
         return response
     pdf.closed
 
-
 @login_required
 def invoice(request):
     return render(request, 'invoice/invoice.html')
+
+
+def get_measurements_filter_transductor(request, transductor_id):
+    measurements = EnergyMeasurements.objects.all().filter(transductor = EnergyTransductor.objects.get(id = transductor_id))
+    return HttpResponse(serializers.serialize('json',measurements),'application/json')
+
+def list_transductors(request):
+    return HttpResponse(serializers.serialize('json',EnergyTransductor.objects.all()))
+
+@login_required
+def return_chart(request):
+    return render(request,'graphics/chart.html', {'all_transductors' : EnergyTransductor.objects.all()})
