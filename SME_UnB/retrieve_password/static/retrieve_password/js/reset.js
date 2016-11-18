@@ -18,13 +18,13 @@ $(function() {
     var csrftoken = getCookie('csrftoken');
 
     /*
-       The functions below will create a header with csrftoken
-       */
-
+     The functions below will create a header with csrftoken
+    */
     function csrfSafeMethod(method) {
-        // these HTTP methods do not require CSRF protection
+    // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
+
     function sameOrigin(url) {
         // test that a given url is a same-origin URL
         // url could be relative or scheme relative or absolute
@@ -60,21 +60,29 @@ $(function() {
 
         $("#myModalLabel")[0].textContent = "Mudar senha";
 
-        var tittle = "<h2 class='form-signin-heading text-center'>Nova senha</h2>";
-        var email = "<input id='email' type='' value='" + email + "' name='email' />"
-
-        var div_new_pass = "<div id='form-group-confirm' class='form-group'></div>";
-        var div_confirm_pass = "<div id='form-group' class='form-group'></div>";
+        var tittle = "<h2 class='form-signin-heading" +
+            "text-center'>Nova senha</h2>";
+        var email = "<input id='email' type='' value='" + email +
+            "' name='email' />"
+        var div_new_pass = "<div id='form-group-confirm'" +
+            "class='form-group'></div>";
+        var div_confirm_pass = "<div id='form-group'"+
+            "class='form-group'></div>";
 
         var form = "<form  id='form-pass' class='form-signin'></form>";
-        var button_pass = "<button id='reset_password_button' class='btn btn-lg btn-primary btn-block'>Trocar senha</button>";
+        var button_pass = "<button id='reset_password_button'" +
+            "class='btn btn-lg btn-primary btn-block'>Trocar senha</button>";
 
-        var label_new_pass = "<label for='inputPassword' class='sr-only'>{% trans 'Password' %}</label>";
-        var input_new_pass = "<input type='password' id='inputPassword' name='password'" +
+        var label_new_pass = "<label for='inputPassword'" +
+            "class='sr-only'>{% trans 'Password' %}</label>";
+        var input_new_pass = "<input type='password'" +
+            "id='inputPassword' name='password'" +
             "class='form-control' placeholder='Password' required>";
 
-        var label_confirm_pass = "<label for='confirmPassword' class='sr-only'>Confirm Password</label>";
-        var input_confirm_pass = "<input type='password' id='confirmPassword' name='confirmPassword'" +
+        var label_confirm_pass = "<label for='confirmPassword'"+
+            "class='sr-only'>Confirm Password</label>";
+        var input_confirm_pass = "<input type='password'" +
+            "id='confirmPassword' name='confirmPassword'" +
             " class='form-control' placeholder='Confirm Password' required>";
 
         $('#content-form').append(form);
@@ -100,7 +108,6 @@ $(function() {
 
     // AJAX for posting
     function reset_password() {
-      console.log("reset_password");
       $.ajax({
             url : "/retrieve_password/reset_password/", // the endpoint
             type : "POST", // http method
@@ -112,15 +119,16 @@ $(function() {
 
             // handle a successful response
             success : function(json) {
-                alert("Success");
+                alert(json.message);
             },
 
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
               alert("error");
               console.log("error \n");
-                //  $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                //      " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                  $('#results').html("<div class='alert-box alert radius'\
+                    data-alert>Oops! We have encountered an error: "+errmsg+
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
               console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             }
         });
@@ -152,8 +160,9 @@ $(function() {
 
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
-                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                $('#results').html("<div class='alert-box alert radius' \
+                  data-alert>Oops! We have encountered an error: "+errmsg+
+                  " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
                 console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             }
         });
