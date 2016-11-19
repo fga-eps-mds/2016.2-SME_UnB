@@ -1,0 +1,33 @@
+{% extends "users/dashboard.html" %}
+{% load i18n %}
+{% block dashboard_content %}
+
+<div class="margin">
+  <h1 class="text-center">{% trans "List of Transductors:" %}</h>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="margin">
+        <table class ="table table-bordered">
+          <tr>
+            <th>{% trans "Serial Number" %}</th>
+            <th>{% trans "IP Address" %}</th>
+            <th>{% trans "Description" %}</th>
+            <th>{% trans "Creation Date" %}</th>
+            <th> </th>
+          </tr>
+          {% for transductor in transductors %}
+          <tr>
+            <td>{{transductor.serie_number}}</td>
+            <td>{{transductor.ip_address}}</td>
+            <td>{{transductor.description}}</td>
+            <td>{{transductor.creation_date}}</td>
+            <td><a href="{% url 'report:invoice' transductor.id %}"><button class ="btn btn-success" type="button" name="button"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span></button></a></td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
