@@ -98,6 +98,7 @@ def register(request):
         email = form.get('email')
 
         resultCheck = fullValidationRegister(form)
+        resultCheck += fullValidation(form)
 
         if len(resultCheck) != 0:
             return render(
@@ -233,7 +234,6 @@ def fullValidationRegister(form, user=None):
     confirmPassword = form.get('confirmPassword')
 
     resultCheck = ''
-    resultCheck += fullValidation(form)
     if user is not None:
         resultCheck += check_current_password(user, currentPassword)
         resultCheck += check_password_lenght(password, confirmPassword)
@@ -280,6 +280,31 @@ def check_permissions(user):
 
 
 @login_required
+def change_password(request):
+    user = User.objects.get(pk=request.user.id)
+
+    if request.method == "GET":
+        return render(request, 'users/change_password.html',)
+
+    else:
+        form = request.POST
+        password = form.get('password')
+        currentPassword = form.get('currentPassword')
+        print(currentPassword)
+
+        resultCheck = fullValidationRegister(form, user)
+        if len(resultCheck) != 0:
+            return __prepare_error_render_self__(request, resultCheck, user)
+
+        user.set_password(password)
+        user.save()
+        update_session_auth_hash(request, user)
+        logger = logging.getLogger(__name__)
+        logger.info(request.user.__str__() + ' edited  password')
+    return render(request, 'users/dashboard.html')
+
+
+@login_required
 def self_edit_user(request):
 
     user = User.objects.get(pk=request.user.id)
@@ -293,21 +318,13 @@ def self_edit_user(request):
         last_name = form.get('last_name')
         # email = form.get('email')
         email = request.user.username
-        password = form.get('password')
-        currentPassword = form.get('currentPassword')
-        print(currentPassword)
 
-        resultCheck = fullValidationRegister(form, user)
-
-        if len(resultCheck) != 0:
-            return __prepare_error_render_self__(request, resultCheck, user)
+        resultCheck += fullValidation(form)
 
         user.first_name = first_name
         user.last_name = last_name
         user.username = email
         user.email = email
-        user.set_password(password)
-
         user.save()
 
         # login(request,user)
@@ -413,7 +430,7 @@ def __prepare_error_render__(request, fail_message, user):
 
 def __prepare_error_render_self__(request, fail_message, user):
 
-    return render(request, 'users/self_edit.html',
+    return render(request, 'users/change_password.html',
                   {'falha': fail_message, 'user': user})
 
 
