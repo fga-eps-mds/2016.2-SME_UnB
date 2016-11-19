@@ -136,7 +136,6 @@ def register(request):
         user.save()
         messages.success(request, 'Usuario registrado com sucesso')
 
-        return HttpResponseRedirect(reverse("users:dashboard"))
 
         logger = logging.getLogger(__name__)
 
