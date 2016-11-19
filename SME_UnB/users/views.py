@@ -296,14 +296,12 @@ def change_password(request):
         if len(resultCheck) != 0:
             return __prepare_error_render_self__(request, resultCheck, user)
 
-        if(password == confirmPassword):
-            user.set_password(password)
-            user.save()
-            update_session_auth_hash(request, user)
-            logger = logging.getLogger(__name__)
-            logger.info(request.user.__str__() + ' edited  password')
-
-        return render(request, 'users/dashboard.html')
+        user.set_password(password)
+        user.save()
+        update_session_auth_hash(request, user)
+        logger = logging.getLogger(__name__)
+        logger.info(request.user.__str__() + ' edited  password')
+    return render(request, 'users/dashboard.html')
 
 
 @login_required
