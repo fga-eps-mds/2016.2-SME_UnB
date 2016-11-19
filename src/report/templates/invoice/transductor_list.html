@@ -22,7 +22,6 @@
             <td>{{transductor.ip_address}}</td>
             <td>{{transductor.description}}</td>
             <td>{{transductor.creation_date}}</td>
-            <td>{{transductor.id}}</td>
             <td><a href="{% url 'report:invoice' transductor.id %}"><button class ="btn btn-success" type="button" name="button"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span></button></a></td>
           </tr>
           {% endfor %}
