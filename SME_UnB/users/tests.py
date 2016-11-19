@@ -24,6 +24,23 @@ class TestLoginView(unittest.TestCase):
         self.user_delete.email = "admin_delete@admin.com"
         self.user_delete.save()
 
+    def test_is_reseting_password(self):
+        old_pass = self.user.password
+
+        self.client.post(
+            '/users/change_password/',
+            {
+                'password': '123456',
+                'confirmPassword': '123456',
+                'email': 'test@email.com'
+            }
+        )
+        new_pass = User.objects.get(username='testuser')
+
+        password_has_changed = True if old_pass is not new_pass.password else False
+
+        self.assertTrue(password_has_changed)
+
     def test_getting_page_login(self):
         response = self.client.post(
             '/accounts/login/',
