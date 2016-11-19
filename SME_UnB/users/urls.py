@@ -21,4 +21,5 @@ urlpatterns = [
         name="delete_user"),
     url(r'^self_edit/', views.self_edit_user, name="self_edit_user"),
     url(r'^logging_list/', views.logging_list, name="logging_list"),
+    url(r'^change_password/', views.change_password, name="change_password"),
 ]
