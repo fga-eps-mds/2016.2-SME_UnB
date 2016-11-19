@@ -8,6 +8,7 @@
       {% block breadcrumb %}
       {%if perms.report.can_generate%}
       <li><a href="{% url 'report:transductors_filter' %}">{% trans "Reports" %}</a></li>
+      <li><a href="{% url 'report:return_chart' %}">{% trans "Graphics and Charts" %}</a></li>
       {%endif%}
       <li><a href="{% url 'transductor:index'%}">{% trans "Transductors" %}</a></li>
       <li><a href="{% url 'report:invoice' %}">{% trans "Invoice" %}</a></li>
