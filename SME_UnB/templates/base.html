@@ -79,8 +79,7 @@
 
 <body>
     {% include "notification.html" %}
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 0px;">
-        <div class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="margin-bottom: 0px;">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
@@ -97,7 +96,7 @@
                     <li><a href="#about">{% trans "About" %}</a></li>
                     <li><a href="#contact">{% trans "Contact" %}</a></li>
                 </ul>
-                <div class="navbar-right">
+                <div class="navbar-right" style="margin-right:30px">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">{% include "languages.html" %}</li>
                     </ul>
@@ -113,7 +112,7 @@
                     <li><a href="#about">{% trans "About" %}</a></li>
                     <li><a href="#contact">{% trans "Contact" %}</a></li>
                 </ul>
-                <div class=" navbar-right">
+                <div class=" navbar-right" style="margin-right:30px">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">{% include "languages.html" %}</li>
                     </ul>
@@ -125,7 +124,6 @@
                 </div>
                 {% endif %}
             </div>
-        </div>
     </nav>
     <div class="container-fluid" style="padding-top: 50px;">
         {% block body %} {% endblock %}
