@@ -154,7 +154,6 @@ def __average(arrayData):
 
 @login_required
 def report(request,transductor_id):
-
     now = datetime.datetime.now()
     delta = datetime.timedelta(days=1)
 
@@ -179,7 +178,6 @@ def report(request,transductor_id):
 
 
     for i in EnergyMeasurements.objects.all().filter(transductor=EnergyTransductor.objects.get(id=transductor_id)):
-        print 'asfasdfa'
 
         date.append(i.collection_date)
         voltage_a.append(i.voltage_a)
@@ -288,7 +286,7 @@ def transductor_list(request):
     return render(request,'invoice/transductor_list.html',{'transductors': EnergyTransductor.objects.all()});
 
 def open_pdf(request,transductor_id):
-    with open('report/static/Relatorio'+transductor_id+'.pdf', 'r') as pdf:
+    with open('src/report/static/Relatorio'+transductor_id+'.pdf', 'r') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'filename=Relatorio'+transductor_id+'.pdf'
         return response
