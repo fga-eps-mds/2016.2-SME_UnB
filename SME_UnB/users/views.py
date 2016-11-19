@@ -289,19 +289,21 @@ def change_password(request):
     else:
         form = request.POST
         password = form.get('password')
-        currentPassword = form.get('currentPassword')
+        currentPassword = form.get('confirmPassword')
         print(currentPassword)
 
         resultCheck = fullValidationRegister(form, user)
         if len(resultCheck) != 0:
             return __prepare_error_render_self__(request, resultCheck, user)
 
-        user.set_password(password)
-        user.save()
-        update_session_auth_hash(request, user)
-        logger = logging.getLogger(__name__)
-        logger.info(request.user.__str__() + ' edited  password')
-    return render(request, 'users/dashboard.html')
+        if(password == confirmPassword):
+            user.set_password(password)
+            user.save()
+            update_session_auth_hash(request, user)
+            logger = logging.getLogger(__name__)
+            logger.info(request.user.__str__() + ' edited  password')
+
+        return render(request, 'users/dashboard.html')
 
 
 @login_required
