@@ -177,7 +177,9 @@ def report(request,transductor_id):
     apparent_power_b = []
     apparent_power_c = []
 
+
     for i in EnergyMeasurements.objects.all().filter(transductor=EnergyTransductor.objects.get(id=transductor_id)):
+        print 'asfasdfa'
 
         date.append(i.collection_date)
         voltage_a.append(i.voltage_a)
@@ -281,12 +283,20 @@ def report(request,transductor_id):
 def transductors_filter(request):
     return render(request,'graphics/transductors_filter.html',{'transductors': EnergyTransductor.objects.all()});
 
+@login_required
+def transductor_list(request):
+    return render(request,'invoice/transductor_list.html',{'transductors': EnergyTransductor.objects.all()});
+
 def open_pdf(request,transductor_id):
     with open('report/static/Relatorio'+transductor_id+'.pdf', 'r') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'filename=Relatorio'+transductor_id+'.pdf'
         return response
     pdf.closed
+
 @login_required
-def invoice(request):
-    return render(request, 'invoice/invoice.html')
+def invoice(request,transductor_id):
+    context = {
+    'transductor_id': transductor_id
+    }
+    return render(request, 'invoice/invoice.html', context)

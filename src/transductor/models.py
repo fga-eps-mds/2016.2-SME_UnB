@@ -75,7 +75,7 @@ class Transductor(PolymorphicModel):
     class Meta:
         abstract = True
         permissions = (("can_view_transductors", "Can view Transductors Page"),)
-        
+
     def set_transductor_broken(self, new_status):
         """
         Method responsible to change transductor broken status.
@@ -238,8 +238,6 @@ class EnergyMeasurements(Measurements):
     apparent_power_b = models.FloatField(default=None)
     apparent_power_c = models.FloatField(default=None)
 
-    def __str__(self):
-        return '%s' % self.collection_date
 
     def save_measurements(self, values_list):
         """
@@ -268,6 +266,8 @@ class EnergyMeasurements(Measurements):
         self.apparent_power_c = EnergyOperations.calculate_apparent_power(self.active_power_c, self.reactive_power_c)
         self.collection_minute = timezone.now().minute
         self.save()
+    def __unicode__(self):
+        return u'{1}'.format(self.collection_date)
 
 
 class EnergyOperations(object):
