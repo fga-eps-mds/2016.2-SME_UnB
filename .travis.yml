@@ -14,7 +14,6 @@ env:
 before_install:
     - sudo apt-get -qq update
     - sudo apt-get install -y git
-    - sudo apt-get install -y vim
     - sudo apt-get install -y build-essential
     - sudo apt-get install -y libpq-dev
     - sudo apt-get install -y python-psycopg2
@@ -25,11 +24,11 @@ before_install:
 
 install:
     # Install project dependencies
-    - pip install -r SME_UnB/requirements.txt
+    - pip install -r src/requirements.txt
     # Install a tool to run unit testes
     - pip install nose
     # Create the data base conform the configuration
-    - python SME_UnB/manage.py migrate
+    - python manage.py migrate
 
 # Run all scripts to testing the application: unit test, coverage,
 # Acceptance Tests and outhers
