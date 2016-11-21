@@ -350,7 +350,7 @@ def open_pdf(request,transductor_id):
     pdf.closed
 
 @login_required
-def invoice(request):
+def invoice(request, transductor_id):
     context = {
     'transductor_id': transductor_id
     }
