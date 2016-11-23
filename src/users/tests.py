@@ -1,6 +1,8 @@
 from django.test import Client
 from django.contrib.auth.models import User, Permission
+import views
 import unittest
+from django.db import IntegrityError
 
 
 class TestLoginView(unittest.TestCase):
@@ -26,9 +28,9 @@ class TestLoginView(unittest.TestCase):
 
     def test_is_reseting_password(self):
         old_pass = self.user.password
-
-        self.client.post(
-            '/users/change_password/',
+        logged_in = self.client.login(username='testuser', password='12345')
+        response = self.client.post(
+            '/accounts/change_password/',
             {
                 'password': '123456',
                 'confirmPassword': '123456',
@@ -40,13 +42,20 @@ class TestLoginView(unittest.TestCase):
         password_has_changed = True if old_pass is not new_pass.password else False
 
         self.assertTrue(password_has_changed)
+        self.assertEqual(200, response.status_code)
 
-    def test_getting_page_login(self):
+    def test_getting_page_post_login(self):
         response = self.client.post(
             '/accounts/login/',
             {"username": 'temporary', 'password': 'temporary'}
         )
 
+        self.assertEqual(200, response.status_code)
+
+    def test_getting_page_get_login(self):
+        response = self.client.get(
+            '/accounts/login/',
+        )
         self.assertEqual(200, response.status_code)
 
     def test_getting_edit_self_user(self):
@@ -79,7 +88,7 @@ class TestLoginView(unittest.TestCase):
 
     def test_getting_page_home(self):
         response = self.client.get(
-            '/users/home/',
+            '',
         )
 
         self.assertEqual(302, response.status_code)
@@ -201,12 +210,12 @@ class TestLoginView(unittest.TestCase):
         response = self.client.post(
             '/accounts/register/',
             {
-                'username': 'testsecond',
+                'first_name': 'testsecond',
+                'last_name': 'Lastname',
                 'password': '123456',
                 'confirmPassword': '123456',
-                'first_name': 'Testsecond',
-                'last_name': 'Lastname',
-                'email': 'test@email.com'
+                'email': 'aaatest@email.com',
+                'user_type': 'common'
             }
         )
 
@@ -255,6 +264,7 @@ class TestLoginView(unittest.TestCase):
                 'first_name': 'Testsecond',
                 'last_name': 'Lastname',
                 'email': 'admin@admin.com'
+
             }
         )
 
@@ -395,13 +405,13 @@ class TestLoginView(unittest.TestCase):
 
     def test_getting_page_home(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get('')
+        response = self.client.get('/')
 
         self.assertEqual(200, response.status_code)
 
     def test_getting_page_dashboards(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get('')
+        response = self.client.get('/accounts/dashboard/')
 
         self.assertEqual(200, response.status_code)
 

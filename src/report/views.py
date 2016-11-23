@@ -79,16 +79,16 @@ def generatePdf(transductor_id):
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from reportlab.lib.units import inch
 
-    doc = SimpleDocTemplate("report/static/Relatorio"+transductor_id+".pdf",
+    doc = SimpleDocTemplate("src/report/static/Relatorio"+transductor_id+".pdf",
                             pagesize=letter,
                             rightMargin=72, leftMargin=72,
                             topMargin=72, bottomMargin=18)
     Story = []
-    logo = "report/static/currentGraphic"+transductor_id+".png"
-    logo2 = "report/static/voltageGraphic"+transductor_id+".png"
-    logo3 = "report/static/activePowerGraphic"+transductor_id+".png"
-    logo4 = "report/static/reactivePowerGraphic"+transductor_id+".png"
-    logo5 = "report/static/apparentPowerGraphic"+transductor_id+".png"
+    logo = "src/report/static/currentGraphic"+transductor_id+".png"
+    logo2 = "src/report/static/voltageGraphic"+transductor_id+".png"
+    logo3 = "src/report/static/activePowerGraphic"+transductor_id+".png"
+    logo4 = "src/report/static/reactivePowerGraphic"+transductor_id+".png"
+    logo5 = "src/report/static/apparentPowerGraphic"+transductor_id+".png"
 
     magName = "Pythonista"
     issueNum = 12
@@ -131,6 +131,7 @@ def generatePdf(transductor_id):
     Story.append(Paragraph(ptext, styles["Normal"]))
 
     doc.build(Story)
+    return 1
 
 
 def __minValue(arrayData):

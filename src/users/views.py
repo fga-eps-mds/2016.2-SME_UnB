@@ -96,6 +96,7 @@ def register(request):
         password = form.get('password')
         confirmPassword = form.get('confirmPassword')
         email = form.get('email')
+        user_type = form.get('user_type')
 
         resultCheck = fullValidationRegister(form)
         resultCheck += fullValidation(form)
@@ -107,11 +108,10 @@ def register(request):
                 {'falha': resultCheck})
 
         # Fim do bloco que saira da view
-        first_name = form.get('first_name')
-        last_name = form.get('last_name')
-        password = form.get('password')
-        email = form.get('email')
-        user_type = form.get('user_type')
+    #    first_name = form.get('first_name')
+    #    last_name = form.get('last_name')
+    #    password = form.get('password')
+    #    email = form.get('email')
 
         try:
             if user_type == 'common':
@@ -319,6 +319,7 @@ def self_edit_user(request):
         # email = form.get('email')
         email = request.user.username
 
+        resultCheck = fullValidationRegister(form)
         resultCheck += fullValidation(form)
 
         user.first_name = first_name

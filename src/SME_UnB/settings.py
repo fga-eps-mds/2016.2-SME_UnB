@@ -58,7 +58,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=users,report',
+    '--cover-package=src.users,src.report',
 ]
 
 MIDDLEWARE_CLASSES = [
