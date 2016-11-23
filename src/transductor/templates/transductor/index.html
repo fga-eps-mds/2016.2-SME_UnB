@@ -8,14 +8,14 @@
 <div class="col-md-6">
   <table class="table table-striped">
     {% if transductors_list %}
-      <p><a href="{% url 'transductor:new' %}" class="btn btn-primary">Create Transductor</a></p>
+      <p><a href="{% url 'transductor:new' %}" class="btn btn-primary">{% trans "Create Transductor"%}</a></p>
       <thead>
         <tr>
           <th>#</th>
-          <th>Description</th>
-          <th>IP Address</th>
-          <th>Serie Number</th>
-          <th>Options</th>
+          <th>{% trans "Description"%}</th>
+          <th>{% trans "IP Address"%}</th>
+          <th>{% trans "Serie Number"%}</th>
+          <th>{% trans "Options"%}</th>
         </tr>
       </thead>
 
@@ -41,8 +41,8 @@
     {% else %}
       <div class="container">
         <div class="starter-template">
-          <h1>No Registered Transducer</h1>
-          <p class="lead">To create a new transductor click <a href="{% url 'transductor:new' %}" >here</a></p>
+          <h1>{% trans "No Registered Transducer"%}</h1>
+          <p class="lead">{% trans "To create a new transductor click "%}"<a href="{% url 'transductor:new' %}" >here</a></p>
         </div>
       </div>
     {% endif %}

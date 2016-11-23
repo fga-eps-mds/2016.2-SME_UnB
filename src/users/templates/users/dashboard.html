@@ -7,20 +7,48 @@
     <ul class="sidebar-nav">
       {% block breadcrumb %}
       {%if perms.report.can_generate%}
-      <li><a href="{% url 'report:transductors_filter' %}">{% trans "Reports" %}<span
-        style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon
-        glyphicon-dashboard"></span></a></li>
-        <li><a href="{% url 'report:return_chart' %}">{% trans "Graphics and Charts"%}<span
-          style="font-size:16px;" class="pull-left hidden-xs showopacity
-          glyphicon glyphicon-stats"></span></a></li>
-          {%endif%}
-          <li><a href="{% url 'transductor:index'%}">{% trans "Transductors" %}<span
-            style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon
-            glyphicon-phone"></span></a></li>
-            <li><a href="{% url 'report:transductor_list' %}">{% trans "Invoice" %}<span
-              style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon
-              glyphicon-bullhorn"></span></a></li>
-              {% endblock %}
+      <li><a href="{% url 'report:transductors_filter' %}">{% trans "Reports" %}</a></li>
+      <li><a href="{% url 'report:return_chart' %}">{% trans "Graphics and Charts" %}</a></li>
+      {%endif%}
+      <li><a href="{% url 'transductor:index'%}">{% trans "Transductors" %}</a></li>
+      <li><a href="{% url 'report:transductor_list' %}">{% trans "Invoice" %}</a></li>
+      {% endblock %}
+      {% if request.user.is_staff %}
+      <li><a href="{% url 'users:register' %}">{% trans "Register" %}</a></li>
+      {% endif %}
+      {%if perms.users.can_edit_user%}
+      <li><a href="{% url 'users:list_user_edit' %}">{% trans "Edit Users" %}</a></li>
+      {%endif%}
+	    <!-- fixing bug of users insted user -->
+	    {%if perms.users.can_delete_user%}
+      <li><a href="{% url 'users:list_user_delete' %}">{% trans "Delete Users" %}</a></li>
+      {%endif%}
+      {%if perms.users.can_see_logging%}
+      <li><a href="{% url 'users:logging_list' %}">{% trans "Logging Users" %}</a></li>
+      {%endif%}
+    </ul>
+  </div>
+  <div id="page-content-wrapper">
+    <div class="container-fluid">
+      {% if messages %}
+        <div class="row">
+          <div class="col-md-4 col-md-offset-8">
+            {% for message in messages %}
+            <p{% if message.tags == "success" %} class= "alert alert-success"{% endif %}>{{ message }}</p>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+      {% block dashboard_content %}
+      <p><strong>{% trans "Usuário" %}</strong>: {{ request.user.username}}</p>
+      <p><strong>{% trans "E-mail" %}</strong>: {{ request.user.email }}</p>
+      <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/self_edit/">{% trans "Edit my Profile"%} </a>
+        <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/change_password/">{% trans "Edit my Password"%} </a>
+      {% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuração de Usuarios <span class="caret"></span><span style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
