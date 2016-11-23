@@ -43,15 +43,25 @@ def new(request):
         form = EnergyForm(request.POST)
 
         if form.is_valid():
-            form.instance.model = form.cleaned_data['model']
-            transductor = form.save()
+            transductor = EnergyTransductor()
+            transductor.serie_number = form.cleaned_data['serie_number']
+            transductor.ip_address = form.cleaned_data['ip_address']
+            transductor.description = form.cleaned_data['description']
+            transductor.model = form.cleaned_data['transductor_model']
+            transductor.creation_date = timezone.now()
 
-            return redirect('transductor:detail',
-                            transductor_id=transductor.id)
+            try:
+                transductor.save()
+            except ValidationError, err:
+                errors = '; '.join(err.messages)
+                return render(request, 'transductor/new.html', {'form': form, 'errors': errors})
+
+            return redirect('transductor:detail', transductor_id=transductor.id)
     else:
         form = EnergyForm()
 
     return render(request, 'transductor/new.html', {'form': form})
+
 
 
 @login_required
