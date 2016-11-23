@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>New Transductor</title>
+    <title>{% trans "New Transductor"%}</title>
 {% endblock %}
 
 {% block body %}
-    <h1>New Transductor</h1>
+    <h1>{% trans "New Transductor"%}</h1>
 
     {% if errors %}
         <p style="color: #ff0000;">{{errors}}</p>
@@ -14,7 +14,7 @@
     <form method="post" class="post-form">
         {% csrf_token %}
         {{form.as_p}}
-        <button type="submit" class="save btn btn-default">Save</button>
-        <a href="{% url 'transductor:index' %}" class="save btn btn-default">Cancel</button>
+        <button type="submit" class="save btn btn-default">{% trans "Save"%}</button>
+        <a href="{% url 'transductor:index' %}" class="save btn btn-default">{% trans "Cancel"%}</button>
     </form>
 {% endblock %}

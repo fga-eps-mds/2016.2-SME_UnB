@@ -42,8 +42,8 @@
       {% block dashboard_content %}
       <p><strong>{% trans "Usuário" %}</strong>: {{ request.user.username}}</p>
       <p><strong>{% trans "E-mail" %}</strong>: {{ request.user.email }}</p>
-      <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/self_edit/">Editar meus dados</a>
-        <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/change_password/">Editar minha senha</a>
+      <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/self_edit/">{% trans "Edit my Profile"%} </a>
+        <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/change_password/">{% trans "Edit my Password"%} </a>
       {% endblock %}
     </div>
   </div>
