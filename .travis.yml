@@ -33,5 +33,3 @@ install:
 # Run all scripts to testing the application: unit test, coverage,
 # Acceptance Tests and outhers
 script:
-    - nosetests
-    - python2 SME_UnB/manage.py test --with-coverage SME_UnB/users/
