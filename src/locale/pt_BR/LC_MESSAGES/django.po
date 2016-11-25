@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-25 14:01+0000\n"
+"POT-Creation-Date: 2016-11-25 14:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,22 +18,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: SME_UnB/report/templates/graphics/chart.html:11
+msgid "Choose a Transductor"
+msgstr "Novo Transdutor"
+
+#: SME_UnB/report/templates/graphics/chart.html:12
+msgid "Show Graphics of transdutors"
+msgstr "Transdutores"
+
 #: SME_UnB/report/templates/graphics/chart.html:14
 #: src/report/templates/graphics/chart.html:14
-#, fuzzy
-#| msgid "New Transductor"
 msgid "Select a Transductor"
 msgstr "Novo Transdutor"
 
 #: SME_UnB/report/templates/graphics/chart.html:21
 #: src/report/templates/graphics/chart.html:21
 msgid "Select"
-msgstr ""
+msgstr "Selecionar"
 
 #: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:10
-#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:9
-msgid "SME - Esqueci a senha"
-msgstr ""
+msgid "SME - Forgot my password"
+msgstr "SME- Esqueci minha senha"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:21
+msgid "Forgot my password"
+msgstr "Senha"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:28
+#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:26
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:28
+#: src/retrieve_password/templates/retrieve_password/reset_password.html:26
+msgid "Close"
+msgstr "Fechar"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:38
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:38
+msgid "Recover Password"
+msgstr "Recuperar Senha"
 
 #: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:40
 #: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:39
@@ -43,40 +64,58 @@ msgstr ""
 msgid "Email address"
 msgstr "Endereço de Email"
 
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:42
+msgid "Invalid Email. Insert it again"
+msgstr "Email Invalid. Insira novamente"
+
 #: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:45
-msgid "Enviar Email"
-msgstr ""
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:45
+msgid "Send Email"
+msgstr "Enviar Email"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:49
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:49
+msgid "Email sended with success"
+msgstr "Email enviado com Sucesso"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:50
+msgid "Enter with the link sended in your email and register a new password"
+msgstr "Entre com link enviado em seu email e cadastre uma nova senha."
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:9
+msgid "SME - Forgot my Password"
+msgstr "SME - Esqueci minha senha"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:20
+msgid "Wrong Email"
+msgstr "Email invalido"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:37
+#: src/retrieve_password/templates/retrieve_password/reset_password.html:37
+msgid "Confirm Email"
+msgstr "Confime email"
 
 #: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:43
-msgid "Alterar senha"
-msgstr ""
-
 #: SME_UnB/users/templates/users/change_password.html:5
 #: src/retrieve_password/templates/retrieve_password/reset_password.html:43
 #: src/users/templates/users/change_password.html:5
-#, fuzzy
-#| msgid "Password"
 msgid "Change Password"
-msgstr "Senha"
+msgstr "Mudar Senha"
 
 #: SME_UnB/users/templates/users/change_password.html:25
 #: src/users/templates/users/change_password.html:25
-#, fuzzy
-#| msgid "Password"
 msgid "Current Password :"
-msgstr "Senha"
+msgstr "Senha Atual"
 
 #: SME_UnB/users/templates/users/change_password.html:29
 #: src/users/templates/users/change_password.html:29
-#, fuzzy
-#| msgid "Password"
 msgid "New Password:"
-msgstr "Senha"
+msgstr " Nova senha Senha"
 
 #: SME_UnB/users/templates/users/change_password.html:33
 #: src/users/templates/users/change_password.html:33
 msgid "Confirm New Password:"
-msgstr ""
+msgstr "Confirmar Nova senha"
 
 #: SME_UnB/users/templates/users/change_password.html:37
 #: src/users/templates/users/change_password.html:37
@@ -104,14 +143,12 @@ msgid "Sign in"
 msgstr "Entrar"
 
 #: src/report/templates/graphics/chart.html:11
-#, fuzzy
-#| msgid "New Transductor"
 msgid "Choose A transductor"
 msgstr "Novo Transdutor"
 
 #: src/report/templates/graphics/chart.html:12
 msgid "Show graphics  of transductor"
-msgstr ""
+msgstr "Mostrar Graficos dos transdutores"
 
 #: src/report/templates/graphics/report.html:5
 #: src/users/templates/users/dashboard.html:10
@@ -131,8 +168,6 @@ msgstr "Gerar PDF"
 #: src/report/templates/graphics/report.html:105
 #: src/report/templates/graphics/report.html:143
 #: src/report/templates/graphics/report.html:180
-#, fuzzy
-#| msgid "Phase A"
 msgid "Phase"
 msgstr "Fase A"
 
@@ -142,7 +177,7 @@ msgstr "Fase A"
 #: src/report/templates/graphics/report.html:144
 #: src/report/templates/graphics/report.html:181
 msgid "Max. value"
-msgstr ""
+msgstr "Valor Maximo"
 
 #: src/report/templates/graphics/report.html:31
 #: src/report/templates/graphics/report.html:69
@@ -150,7 +185,7 @@ msgstr ""
 #: src/report/templates/graphics/report.html:145
 #: src/report/templates/graphics/report.html:182
 msgid "Min. Value"
-msgstr ""
+msgstr "Valor Minimo"
 
 #: src/report/templates/graphics/report.html:32
 #: src/report/templates/graphics/report.html:70
@@ -158,15 +193,13 @@ msgstr ""
 #: src/report/templates/graphics/report.html:146
 #: src/report/templates/graphics/report.html:183
 msgid "Average Value"
-msgstr ""
+msgstr "Valor Medio"
 
 #: src/report/templates/graphics/report.html:35
 #: src/report/templates/graphics/report.html:73
 #: src/report/templates/graphics/report.html:111
 #: src/report/templates/graphics/report.html:149
 #: src/report/templates/graphics/report.html:186 src/report/views.py:54
-#, fuzzy
-#| msgid "Phase A"
 msgid "Phase 1"
 msgstr "Fase A"
 
@@ -175,8 +208,6 @@ msgstr "Fase A"
 #: src/report/templates/graphics/report.html:117
 #: src/report/templates/graphics/report.html:155
 #: src/report/templates/graphics/report.html:192 src/report/views.py:55
-#, fuzzy
-#| msgid "Phase A"
 msgid "Phase 2"
 msgstr "Fase A"
 
@@ -185,22 +216,16 @@ msgstr "Fase A"
 #: src/report/templates/graphics/report.html:123
 #: src/report/templates/graphics/report.html:161
 #: src/report/templates/graphics/report.html:198 src/report/views.py:56
-#, fuzzy
-#| msgid "Phase A"
 msgid "Phase 3"
 msgstr "Fase A"
 
 #: src/report/templates/graphics/transductors_filter.html:6
 #: src/report/templates/invoice/transductor_list.html:6
-#, fuzzy
-#| msgid "Transductors"
 msgid "List of Transductors:"
-msgstr "Transdutores"
+msgstr "Lista de Transdutores"
 
 #: src/report/templates/graphics/transductors_filter.html:13
 #: src/report/templates/invoice/transductor_list.html:13
-#, fuzzy
-#| msgid "Serie Number"
 msgid "Serial Number"
 msgstr "Número Serial"
 
@@ -219,18 +244,104 @@ msgstr "Descrição"
 #: src/report/templates/graphics/transductors_filter.html:16
 #: src/report/templates/invoice/transductor_list.html:16
 msgid "Creation Date"
-msgstr ""
+msgstr "Data de Criaçao"
 
 #: src/report/templates/invoice/invoice.html:6
 msgid "Simulated invoice"
 msgstr ""
 
 #: src/report/templates/invoice/invoice.html:56
-msgid "Simular fatura"
-msgstr ""
+msgid "Simulate invoice"
+msgstr "Simular fatura"
 
 #: src/report/templates/invoice/invoice.html:59
-msgid "Gerar pdf"
+msgid "Generate pdf"
+msgstr "Gerar PDF"
+
+#: src/report/templates/invoice/invoice.html:64
+msgid "Operations to be used to simulate invoice:"
+msgstr "Operações a serem usadas para simular faturas:"
+
+#: src/report/templates/invoice/invoice.html:67
+msgid "Watts Calculation"
+msgstr "Cálculo de Watts"
+
+#: src/report/templates/invoice/invoice.html:68
+msgid "Calculation of Kw / h"
+msgstr "Cálculo de Kw / h"
+
+#: src/report/templates/invoice/invoice.html:69
+msgid "Monthly consumption"
+msgstr "Consumo Mensal"
+
+#: src/report/templates/invoice/invoice.html:72
+msgid "KiloWatts value"
+msgstr "Valor de KiloWatts "
+
+#: src/report/templates/invoice/invoice.html:74
+msgid "Power in kiloWatts through amperage and current ratio"
+msgstr "Potência em quilowatts por amperagem e razão de corrente"
+
+#: src/report/templates/invoice/invoice.html:76
+msgid "Enter the approximate value of the current"
+msgstr "Introduza o valor aproximado da corrente"
+
+#: src/report/templates/invoice/invoice.html:79
+msgid "Enter the approximate amperage value"
+msgstr "Insira o valor aproximado de amperagem"
+
+#: src/report/templates/invoice/invoice.html:83
+#: src/report/templates/invoice/invoice.html:97
+#: src/report/templates/invoice/invoice.html:119
+msgid "Calculate"
+msgstr "Calcular"
+
+#: src/report/templates/invoice/invoice.html:86
+msgid "KW / h consumption"
+msgstr "Consumo de KW / h"
+
+#: src/report/templates/invoice/invoice.html:88
+msgid "Quantity power measured in KiloWatts for one hour"
+msgstr "Quantidade de potência medida em KiloWatts por uma hora"
+
+#: src/report/templates/invoice/invoice.html:90
+msgid "Enter the power of KW"
+msgstr "Digite a potência de KW"
+
+#: src/report/templates/invoice/invoice.html:93
+msgid "Enter the number of hours"
+msgstr "Digite o número de horas"
+
+#: src/report/templates/invoice/invoice.html:99
+msgid "Value of consumption"
+msgstr "Valor do consumo"
+
+#: src/report/templates/invoice/invoice.html:103
+msgid "Flag"
+msgstr "Bandeira"
+
+#: src/report/templates/invoice/invoice.html:105
+msgid "Red"
+msgstr "Vermelho"
+
+#: src/report/templates/invoice/invoice.html:106
+msgid "Yellow"
+msgstr "Amarela"
+
+#: src/report/templates/invoice/invoice.html:107
+msgid "Green"
+msgstr "Verde"
+
+#: src/report/templates/invoice/invoice.html:110
+msgid "Total consumption"
+msgstr "Consumo Total"
+
+#: src/report/templates/invoice/invoice.html:112
+msgid "Enter the amount of KW / h used:"
+msgstr "Introduza a quantidade de KW / h utilizada"
+
+#: src/report/templates/invoice/invoice.html:115
+msgid "Digite o preço do KW/h"
 msgstr ""
 
 #: src/report/views.py:28
@@ -263,55 +374,31 @@ msgstr "Poder Aparente"
 
 #: src/retrieve_password/templates/retrieve_password/forgot_password.html:10
 msgid "SME - Forgot Password"
-msgstr ""
+msgstr "SME - Esqueceu a senha"
 
 #: src/retrieve_password/templates/retrieve_password/forgot_password.html:21
-#, fuzzy
-#| msgid "Password"
 msgid "Forgot Password"
-msgstr "Senha"
-
-#: src/retrieve_password/templates/retrieve_password/forgot_password.html:28
-#: src/retrieve_password/templates/retrieve_password/reset_password.html:26
-msgid "Close"
-msgstr ""
-
-#: src/retrieve_password/templates/retrieve_password/forgot_password.html:38
-#, fuzzy
-#| msgid "Password"
-msgid "Recover Password"
 msgstr "Senha"
 
 #: src/retrieve_password/templates/retrieve_password/forgot_password.html:42
 msgid "Invalid Email"
-msgstr ""
-
-#: src/retrieve_password/templates/retrieve_password/forgot_password.html:45
-#, fuzzy
-#| msgid "Email"
-msgid "Send Email"
-msgstr "Email"
-
-#: src/retrieve_password/templates/retrieve_password/forgot_password.html:49
-msgid "Email sended with success"
-msgstr ""
+msgstr "Email Invalido"
 
 #: src/retrieve_password/templates/retrieve_password/forgot_password.html:50
-msgid ""
-"Enter with Link that was sended for your email and register a new Password"
-msgstr ""
+msgid "Enter with Link that was sended for your email and register a new Password"
+msgstr "Entre com link que foi enviado para seu email e registre uma nova senha"
 
 #: src/retrieve_password/templates/retrieve_password/reset_password.html:9
 msgid "SME -Forgot Password"
-msgstr ""
+msgstr "SME - Esqueceu a Senha"
 
 #: src/retrieve_password/templates/retrieve_password/reset_password.html:20
 msgid " Wrong Email"
-msgstr ""
+msgstr "Email Invalido"
 
-#: src/retrieve_password/templates/retrieve_password/reset_password.html:37
-msgid "Confirm Email"
-msgstr ""
+#: src/templates/base.html:77
+msgid "Toggle navigation "
+msgstr "Navegação de Altenância"
 
 #: src/templates/base.html:88 src/templates/base.html:104
 msgid "About"
@@ -345,8 +432,6 @@ msgid "Change Language"
 msgstr "Mudar idioma"
 
 #: src/transductor/templates/transductor/detail.html:4
-#, fuzzy
-#| msgid "Measurements Record"
 msgid "Measurements Record "
 msgstr "Recorde de Medida"
 
@@ -363,8 +448,6 @@ msgid "Phase C"
 msgstr "Fase C"
 
 #: src/transductor/templates/transductor/detail.html:72
-#, fuzzy
-#| msgid "previous"
 msgid "Previus"
 msgstr "Anterior"
 
@@ -373,8 +456,6 @@ msgid "Next"
 msgstr "Próximo"
 
 #: src/transductor/templates/transductor/detail.html:88
-#, fuzzy
-#| msgid "No measurement avaiable"
 msgid "No measurement avaiable"
 msgstr "Sem Medida Disponível "
 
@@ -395,8 +476,6 @@ msgid "No Registered Transducer"
 msgstr "Sem Transdutor Registrado"
 
 #: src/transductor/templates/transductor/index.html:45
-#, fuzzy
-#| msgid "To create a new transductor click"
 msgid "To create a new transductor click "
 msgstr "Para Criar um Novo Transdutor"
 
@@ -479,10 +558,8 @@ msgstr "Deletar Usuários"
 
 #: src/users/templates/userRegister/register.html:95
 #: src/users/templates/users/edit_user.html:67
-#, fuzzy
-#| msgid "Login"
 msgid "See Logging"
-msgstr "Entrar"
+msgstr "Ver logging"
 
 #: src/users/templates/userRegister/register.html:98
 #: src/users/templates/users/dashboard.html:17
@@ -493,7 +570,7 @@ msgstr "Registrar"
 
 #: src/users/templates/users/dashboard.html:11
 msgid "Graphics and Charts"
-msgstr ""
+msgstr "Graficos e Imagens"
 
 #: src/users/templates/users/dashboard.html:13
 msgid "Transductors"
@@ -501,11 +578,9 @@ msgstr "Transdutores"
 
 #: src/users/templates/users/dashboard.html:14
 msgid "Invoice"
-msgstr ""
+msgstr "Fatura"
 
 #: src/users/templates/users/dashboard.html:27
-#, fuzzy
-#| msgid "Edit Users"
 msgid "Logging Users"
 msgstr "Editar Usuários"
 
@@ -519,13 +594,11 @@ msgstr "E-mail"
 
 #: src/users/templates/users/dashboard.html:45
 msgid "Edit my Profile"
-msgstr ""
+msgstr "Editar meu Perfil"
 
 #: src/users/templates/users/dashboard.html:46
-#, fuzzy
-#| msgid "Password"
 msgid "Edit my Password"
-msgstr "Senha"
+msgstr "Editrar minha senha"
 
 #: src/users/templates/users/delete_user.html:6
 msgid "Delete  Users"
@@ -541,14 +614,10 @@ msgid "Delete"
 msgstr "Deletar"
 
 #: src/users/templates/users/edit_user.html:5
-#, fuzzy
-#| msgid "Edit Users"
 msgid "Edit User"
 msgstr "Editar Usuários"
 
 #: src/users/templates/users/edit_user.html:15
-#, fuzzy
-#| msgid "Edit user"
 msgid "Edit user "
 msgstr "Editar Usuário"
 
@@ -561,14 +630,8 @@ msgid "Manage Transductors"
 msgstr "Adminstrar Transdutores"
 
 #: src/users/templates/users/home.html:11
-#, fuzzy
-#| msgid ""
-#| "SME - UnB is a web platform to monitor measurements from energy "
-#| "transductors."
-msgid ""
-"SME - UnB is a web platform to monitor measurements from energy transductors"
-msgstr ""
-"SME - UnB é uma plataforma de monitoramento de medidas de transdutores de "
+msgid "SME - UnB is a web platform to monitor measurements from energy transductors"
+msgstr"SME - UnB é uma plataforma de monitoramento de medidas de transdutores de "
 "energia"
 
 #: src/users/templates/users/home.html:12
@@ -608,13 +671,11 @@ msgstr "Lista de Usuários Registrados:"
 
 #: src/users/templates/users/logging_list.html:8
 msgid "List of Logging:"
-msgstr ""
+msgstr "Lista de Logging"
 
 #: src/users/templates/users/login.html:8
-#, fuzzy
-#| msgid "Login"
 msgid "SME - Login"
-msgstr "Entrar"
+msgstr "SME - Logar"
 
 #: src/users/templates/users/login.html:16
 #: src/users/templates/users/login.html:28
@@ -627,23 +688,17 @@ msgstr "Senha"
 
 #: src/users/templates/users/self_edit.html:5
 msgid "Edit Profile"
-msgstr ""
+msgstr "Editrar Perfil"
 
 #: src/users/templates/users/self_edit.html:24
-#, fuzzy
-#| msgid "Name"
 msgid "Name:"
 msgstr "Nome"
 
 #: src/users/templates/users/self_edit.html:28
-#, fuzzy
-#| msgid "Last Name"
 msgid "Last Name:"
 msgstr "Último Nome"
 
 #: src/users/templates/users/self_edit.html:31
-#, fuzzy
-#| msgid "Email"
 msgid "Email:"
 msgstr "Email"
 
@@ -656,8 +711,7 @@ msgstr "Email"
 #~ msgid "here"
 #~ msgstr "aqui"
 
-#, fuzzy
-#~| msgid "No Permission to see transductors"
+
 #~ msgid "No permission to see the transductors"
 #~ msgstr "Sem Permissão Para Ver os Transdutores"
 
@@ -670,13 +724,9 @@ msgstr "Email"
 #~ msgid "Admin"
 #~ msgstr "Administrador"
 
-#~ msgid "Toggle navigation"
-#~ msgstr "Navegação de Altenância"
-
 #~ msgid "next"
 #~ msgstr "Próximo"
 
-#, fuzzy
-#~| msgid "Toggle navigation"
+
 #~ msgid "Navigation"
 #~ msgstr "Navegação de altenância"
