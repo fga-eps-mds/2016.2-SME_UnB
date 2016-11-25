@@ -152,7 +152,7 @@ LANGUAGES = (
     ('en-us', u'English'),
     ('pt-br', u'Portuguese'),
 )
-LOCALE_PATHS = ('locale',)
+LOCALE_PATHS = ('src/locale',)
 
 
 TIME_ZONE = 'UTC'
