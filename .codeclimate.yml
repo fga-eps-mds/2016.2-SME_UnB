@@ -6,7 +6,6 @@ engines:
     enabled: true
     config:
       languages:
-      - javascript
       - python
   fixme:
     enabled: true
@@ -23,7 +22,9 @@ ratings:
   - "**.py"
   - "**.rb"
 exclude_paths:
-  - "SME_UnB/data_reader/**/*"
-  - "SME_UnB/SME_UnB/**/*"
-  - "SME_UnB/transductor/**/*"
-  - "SME_UnB/**/tests.py"
+  - "src/data_reader/**/*"
+  - "src/SME_UnB/**/*"
+  - "src/transductor/**/*"
+  - "src/**/tests.py"
+  - "SME_UnB/**"
+  - "src/**/tests.py"

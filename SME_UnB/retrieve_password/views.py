@@ -104,12 +104,6 @@ actualy want to reset your password, please visit this link: \n\n"
         return render(request, template_name, context_return)
 
 def confirm_email(request, token):
-    """TODO: Method that confirms if email exists on database
-    :request: TODO
-    :token: TODO
-    :returns: TODO
-
-    """
     if request.method == "GET":
         return render(request, "retrieve_password/reset_password.html", \
         {"token":token})
