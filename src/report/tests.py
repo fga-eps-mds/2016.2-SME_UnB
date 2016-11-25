@@ -3,16 +3,60 @@ from . import views
 import unittest
 import datetime
 import os.path
+from django.utils import timezone
+from transductor.models import TransductorModel,EnergyTransductor,EnergyMeasurements
 
 class TestReportView(unittest.TestCase):
     def setUp(self):
         self.client = Client()
 
+        address =[[68, 0], [70, 1]]
+        self.t_model = TransductorModel(name="Test Name",
+                                   transport_protocol="UDP",
+                                   serial_protocol="Modbus RTU",
+                                   register_addresses= address)
+        self.t_model.save()
+        self.e_transductor = EnergyTransductor(model=self.t_model,
+                                            serie_number=1,
+                                            ip_address="1.1.1.1",
+                                            description="Energy Transductor Test",
+                                            creation_date=timezone.now())
+
+        self.e_transductor.save()
+        self.e_measurements = EnergyMeasurements(transductor=self.e_transductor,
+                                               voltage_a=122.875,
+                                               voltage_b=122.784,
+                                               voltage_c=121.611,
+                                               current_a=22.831,
+                                               current_b=17.187,
+                                               current_c= 3.950,
+                                               active_power_a=2.794,
+                                               active_power_b=1.972,
+                                               active_power_c=3.950,
+                                               reactive_power_a=-0.251,
+                                               reactive_power_b=-0.752,
+                                               reactive_power_c=-1.251,
+                                               apparent_power_a=2.805,
+                                               apparent_power_b=2.110,
+                                               apparent_power_c=4.144,
+                                               collection_minute=timezone.now().minute)
+        self.e_measurements.save()
+        # self.assertEqual(1, 2)
+
+    def tearDown(self):
+
+        self.t_model.delete()
+        self.e_transductor.delete()
+        #self.e_measurements.delete()
+
+
     def test_getting_page_report(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get('/reports/report/1/')
+        response = self.client.get('/reports/report/' + str(self.e_transductor.id)+ '/')
+        print'aqui'
+        print(EnergyMeasurements.objects.all())
 
-        self.assertEqual(302, response.status_code)
+        self.assertEqual(200, response.status_code)
 
     def test_getting_wrong_page_report(self):
         response = self.client.post(
@@ -63,9 +107,9 @@ class TestReportView(unittest.TestCase):
 
     def test_getting_page_invoice(self):
         logged_in = self.client.login(username='testuser', password='12345')
-        response = self.client.get('/reports/invoice/')
+        response = self.client.get('/reports/invoice/'+ str(self.e_transductor.id))
 
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(301, response.status_code)
 
     def test_getting_wrong_page_invoice(self):
         logged_in = self.client.login(username='testuser', password='12345')

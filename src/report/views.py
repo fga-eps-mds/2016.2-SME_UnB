@@ -200,9 +200,6 @@ def report(request, transductor_id):
         apparent_power_b.append(i.apparent_power_b)
         apparent_power_c.append(i.apparent_power_c)
 
-        # now+=delta
-
-    data = [4, 6, 23, 7, 4, 2]
 
     create_graphic(
         'src/report/static/currentGraphic' + transductor_id + '.png',

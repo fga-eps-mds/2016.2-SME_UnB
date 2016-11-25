@@ -34,5 +34,5 @@ install:
 # Acceptance Tests and outhers
 #
 #
-scipt:
+script:
     - python2 manage.py test --with-coverage src/users/ src/report/ src/retrieve_password --cover-package=users --cover-tests --cover-html

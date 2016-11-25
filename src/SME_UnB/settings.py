@@ -125,9 +125,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-if 'test' in sys.argv or 'test_coverage' in sys.argv:
+#if 'test' in sys.argv or 'test_coverage' in sys.argv:
     # Covers regular testing and django-coverage
-    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+#    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
 
 # Auth
 
