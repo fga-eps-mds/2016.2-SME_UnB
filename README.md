@@ -2,6 +2,9 @@
 [![Build Status](https://travis-ci.org/fga-gpp-mds/2016.2-SME_UnB.svg?branch=master)](https://travis-ci.org/fga-gpp-mds/2016.2-SME_UnB)
 [![Code Climate](https://codeclimate.com/github/fga-gpp-mds/2016.2-SME_UnB/badges/gpa.svg)](https://codeclimate.com/github/fga-gpp-mds/2016.2-SME_UnB)
 [![Issue Count](https://codeclimate.com/github/fga-gpp-mds/2016.2-SME_UnB/badges/issue_count.svg)](https://codeclimate.com/github/fga-gpp-mds/2016.2-SME_UnB)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub version](https://badge.fury.io/gh/fga-gpp-mds%2F2016.2-SME_UnB.svg)](https://badge.fury.io/gh/fga-gpp-mds%2F2016.2-SME_UnB)
+
 
 ## O que é?
 

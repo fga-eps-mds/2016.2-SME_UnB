@@ -35,4 +35,5 @@ install:
 #
 #
 script:
-    - python2 manage.py test --with-coverage src/users/ src/retrieve_password --cover-package=users --cover-tests --cover-html
+    # - python2 manage.py test --with-coverage src/users/ src/retrieve_password --cover-package=users --cover-tests --cover-html
+    - python manage.py migrate
