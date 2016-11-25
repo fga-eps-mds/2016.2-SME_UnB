@@ -267,7 +267,7 @@ class EnergyMeasurements(Measurements):
         self.collection_minute = timezone.now().minute
         self.save()
     def __unicode__(self):
-        return u'{1}'.format(self.collection_date)
+        return u'{0}'.format(self.collection_date)
 
 
 class EnergyOperations(object):
