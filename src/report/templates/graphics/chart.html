@@ -8,8 +8,8 @@
 <body>
   <div class="container-fluid">
     <div class="span2 well" id="select_transductor">
-      <h3 class="info">Escolha um transdutor.</h3>
-      <h5 class="info2">Mostrar gráficos do transdutor:</h5>
+      <h3 class="info">{% trans "Choose A transductor"%}.</h3>
+      <h5 class="info2">{% trans "Show graphics  of transductor"%}</h5>
       <select required class="form-control" id="selectTransductor" style="width: 40%;">
         <option value="" selected="true"> {% trans "Select a Transductor" %} </option>
         {% for transductor in all_transductors %}

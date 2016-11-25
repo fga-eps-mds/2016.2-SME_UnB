@@ -53,70 +53,70 @@
 <body>
   <center>
     <div class="form-group">
-      <h1 class='text-center'>{% trans "Simular fatura" %}</h1>
+      <h1 class='text-center'>{% trans "Simulate invoice" %}</h1>
       <div class="row">
         <div class="col-md-2 col-md-offset-5">
-          <a class="btn btn-primary btn-lg btn-block" href="{% url 'report:open_pdf' transductor_id %}" target="_blank" role="button">{% trans "Gerar pdf" %}&raquo;</a>
+          <a class="btn btn-primary btn-lg btn-block" href="{% url 'report:open_pdf' transductor_id %}" target="_blank" role="button">{% trans "Generate pdf" %}&raquo;</a>
         </div>
       </div>
     </div>
     <br>
-    Operações a serem utilizadas para simular fatura:
+    {% trans "Operations to be used to simulate invoice:" %}
 
     <ul id="list">
-      <li>Calculo de Watts</li>
-      <li>Calculo de Kw/h </li>
-      <li>Consumo mensal</li>
+      <li>{% trans "Watts Calculation" %}</li>
+      <li>{% trans "Calculation of Kw / h" %}</li>
+      <li>{% trans "Monthly consumption" %}</li>
     </ul>
 
-    <h1>Valor KiloWatts:</h1>
+    <h1>{% trans "KiloWatts value" %} :</h1>
     <br>
-    <label>Potência em kiloWatts através da relação amperagem e corrente: </label>
+    <label>{% trans "Power in kiloWatts through amperage and current ratio" %}: </label>
     <br>
-    <label>Digite o valor aproximado da corrente: </label>
+    <label>{% trans "Enter the approximate value of the current" %}: </label>
     <input type="text" id="current_input" tabindex="5" size="5"/>
     <br>
-    <label for="amperage">Digite o valor aproximado da amperagem: </label>
+    <label for="amperage">{% trans "Enter the approximate amperage value" %}: </label>
     <input type="text" id="amperage_input" tabindex="5" size="5"/>
     <label id="kw"></label>
     <br>
-    <button type="button" onclick="CalcWatts()">Calcular</button>
+    <button type="button" onclick="CalcWatts()">{% trans "Calculate" %}</button>
 
 
-    <h1>Consumo de KW/h:</h1>
+    <h1>{% trans "KW / h consumption" %}:</h1>
     <br>
-    <label>Quantidade potência medida em KiloWatts durante uma hora: </label>
+    <label>{% trans "Quantity power measured in KiloWatts for one hour" %}: </label>
     <br>
-    <label>Digite a potencia de KW: </label>
+    <label>{% trans "Enter the power of KW" %}: </label>
     <input type="text" id="kw_input" tabindex="5" size="5"/>
     <br>
-    <label>Digite a quantidade de horas: </label>
+    <label>{% trans "Enter the number of hours" %}: </label>
     <input type="text" id="hours_input" tabindex="5" size="5"/>
     <label id="kwh"></label>
     <br>
-    <button type="button" onclick="CalcKw()">Calcular</button>
+    <button type="button" onclick="CalcKw()">{% trans "Calculate" %}</button>
 
-    <h1>Valor do consumo: </h1>
+    <h1>{% trans "Value of consumption" %}: </h1>
 
     <br>
     <form>
-      <label>Bandeira: </label>
+      <label>{% trans "Flag" %}: </label>
     <br>
-      <input type="radio" name="band" value="red" checked> Vermelha<br>
-      <input type="radio" name="band" value="yellow"> Amarela<br>
-      <input type="radio" name="band" value="green"> Verde
+      <input type="radio" name="band" value="red" checked> {% trans "Red" %}<br>
+      <input type="radio" name="band" value="yellow"> {% trans "Yellow" %}<br>
+      <input type="radio" name="band" value="green">{% trans "Green" %}
     </form>
     <br>
-    <label>Consumo total: </label>
+    <label>{% trans "Total consumption" %}: </label>
     <br>
-    <label>Digite a quantidade do KW/h utilizada: </label>
+    <label>{% trans "Enter the amount of KW / h used:" %} </label>
     <input type="text" id="kwh_input" tabindex="5" size="5"/>
     <br>
-    <label>Digite o preço do KW/h: </label>
+    <label>{% trans "Enter the price of KW / h" %}: </label>
     <input type="text" id="khw_price" tabindex="5" size="8"/ value="0.5041085">
     <label id="price"></label>
     <br>
-    <button type="button" onclick="CalcValuePrice()">Calcular</button>
+    <button type="button" onclick="CalcValuePrice()">{% trans "Calculate" %}</button>
     </center>
   </body>
 </html>

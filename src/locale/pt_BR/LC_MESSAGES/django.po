@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-10 14:21+0000\n"
+"POT-Creation-Date: 2016-11-25 15:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,362 +18,702 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: report/templates/graphics/report.html:5
-#: users/templates/users/dashboard.html:10
+#: SME_UnB/report/templates/graphics/chart.html:11
+msgid "Choose a Transductor"
+msgstr "Novo Transdutor"
+
+#: SME_UnB/report/templates/graphics/chart.html:12
+msgid "Show Graphics of transdutors"
+msgstr "Transdutores"
+
+#: SME_UnB/report/templates/graphics/chart.html:14
+#: src/report/templates/graphics/chart.html:14
+msgid "Select a Transductor"
+msgstr "Novo Transdutor"
+
+#: SME_UnB/report/templates/graphics/chart.html:21
+#: src/report/templates/graphics/chart.html:21
+msgid "Select"
+msgstr "Selecionar"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:10
+msgid "SME - Forgot my password"
+msgstr "SME- Esqueci minha senha"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:21
+msgid "Forgot my password"
+msgstr "Senha"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:28
+#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:26
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:28
+#: src/retrieve_password/templates/retrieve_password/reset_password.html:26
+msgid "Close"
+msgstr "Fechar"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:38
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:38
+msgid "Recover Password"
+msgstr "Recuperar Senha"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:40
+#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:39
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:40
+#: src/retrieve_password/templates/retrieve_password/reset_password.html:39
+#: src/users/templates/users/login.html:18
+msgid "Email address"
+msgstr "Endereço de Email"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:42
+msgid "Invalid Email. Insert it again"
+msgstr "Email Invalid. Insira novamente"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:45
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:45
+msgid "Send Email"
+msgstr "Enviar Email"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:49
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:49
+msgid "Email sended with success"
+msgstr "Email enviado com Sucesso"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/forgot_password.html:50
+msgid "Enter with the link sended in your email and register a new password"
+msgstr "Entre com link enviado em seu email e cadastre uma nova senha."
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:9
+msgid "SME - Forgot my Password"
+msgstr "SME - Esqueci minha senha"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:20
+msgid "Wrong Email"
+msgstr "Email invalido"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:37
+#: src/retrieve_password/templates/retrieve_password/reset_password.html:37
+msgid "Confirm Email"
+msgstr "Confime email"
+
+#: SME_UnB/retrieve_password/templates/retrieve_password/reset_password.html:43
+#: src/retrieve_password/templates/retrieve_password/reset_password.html:43
+#: src/users/templates/users/change_password.html:5
+msgid "Change Password"
+msgstr "Mudar Senha"
+
+#: src/report/templates/graphics/chart.html:11
+msgid "Choose A transductor"
+msgstr "Novo Transdutor"
+
+#: src/report/templates/graphics/chart.html:12
+msgid "Show graphics  of transductor"
+msgstr "Mostrar Graficos dos transdutores"
+
+#: src/report/templates/graphics/report.html:5
+#: src/users/templates/users/dashboard.html:10
 msgid "Reports"
 msgstr "Relatórios"
 
-#: report/templates/graphics/report.html:13
+#: src/report/templates/graphics/report.html:13
 msgid "Report"
 msgstr "Relatório"
 
-#: report/templates/graphics/report.html:16
+#: src/report/templates/graphics/report.html:16
 msgid "Generate PDF"
 msgstr "Gerar PDF"
 
-#: report/views.py:26
+#: src/report/templates/graphics/report.html:29
+#: src/report/templates/graphics/report.html:67
+#: src/report/templates/graphics/report.html:105
+#: src/report/templates/graphics/report.html:143
+#: src/report/templates/graphics/report.html:180
+msgid "Phase"
+msgstr "Fase A"
+
+#: src/report/templates/graphics/report.html:30
+#: src/report/templates/graphics/report.html:68
+#: src/report/templates/graphics/report.html:106
+#: src/report/templates/graphics/report.html:144
+#: src/report/templates/graphics/report.html:181
+msgid "Max. value"
+msgstr "Valor Maximo"
+
+#: src/report/templates/graphics/report.html:31
+#: src/report/templates/graphics/report.html:69
+#: src/report/templates/graphics/report.html:107
+#: src/report/templates/graphics/report.html:145
+#: src/report/templates/graphics/report.html:182
+msgid "Min. Value"
+msgstr "Valor Minimo"
+
+#: src/report/templates/graphics/report.html:32
+#: src/report/templates/graphics/report.html:70
+#: src/report/templates/graphics/report.html:108
+#: src/report/templates/graphics/report.html:146
+#: src/report/templates/graphics/report.html:183
+msgid "Average Value"
+msgstr "Valor Medio"
+
+#: src/report/templates/graphics/report.html:35
+#: src/report/templates/graphics/report.html:73
+#: src/report/templates/graphics/report.html:111
+#: src/report/templates/graphics/report.html:149
+#: src/report/templates/graphics/report.html:186 src/report/views.py:54
+msgid "Phase 1"
+msgstr "Fase A"
+
+#: src/report/templates/graphics/report.html:41
+#: src/report/templates/graphics/report.html:79
+#: src/report/templates/graphics/report.html:117
+#: src/report/templates/graphics/report.html:155
+#: src/report/templates/graphics/report.html:192 src/report/views.py:55
+msgid "Phase 2"
+msgstr "Fase A"
+
+#: src/report/templates/graphics/report.html:47
+#: src/report/templates/graphics/report.html:85
+#: src/report/templates/graphics/report.html:123
+#: src/report/templates/graphics/report.html:161
+#: src/report/templates/graphics/report.html:198 src/report/views.py:56
+msgid "Phase 3"
+msgstr "Fase A"
+
+#: src/report/templates/graphics/transductors_filter.html:6
+#: src/report/templates/invoice/transductor_list.html:6
+msgid "List of Transductors:"
+msgstr "Lista de Transdutores"
+
+#: src/report/templates/graphics/transductors_filter.html:13
+#: src/report/templates/invoice/transductor_list.html:13
+msgid "Serial Number"
+msgstr "Número Serial"
+
+#: src/report/templates/graphics/transductors_filter.html:14
+#: src/report/templates/invoice/transductor_list.html:14
+#: src/transductor/templates/transductor/index.html:17
+msgid "IP Address"
+msgstr "Endereço IP"
+
+#: src/report/templates/graphics/transductors_filter.html:15
+#: src/report/templates/invoice/transductor_list.html:15
+#: src/transductor/templates/transductor/index.html:16
+msgid "Description"
+msgstr "Descrição"
+
+#: src/report/templates/graphics/transductors_filter.html:16
+#: src/report/templates/invoice/transductor_list.html:16
+msgid "Creation Date"
+msgstr "Data de Criaçao"
+
+#: src/report/templates/invoice/invoice.html:6
+msgid "Simulated invoice"
+msgstr "Fatura simulada"
+
+#: src/report/templates/invoice/invoice.html:56
+msgid "Simulate invoice"
+msgstr "Simular fatura"
+
+#: src/report/templates/invoice/invoice.html:59
+msgid "Generate pdf"
+msgstr "Gerar PDF"
+
+#: src/report/templates/invoice/invoice.html:64
+msgid "Operations to be used to simulate invoice:"
+msgstr "Operações a serem usadas para simular faturas:"
+
+#: src/report/templates/invoice/invoice.html:67
+msgid "Watts Calculation"
+msgstr "Cálculo de Watts"
+
+#: src/report/templates/invoice/invoice.html:68
+msgid "Calculation of Kw / h"
+msgstr "Cálculo de Kw / h"
+
+#: src/report/templates/invoice/invoice.html:69
+msgid "Monthly consumption"
+msgstr "Consumo Mensal"
+
+#: src/report/templates/invoice/invoice.html:72
+msgid "KiloWatts value"
+msgstr "Valor de KiloWatts "
+
+#: src/report/templates/invoice/invoice.html:74
+msgid "Power in kiloWatts through amperage and current ratio"
+msgstr "Potência em quilowatts por amperagem e razão de corrente"
+
+#: src/report/templates/invoice/invoice.html:76
+msgid "Enter the approximate value of the current"
+msgstr "Introduza o valor aproximado da corrente"
+
+#: src/report/templates/invoice/invoice.html:79
+msgid "Enter the approximate amperage value"
+msgstr "Insira o valor aproximado de amperagem"
+
+#: src/report/templates/invoice/invoice.html:83
+#: src/report/templates/invoice/invoice.html:97
+#: src/report/templates/invoice/invoice.html:119
+msgid "Calculate"
+msgstr "Calcular"
+
+#: src/report/templates/invoice/invoice.html:86
+msgid "KW / h consumption"
+msgstr "Consumo de KW / h"
+
+#: src/report/templates/invoice/invoice.html:88
+msgid "Quantity power measured in KiloWatts for one hour"
+msgstr "Quantidade de potência medida em KiloWatts por uma hora"
+
+#: src/report/templates/invoice/invoice.html:90
+msgid "Enter the power of KW"
+msgstr "Digite a potência de KW"
+
+#: src/report/templates/invoice/invoice.html:93
+msgid "Enter the number of hours"
+msgstr "Digite o número de horas"
+
+#: src/report/templates/invoice/invoice.html:99
+msgid "Value of consumption"
+msgstr "Valor do consumo"
+
+#: src/report/templates/invoice/invoice.html:103
+msgid "Flag"
+msgstr "Bandeira"
+
+#: src/report/templates/invoice/invoice.html:105
+msgid "Red"
+msgstr "Vermelho"
+
+#: src/report/templates/invoice/invoice.html:106
+msgid "Yellow"
+msgstr "Amarela"
+
+#: src/report/templates/invoice/invoice.html:107
+msgid "Green"
+msgstr "Verde"
+
+#: src/report/templates/invoice/invoice.html:110
+msgid "Total consumption"
+msgstr "Consumo Total"
+
+#: src/report/templates/invoice/invoice.html:112
+msgid "Enter the amount of KW / h used:"
+msgstr "Introduza a quantidade de KW / h utilizada"
+
+#: src/report/templates/invoice/invoice.html:115
+msgid "Enter the price of KW / h"
+msgstr "Digite o preço de KW/hr"
+
+#: src/report/views.py:28
 msgid "Monitoring"
 msgstr "Monitoramento"
 
-#: report/views.py:52 transductor/templates/transductor/detail.html:25
-msgid "Phase A"
-msgstr "Fase A"
-
-#: report/views.py:53 transductor/templates/transductor/detail.html:26
-msgid "Phase B"
-msgstr "Fase B"
-
-#: report/views.py:54 transductor/templates/transductor/detail.html:27
-msgid "Phase C"
-msgstr "Fase C"
-
-#: report/views.py:61
+#: src/report/views.py:63
 msgid "Date"
 msgstr "Data"
 
-#: report/views.py:188 transductor/templates/transductor/detail.html:39
+#: src/report/views.py:210
 msgid "Current"
 msgstr "Corrente"
 
-#: report/views.py:196 transductor/templates/transductor/detail.html:33
+#: src/report/views.py:218
 msgid "Voltage"
 msgstr "Voltagem"
 
-#: report/views.py:204 transductor/templates/transductor/detail.html:45
+#: src/report/views.py:226
 msgid "Active Power"
 msgstr "Potência Ativa"
 
-#: report/views.py:212 transductor/templates/transductor/detail.html:52
+#: src/report/views.py:234
 msgid "Reactive Power"
 msgstr "Potência Reativa"
 
-#: report/views.py:220 transductor/templates/transductor/detail.html:59
+#: src/report/views.py:242
 msgid "Apparent Power"
 msgstr "Poder Aparente"
 
-#: templates/base.html:36 templates/base.html:49
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:10
+msgid "SME - Forgot Password"
+msgstr "SME - Esqueceu a senha"
+
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:21
+msgid "Forgot Password"
+msgstr "Senha"
+
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:42
+msgid "Invalid Email"
+msgstr "Email Invalido"
+
+#: src/retrieve_password/templates/retrieve_password/forgot_password.html:50
+msgid ""
+"Enter with Link that was sended for your email and register a new Password"
+msgstr ""
+"Entre com link que foi enviado para seu email e registre uma nova senha"
+
+#: src/retrieve_password/templates/retrieve_password/reset_password.html:9
+msgid "SME -Forgot Password"
+msgstr "SME - Esqueceu a Senha"
+
+#: src/retrieve_password/templates/retrieve_password/reset_password.html:20
+msgid " Wrong Email"
+msgstr "Email Invalido"
+
+#: src/templates/base.html:23
+msgid "Toggle navigation "
+msgstr "Navegação de Altenância"
+
+#: src/templates/base.html:34 src/templates/base.html:50
 msgid "About"
 msgstr "Sobre"
 
-#: templates/base.html:37 templates/base.html:50
+#: src/templates/base.html:35 src/templates/base.html:51
 msgid "Contact"
 msgstr "Contato"
 
-#: templates/base.html:44 users/templates/users/home.html:16
+#: src/templates/base.html:45 src/users/templates/users/home.html:16
 msgid "Logout"
 msgstr "Sair"
 
-#: templates/base.html:54
+#: src/templates/base.html:59
 msgid "Login"
 msgstr "Entrar"
 
-#: templates/index.html:11 users/templates/users/home.html:10
+#: src/templates/index.html:10 src/users/templates/users/home.html:10
 msgid "Welcome!"
 msgstr "Bem vindo!"
 
-#: templates/index.html:12
+#: src/templates/index.html:11
 msgid ""
 "SME - UnB is a web platform to monitor measurements from energy transductors."
 msgstr ""
 "SME - UnB é uma plataforma de monitoramento de medidas de energia de "
 "trasistores"
 
-#: templates/index.html:13 users/templates/users/home.html:12
+#: src/templates/index.html:12 src/users/templates/users/home.html:12
 msgid "Learn more"
 msgstr "Aprenda Mais"
 
-#: templates/languages.html:13
+#: src/templates/languages.html:8
 msgid "Change Language"
 msgstr "Mudar idioma"
 
-#: transductor/templates/transductor/detail.html:4
-msgid "Measurements Record"
+#: src/transductor/templates/transductor/detail.html:4
+msgid "Measurements Record "
 msgstr "Recorde de Medida"
 
-#: transductor/templates/transductor/detail.html:28
-msgid "Total"
-msgstr "Total"
+#: src/transductor/templates/transductor/detail.html:25
+msgid "Phase A"
+msgstr "Fase A"
 
-#: transductor/templates/transductor/detail.html:72
-#, fuzzy
-#| msgid "previous"
-msgid "Previous"
+#: src/transductor/templates/transductor/detail.html:26
+msgid "Phase B"
+msgstr "Fase B"
+
+#: src/transductor/templates/transductor/detail.html:27
+msgid "Phase C"
+msgstr "Fase C"
+
+#: src/transductor/templates/transductor/detail.html:72
+msgid "Previus"
 msgstr "Anterior"
 
-#: transductor/templates/transductor/detail.html:80
+#: src/transductor/templates/transductor/detail.html:80
 msgid "Next"
 msgstr "Próximo"
 
-#: transductor/templates/transductor/detail.html:88
-#, fuzzy
-#| msgid "No measurement avaiable"
-msgid "No Measurement Avaiable"
+#: src/transductor/templates/transductor/detail.html:88
+msgid "No measurement avaiable"
 msgstr "Sem Medida Disponível "
 
-#: transductor/templates/transductor/index.html:4
-#: users/templates/users/dashboard.html:12
-msgid "Transductors"
-msgstr "Transdutores"
-
-#: transductor/templates/transductor/index.html:12
+#: src/transductor/templates/transductor/index.html:12
 msgid "Create Transductor"
 msgstr "Criar Transdutor"
 
-#: transductor/templates/transductor/index.html:16
-msgid "Description"
-msgstr "Descrição"
-
-#: transductor/templates/transductor/index.html:17
-msgid "IP Address"
-msgstr "Endereço IP"
-
-#: transductor/templates/transductor/index.html:18
+#: src/transductor/templates/transductor/index.html:18
 msgid "Serie Number"
 msgstr "Número Serial"
 
-#: transductor/templates/transductor/index.html:19
+#: src/transductor/templates/transductor/index.html:19
 msgid "Options"
 msgstr "Opção"
 
-#: transductor/templates/transductor/index.html:31
-#: transductor/templates/transductor/index.html:32
-msgid "Click here to edit"
-msgstr "Clique Aqui Para Editar"
-
-#: transductor/templates/transductor/index.html:40
+#: src/transductor/templates/transductor/index.html:45
 msgid "No Registered Transducer"
 msgstr "Sem Transdutor Registrado"
 
-#: transductor/templates/transductor/index.html:41
-msgid "To create a new transductor click"
+#: src/transductor/templates/transductor/index.html:46
+msgid "To create a new transductor click "
 msgstr "Para Criar um Novo Transdutor"
 
-#: transductor/templates/transductor/index.html:41
-msgid "here"
-msgstr "aqui"
-
-#: transductor/templates/transductor/index.html:46
-#, fuzzy
-#| msgid "No Permission to see transductors"
-msgid "No permission to see the transductors"
-msgstr "Sem Permissão Para Ver os Transdutores"
-
-#: transductor/templates/transductor/model_index.html:4
+#: src/transductor/templates/transductor/model_index.html:4
 msgid "Transductors Models"
 msgstr "Modelo do Trasdutor"
 
-#: transductor/templates/transductor/model_index.html:12
+#: src/transductor/templates/transductor/model_index.html:12
 msgid "Name"
 msgstr "Nome"
 
-#: transductor/templates/transductor/model_index.html:13
+#: src/transductor/templates/transductor/model_index.html:13
 msgid "Internet Protocol"
 msgstr "Protocolo de Internet"
 
-#: transductor/templates/transductor/model_index.html:14
+#: src/transductor/templates/transductor/model_index.html:14
 msgid "Serial Protocol"
 msgstr "Protocolo Serial"
 
-#: transductor/templates/transductor/model_index.html:28
+#: src/transductor/templates/transductor/model_index.html:28
 msgid "Nothing Registered"
 msgstr "Não Há Nada Registrado"
 
-#: transductor/templates/transductor/new.html:4
-#: transductor/templates/transductor/new.html:8
+#: src/transductor/templates/transductor/new.html:4
+#: src/transductor/templates/transductor/new.html:8
 msgid "New Transductor"
 msgstr "Novo Transdutor"
 
-#: transductor/templates/transductor/new.html:17
+#: src/transductor/templates/transductor/new.html:17
 msgid "Save"
 msgstr "Salvar"
 
-#: transductor/templates/transductor/new.html:18
-#: users/templates/users/delete_user.html:24
-#: users/templates/users/edit_user.html:71
+#: src/transductor/templates/transductor/new.html:18
+#: src/users/templates/users/change_password.html:38
+#: src/users/templates/users/delete_user.html:24
+#: src/users/templates/users/edit_user.html:74
+#: src/users/templates/users/self_edit.html:36
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: users/templates/userRegister/register.html:5
+#: src/users/templates/userRegister/register.html:5
 msgid "New User"
 msgstr "Novo Usuário"
 
-#: users/templates/userRegister/register.html:15
+#: src/users/templates/userRegister/register.html:15
 msgid "Register new user"
 msgstr "Registrar Novo Usuário"
 
-#: users/templates/userRegister/register.html:34
-#: users/templates/users/edit_user.html:38
+#: src/users/templates/userRegister/register.html:61
+#: src/users/templates/users/edit_user.html:34
 msgid "User type:"
 msgstr "Tipo de Usuário:"
 
-#: users/templates/userRegister/register.html:37
-#: users/templates/users/edit_user.html:41
+#: src/users/templates/userRegister/register.html:64
+#: src/users/templates/users/edit_user.html:37
 msgid "Commun User"
 msgstr "Usuário"
 
-#: users/templates/userRegister/register.html:40
+#: src/users/templates/userRegister/register.html:67
+#: src/users/templates/users/edit_user.html:40
 msgid " Admin"
 msgstr "Administrador"
 
-#: users/templates/userRegister/register.html:43
-#: users/templates/users/edit_user.html:47
+#: src/users/templates/userRegister/register.html:70
+#: src/users/templates/users/edit_user.html:43
 msgid "Access level:"
 msgstr "Nível de Acesso"
 
-#: users/templates/userRegister/register.html:47
+#: src/users/templates/userRegister/register.html:75
 msgid "Generate Report"
 msgstr "Gerar Relatório"
 
-#: users/templates/userRegister/register.html:52
+#: src/users/templates/userRegister/register.html:80
 msgid "Manage Transdutors"
 msgstr "Administrar Transdutores"
 
-#: users/templates/userRegister/register.html:57
-#: users/templates/users/dashboard.html:17
-#: users/templates/users/edit_user.html:61
+#: src/users/templates/userRegister/register.html:85
+#: src/users/templates/users/dashboard.html:32
+#: src/users/templates/users/edit_user.html:57
 msgid "Edit Users"
 msgstr "Editar Usuários"
 
-#: users/templates/userRegister/register.html:62
-#: users/templates/users/dashboard.html:21
-#: users/templates/users/edit_user.html:66
+#: src/users/templates/userRegister/register.html:90
+#: src/users/templates/users/dashboard.html:37
+#: src/users/templates/users/edit_user.html:62
 msgid "Delete Users"
 msgstr "Deletar Usuários"
 
-#: users/templates/userRegister/register.html:65
-#: users/templates/users/dashboard.html:15
-#: users/templates/users/edit_user.html:70
+#: src/users/templates/userRegister/register.html:95
+#: src/users/templates/users/edit_user.html:67
+msgid "See Logging"
+msgstr "Ver logging"
+
+#: src/users/templates/userRegister/register.html:98
+#: src/users/templates/users/dashboard.html:27
+#: src/users/templates/users/edit_user.html:71
+#: src/users/templates/users/edit_user.html:73
 msgid "Register"
 msgstr "Registrar"
 
-#: users/templates/userRegister/register.html:86
-#: users/templates/users/delete_user.html:38
-#: users/templates/users/edit_user.html:89
+#: src/users/templates/userRegister/register.html:119
+#: src/users/templates/users/change_password.html:56
+#: src/users/templates/users/delete_user.html:38
+#: src/users/templates/users/edit_user.html:92
+#: src/users/templates/users/self_edit.html:54
 msgid "Sign in"
 msgstr "Entrar"
 
-#: users/templates/users/dashboard.html:29
-msgid "Usuário"
-msgstr ""
+#: src/users/templates/users/change_password.html:25
+msgid "Current Password :"
+msgstr "Senha Atual"
 
-#: users/templates/users/dashboard.html:30
+#: src/users/templates/users/change_password.html:29
+msgid "New Password:"
+msgstr " Nova senha Senha"
+
+#: src/users/templates/users/change_password.html:33
+msgid "Confirm New Password:"
+msgstr "Confirmar Nova senha"
+
+#: src/users/templates/users/change_password.html:37
+#: src/users/templates/users/list_user_edit.html:21
+#: src/users/templates/users/self_edit.html:35
+msgid "Edit"
+msgstr "Editar"
+
+#: src/users/templates/users/dashboard.html:13
+msgid "Graphics and Charts"
+msgstr "Graficos e Imagens"
+
+#: src/users/templates/users/dashboard.html:17
+msgid "Transductors"
+msgstr "Transdutores"
+
+#: src/users/templates/users/dashboard.html:20
+msgid "Invoice"
+msgstr "Fatura"
+
+#: src/users/templates/users/dashboard.html:24
+msgid "User Configurations"
+msgstr "Configuração de usuarios"
+
+#: src/users/templates/users/dashboard.html:42
+msgid "Logging Users"
+msgstr "Editar Usuários"
+
+#: src/users/templates/users/dashboard.html:64
+msgid "User"
+msgstr "Usuário"
+
+#: src/users/templates/users/dashboard.html:65
 msgid "E-mail"
 msgstr "E-mail"
 
-#: users/templates/users/delete_user.html:6
+#: src/users/templates/users/dashboard.html:66
+msgid "Edit my Profile"
+msgstr "Editar meu Perfil"
+
+#: src/users/templates/users/dashboard.html:67
+msgid "Edit my Password"
+msgstr "Editrar minha senha"
+
+#: src/users/templates/users/delete_user.html:6
 msgid "Delete  Users"
 msgstr "Deletar Usuário"
 
-#: users/templates/users/delete_user.html:12
+#: src/users/templates/users/delete_user.html:12
 msgid "Delete users"
 msgstr "Deletar Usuário"
 
-#: users/templates/users/delete_user.html:22
-#: users/templates/users/list_user_delete.html:16
+#: src/users/templates/users/delete_user.html:22
+#: src/users/templates/users/list_user_delete.html:16
 msgid "Delete"
 msgstr "Deletar"
 
-#: users/templates/users/edit_user.html:6
-#, fuzzy
-#| msgid "Edit Users"
+#: src/users/templates/users/edit_user.html:5
 msgid "Edit User"
 msgstr "Editar Usuários"
 
-#: users/templates/users/edit_user.html:44
-msgid "Administrator"
-msgstr ""
+#: src/users/templates/users/edit_user.html:15
+msgid "Edit user "
+msgstr "Editar Usuário"
 
-#: users/templates/users/edit_user.html:51
+#: src/users/templates/users/edit_user.html:47
 msgid "Generate Reports"
 msgstr "Gerar Relatórios"
 
-#: users/templates/users/edit_user.html:56
+#: src/users/templates/users/edit_user.html:52
 msgid "Manage Transductors"
 msgstr "Adminstrar Transdutores"
 
-#: users/templates/users/home.html:11
-#, fuzzy
-#| msgid ""
-#| "SME - UnB is a web platform to monitor measurements from energy "
-#| "transductors."
+#: src/users/templates/users/home.html:11
 msgid ""
 "SME - UnB is a web platform to monitor measurements from energy transductors"
 msgstr ""
 "SME - UnB é uma plataforma de monitoramento de medidas de transdutores de "
 "energia"
 
-#: users/templates/users/home.html:17
+#: src/users/templates/users/home.html:17
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: users/templates/users/home.html:20
+#: src/users/templates/users/home.html:20
 msgid "Redirecting..."
 msgstr "Redirecionando..."
 
-#: users/templates/users/list_user_delete.html:6
+#: src/users/templates/users/list_user_delete.html:6
 msgid "List of Registered Users:"
 msgstr "Lista de Usuários Registrados"
 
-#: users/templates/users/list_user_delete.html:13
-#: users/templates/users/list_user_edit.html:18
+#: src/users/templates/users/list_user_delete.html:13
+#: src/users/templates/users/list_user_edit.html:18
 msgid "First Name"
 msgstr "Primeiro Nome"
 
-#: users/templates/users/list_user_delete.html:14
-#: users/templates/users/list_user_edit.html:19
+#: src/users/templates/users/list_user_delete.html:14
+#: src/users/templates/users/list_user_edit.html:19
 msgid "Last Name"
 msgstr "Último Nome"
 
-#: users/templates/users/list_user_delete.html:15
-#: users/templates/users/list_user_edit.html:20
+#: src/users/templates/users/list_user_delete.html:15
+#: src/users/templates/users/list_user_edit.html:20
 msgid "Email"
 msgstr "Email"
 
-#: users/templates/users/list_user_edit.html:8
+#: src/users/templates/users/list_user_edit.html:8
 msgid "List of registered Users:"
 msgstr "Lista de Usuários Registrados:"
 
-#: users/templates/users/list_user_edit.html:21
-msgid "Edit"
-msgstr "Editar"
+#: src/users/templates/users/logging_list.html:8
+msgid "List of Logging:"
+msgstr "Lista de Logging"
 
-#: users/templates/users/login.html:8
-#, fuzzy
-#| msgid "Login"
+#: src/users/templates/users/login.html:8
 msgid "SME - Login"
-msgstr "Entrar"
+msgstr "SME - Logar"
 
-#: users/templates/users/login.html:16 users/templates/users/login.html:25
+#: src/users/templates/users/login.html:16
+#: src/users/templates/users/login.html:28
 msgid "Log in"
 msgstr "Entrar"
 
-#: users/templates/users/login.html:18
-msgid "Email address"
-msgstr "Endereço de Email"
-
-#: users/templates/users/login.html:22
+#: src/users/templates/users/login.html:22
 msgid "Password"
 msgstr "Senha"
+
+#: src/users/templates/users/self_edit.html:5
+msgid "Edit Profile"
+msgstr "Editrar Perfil"
+
+#: src/users/templates/users/self_edit.html:24
+msgid "Name:"
+msgstr "Nome"
+
+#: src/users/templates/users/self_edit.html:28
+msgid "Last Name:"
+msgstr "Último Nome"
+
+#: src/users/templates/users/self_edit.html:31
+msgid "Email:"
+msgstr "Email"
+
+#~ msgid "Total"
+#~ msgstr "Total"
+
+#~ msgid "Click here to edit"
+#~ msgstr "Clique Aqui Para Editar"
+
+#~ msgid "here"
+#~ msgstr "aqui"
+
+#~ msgid "No permission to see the transductors"
+#~ msgstr "Sem Permissão Para Ver os Transdutores"
 
 #~ msgid "My Account"
 #~ msgstr "Minha Conta"
@@ -381,22 +721,11 @@ msgstr "Senha"
 #~ msgid "HOME"
 #~ msgstr "Página Principal"
 
-#~ msgid "User"
-#~ msgstr "Usuário"
-
-#~ msgid "Edit user"
-#~ msgstr "Editar Usuário"
-
 #~ msgid "Admin"
 #~ msgstr "Administrador"
-
-#~ msgid "Toggle navigation"
-#~ msgstr "Navegação de Altenância"
 
 #~ msgid "next"
 #~ msgstr "Próximo"
 
-#, fuzzy
-#~| msgid "Toggle navigation"
 #~ msgid "Navigation"
 #~ msgstr "Navegação de altenância"

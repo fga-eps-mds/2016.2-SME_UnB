@@ -21,72 +21,70 @@
               style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon
               glyphicon-bullhorn"></span></a></li>
               {% endblock %}
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuração de Usuarios <span class="caret"></span><span style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
-                <ul class="dropdown-menu forAnimate" role="menu">
-                  {% if request.user.is_staff %}
-                  <li><a href="{% url 'users:register' %}">{% trans "Register" %}<span
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "User Configurations"%} <span class="caret"></span><span style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
+              <ul class="dropdown-menu forAnimate" role="menu">
+                {% if request.user.is_staff %}
+                <li><a href="{% url 'users:register' %}">{% trans "Register" %}<span
+                  style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon
+                  glyphicon-plus-sign"></span></a></li>
+                  {% endif %}
+                  {%if perms.users.can_edit_user%}
+                  <li><a href="{% url 'users:list_user_edit' %}">{% trans "Edit Users" %}<span
                     style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon
-                    glyphicon-plus-sign"></span></a></li>
-                    {% endif %}
-                    {%if perms.users.can_edit_user%}
-                    <li><a href="{% url 'users:list_user_edit' %}">{% trans "Edit Users" %}<span
+                    glyphicon-wrench"></span></a></li>
+                    {%endif%}
+                    {%if perms.users.can_delete_user%}
+                    <li><a href="{% url 'users:list_user_delete' %}">{% trans "Delete Users" %}<span
                       style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon
-                      glyphicon-wrench"></span></a></li>
+                      glyphicon-minus-sign"></span></a></li>
                       {%endif%}
-                      {%if perms.users.can_delete_user%}
-                      <li><a href="{% url 'users:list_user_delete' %}">{% trans "Delete Users" %}<span
+                      {%if perms.users.can_see_logging%}
+                      <li><a href="{% url 'users:logging_list' %}">{% trans "Logging Users" %}<span
                         style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon
-                        glyphicon-minus-sign"></span></a></li>
+                        glyphicon-info-sign"></span></a></li>
                         {%endif%}
-                        {%if perms.users.can_see_logging%}
-                        <li><a href="{% url 'users:logging_list' %}">{% trans "Logging Users" %}<span
-                          style="font-size:16px;" class="pull-left hidden-xs showopacity glyphicon
-                          glyphicon-info-sign"></span></a></li>
-                          {%endif%}
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
 
-                  <!-- Page to show -->
-                  <div id="page-content-wrapper">
-                    <div class="container-fluid">
-                      {% if messages %}
-                      <div class="row">
-                        <div class="col-md-4 col-md-offset-8">
-                          {% for message in messages %}
-                          <p{% if message.tags == "success" %} class= "alert alert-success"{% endif %}>{{ message }}</p>
-                          {% endfor %}
-                        </div>
+                <!-- Page to show -->
+                <div id="page-content-wrapper">
+                  <div class="container-fluid">
+                    {% if messages %}
+                    <div class="row">
+                      <div class="col-md-4 col-md-offset-8">
+                        {% for message in messages %}
+                        <p{% if message.tags == "success" %} class= "alert alert-success"{% endif %}>{{ message }}</p>
+                        {% endfor %}
                       </div>
-                      {% endif %}
-                      {% block dashboard_content %}
-                      <p><strong>{% trans "Usuário" %}</strong>: {{ request.user.username}}</p>
-                      <p><strong>{% trans "E-mail" %}</strong>: {{ request.user.email }}</p>
-                      <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/self_edit/">Editar meus dados</a>
-                      <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/change_password/">Editar minha senha</a>
-                      {% endblock %}
                     </div>
+                    {% endif %}
+                    {% block dashboard_content %}
+                    <p><strong>{% trans "User" %}</strong>: {{ request.user.username}}</p>
+                    <p><strong>{% trans "E-mail" %}</strong>: {{ request.user.email }}</p>
+                    <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/self_edit/">{% trans "Edit my Profile"%}</a>
+                    <a type="button"  class="btn btn-success" href="http://localhost:3000/accounts/change_password/">{% trans "Edit my Password"%}</a>
+                    {% endblock %}
                   </div>
                 </div>
-                {% endblock %}
+              </div>
+              {% endblock %}
 
-                <script>
-                // Enable pusher logging - don't include this in production
-                Pusher.logToConsole = true;
+              <script>
+              // Enable pusher logging - don't include this in production
+              Pusher.logToConsole = true;
 
-                var pusher = new Pusher('01346f7690ac693e7adb', {
-                  encrypted: true
-                });
-                console.log('notification_'+'{{request.user.id}}');
-                var channel = pusher.subscribe('notification_'+'{{request.user.id}}');
-                channel.bind('create', function(data) {
-                  alert("oi")
-                  $("#allert-container").append('<div class="alert alert-danger "> '+
-                  '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> '+
-                  '<strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.'+
-                  '</div>')
-                });
-                </script>
+              var pusher = new Pusher('01346f7690ac693e7adb', {
+                encrypted: true
+              });
+              console.log('notification_'+'{{request.user.id}}');
+              var channel = pusher.subscribe('notification_'+'{{request.user.id}}');
+              channel.bind('create', function(data) {
+                alert("oi")
+                $("#allert-container").append('<div class="alert alert-danger "> '+
+                '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> '+
+                '<strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.'+
+                '</div>')
+              });
+              </script>

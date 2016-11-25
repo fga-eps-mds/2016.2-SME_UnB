@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>Transductors Models</title>
+    <title>{% trans "Transductors Models"%}</title>
 {% endblock %}
 
 {% block body %}
@@ -9,9 +9,9 @@
   <table class="table table-striped">
     {% if transductors_models %}
       <thead>
-        <th>Name</th>
-        <th>Internet Protocol</th>
-        <th>Serial Protocol</th>
+        <th>{% trans "Name"%}</th>
+        <th>{% trans "Internet Protocol"%}</th>
+        <th>{% trans "Serial Protocol"%}</th>
       </thead>
       {% for model in transductors_models %}
         <tbody>
@@ -25,7 +25,7 @@
     {% else %}
       <div class="container">
         <div class="starter-template">
-          <h1>Nothing Registered</h1>
+          <h1>{% trans "Nothing Registered"%}</h1>
         </div>
       </div>
     {% endif %}
