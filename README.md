@@ -4,6 +4,7 @@
 [![Issue Count](https://codeclimate.com/github/fga-gpp-mds/2016.2-SME_UnB/badges/issue_count.svg)](https://codeclimate.com/github/fga-gpp-mds/2016.2-SME_UnB)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub version](https://badge.fury.io/gh/fga-gpp-mds%2F2016.2-SME_UnB.svg)](https://badge.fury.io/gh/fga-gpp-mds%2F2016.2-SME_UnB)
+[![GitHub version](https://img.shields.io/badge/python-2.7-brightgreen.svg)](https://img.shields.io/badge/python-2.7-brightgreen.svg)
 
 
 ## O que é?
